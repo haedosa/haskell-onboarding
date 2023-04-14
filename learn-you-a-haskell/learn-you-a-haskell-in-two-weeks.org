@@ -1,0 +1,1776 @@
+-*- coding: utf-8-emacs -*-
+#+title: Learn You A Haskell In Two Weeks
+#+haskell_load_module: "SessionManager"
+* 문서 정리
+** regex
+!!Must be done in vim!!
+%s/\(ghci>.*\n\)\@<=#+end_example//g
+17
+%s/\(^\S[^=]*\n\)\@<=#+end_example//g
+461
+%s/#+begin_example\(\nghci>\)\@=//g
+438
+%s/\(^ghci>.*\)\(^ghci> \(.*\)\)\@<=\n\(^ghci>\)\@!\([^#]*\n\)/#\+BEGIN_SRC haskell :session ex\r:{\r\3\r-- \5:}\r#+END_SRC\r/g
+%s/\(^ghci>.*\)\(^ghci> let \(.*\)\)\@<=\n/#\+BEGIN_SRC haskell :session ex\r:{\r\3\r:}\r#\+END_SRC\r/g
+%s/\(^ghci>.*\)\(^ghci> \(.*\)\)\@<=\n/#\+BEGIN_SRC haskell :session ex\r:{\r\3\r:}\r#\+END_SRC\r/g
+%s/ghci>\n//g
+30,$s/#+begin_example/#+BEGIN_SRC haskell
+30,$s/#+end_example/:}\r#+END_SRC/g
+** clear ex
+#+BEGIN_SRC emacs-lisp :results none
+(let ((MATCH t)
+      (SCOPE nil)
+      (SKIP nil)
+      (spacing nil))
+
+  (org-map-entries
+   (lambda ()
+     (let ((name (nth 4 (org-heading-components))))
+       (if (string= name "A.")
+           (save-restriction
+             (org-mark-subtree)
+             ;;(forward-line) ;; keep header
+             (delete-region (region-beginning) (region-end))
+             ))
+       )) MATCH SCOPE SKIP))
+#+END_SRC
+
+* 리스트와 튜플, 그리고 함수의 기초
+- 아래의 질문들을 대답할 수 있는지 확인해보자
+** 데이터 구조로써 리스트가 갖는 특징은? --
+*** .
+**** 동일한 타입의 데이터를
+**** 0개 이상 가질 수 있다
+**** ex
+#+BEGIN_SRC haskell
+numbers = [4,8,15,16,23,42]
+numbers
+#+END_SRC
+
+#+BEGIN_SRC haskell
+wrongList = [1,2,'a',3,'b','c',4]
+#+END_SRC
+
+**** 출처
+***** p.8
+
+
+** 데이터 구조로써 튜플이 갖는 특징은? --
+*** .
+**** 동일하지 않을 수 있는 타입의 데이터를
+**** 최소 2개 이상, 고정된 크기로 가져야 한다
+**** 크기가 2인 튜플(tuple)을 페어(pair), 3인 튜플을 트리플(triple)이라고 한다
+**** ex
+#+BEGIN_SRC haskell
+("Christopher", "Walken", 55)
+#+END_SRC
+
+**** 출처
+***** p.20
+
+
+** 리스트, 페어 항목에 접근하는 방법은? --
+*** .
+**** 리스트 : `!!` 이용
+**** 페어 : `fst`, `snd` 이용
+**** ex
+#+BEGIN_SRC haskell
+[9.4,33.2,96.2,11.2,23.25] !! 1
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+fst (8,11)
+-- 8
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+fst ("Wow", False)
+-- "Wow"
+:}
+#+END_SRC
+**** 출처
+***** pp.9,21,22
+
+
+*** Q.
+리스트 a = [1,2,3,4,5,6,7,8,9,10] 가 주어졌을 때, 3번째 원소인 3에 접근하려면?
+#+BEGIN_SRC haskell
+:{
+a = [1,2,3,4,5,6,7,8,9,10]
+:}
+-- Answer
+
+#+END_SRC
+
+
+** 리스트를 연결하는 방법은? --
+*** .
+**** `++` 이용
+**** `:` 이용
+**** ex
+#+BEGIN_SRC haskell
+[1,2,3,4] ++ [9,10,11,12]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+['w','o'] ++ ['o','t']
+#+END_SRC
+
+#+BEGIN_SRC haskell
+1:[2,3,4,5]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+[2,3,4,5]:[1]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+5:[] == [5]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+1:2:3:4:5:[] == [1,2,3,4,5]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+[1,2,3,4,5,6,7,8,9] ++ [10]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+[1] ++ [2,3,4,5,6,7,8,9]
+#+END_SRC
+
+**** 출처
+***** pp.8,9
+
+
+*** Q.
+리스트 a = [1,2,3,4,5] b = [6,7,8,9,10] 가 주어졌을 때, a와 b를 연결하는 방법은?
+#+BEGIN_SRC haskell
+:{
+a = [1,2,3,4,5]
+b = [6,7,8,9,10]
+:}
+-- Answer
+
+#+END_SRC
+
+
+** 참고
+*** .
+**** 리스트 안의 리스트도 만들 수 있다
+**** 리스트, 튜플끼리 비교가 가능하다
+**** ex
+#+BEGIN_SRC haskell
+b = [[1,2,3,4],[5,3,3,3],[1,2,2,3,4],[1,2,3]]
+:{
+b
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+b ++ [[1,1,1,1]]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+[6,6,6]:b
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+b !! 2
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+[3,2,1] > [2,1,0]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+[3,2,1] > [2,10,100]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+[3,4,2] > [3,4]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+[3,4,2] > [2,4]
+#+END_SRC
+
+**** 출처
+******* pp.9,10
+
+
+*** .
+**** 문자열은 문자 타입의 데이터로 구성된 리스트다
+**** ex
+#+BEGIN_SRC haskell
+['h','e','l','l','o'] == "hello"
+#+END_SRC
+
+**** 출처
+***** pp.8
+
+
+*** .
+**** 리스트를 범위 (표기 : `..`) 를 사용해서 표현할 수 있다
+**** ex
+#+BEGIN_SRC haskell
+:{
+[1..20]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+['a'..'z']
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+['K'..'Z']
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+[2,4..20]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+[3,6..20]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+[0.1, 0.3 .. 1]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+[20,19..1]
+:}
+#+END_SRC
+
+**** 출처
+***** pp.14~16
+
+
+*** .
+**** 전위 함수를 중위 함수로 만들기
+**** ex
+#+BEGIN_SRC haskell
+:{
+div 92 10
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+92 `div` 10
+:}
+#+END_SRC
+
+**** 출처
+***** p.5
+
+
+*** .
+**** 리스트에 대한 다양한 함수들
+***** `head`
+***** `tail`
+***** `init`
+***** `last`
+***** `length`
+***** `null`
+***** `reverse`
+***** `take`
+***** `cycle`
+***** `repeat`
+***** `drop`
+***** `maximum`
+***** `minimum`
+***** `sum`
+***** `elem`
+**** ex
+#+BEGIN_SRC haskell
+:{
+head [5,4,3,2,1]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+tail [5,4,3,2,1]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+last [5,4,3,2,1]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+init [5,4,3,2,1]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+length [5,4,3,2,1]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+null [1,2,3]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+null []
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+reverse [5,4,3,2,1]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+take 3 [5,4,3,2,1]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+take 5 [1,2]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+take 0 [6,6,6]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+take 24 [13,26..]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+take 10 (cycle [1,2,3])
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+take 12 (cycle "LOL ")
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+take 10 (repeat 5)
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+drop 3 [8,4,2,1,5,6]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+drop 0 [1,2,3,4]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+drop 100 [1,2,3,4]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+minimum [8,4,2,1,5,6]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+maximum [1,9,2,3,4]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+sum [5,2,1,6,3,2,5,7]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+product [6,2,1,2]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+4 `elem` [3,4,5,6]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+10 `elem` [3,4,5,6]
+:}
+#+END_SRC
+
+**** 출처
+***** pp.11~13
+
+
+*** .
+**** 튜플에 대한 다양한 함수들
+***** `zip`
+**** ex
+#+BEGIN_SRC haskell
+:{
+zip [1,2,3,4,5] [5,5,5,5,5]
+-- [(1,5),(2,5),(3,5),(4,5),(5,5)]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+zip [1 .. 5] ["one", "two", "three", "four", "five"]
+-- [(1,"one"),(2,"two"),(3,"three"),(4,"four"),(5,"five")]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+zip [5,3,2,6,2,7,2,5,4,6,6] ["im","a","turtle"]
+-- [(5,"im"),(3,"a"),(2,"turtle")]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+zip [1..] ["apple", "orange", "cherry", "mango"]
+-- [(1,"apple"),(2,"orange"),(3,"cherry"),(4,"mango")]
+:}
+#+END_SRC
+
+**** 출처
+***** p.22
+
+
+** 리스트의 조건제시법을 표현하는 방법은?
+*** .
+**** 수학의 조건제시법과 매우 유사함
+리스트 조건제시법 명칭 사용례(https://formal.hknu.ac.kr/Gongsu-DataSci/notebooks/GongSu11_List_Comprehension.html)
+**** ex
+#+BEGIN_SRC haskell
+:{
+[ 2*n | n <- [1..10], 2*n >= 12]
+:}
+#+END_SRC
+
+#+BEGIN_SRC python
+[ 2*n for n in range(1,11) if 2*n >= 12]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+[ x | x <- [10..20], x /= 13, x /= 15, x /= 19]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+[ x*y | x <- [2,5,10], y <- [8,10,11]]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+[1 | _ <- [1,2,3,4]]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+triangles = [ (a,b,c) | c <- [1..10], b <- [1..10], a <- [1..10] ]
+:}
+
+**** 출처
+***** pp.16~19
+
+
+*** Q.
+"Hahaha! Ahahaha!"에서 대문자만을 남기는 방법은?
+#+BEGIN_SRC haskell
+:{
+
+:}
+#+END_SRC
+
+*** Q.
+[2,5,10] 와 [8,10,11] 사이의 모든 가능한 곱에 대해서 50보다 큰 수를 뽑아내면?
+#+BEGIN_SRC haskell
+:{
+-- Answer
+
+:}
+#+END_SRC
+
+*** Q.
+50 에서 100 의 숫자 중에서 7로 나눴을 때 나머지가 3인 숫자들은?
+- mod x y : x를 y로 나눴을 때의 나머지
+#+BEGIN_SRC haskell
+:{
+
+:}
+#+END_SRC
+
+*** Q.
+7에서 13의 리스트 중 홀수를 골라서 10보다 작으면 "BOOM!", 그 외에는 "BANG!"으로 치환된 리스트를 만들면?
+- odd x : x가 홀수이면 True
+#+BEGIN_SRC haskell
+:{
+
+:}
+#+END_SRC
+
+*** Q.
+xxs = [[1,3,5,2,3,1,2,4,5],[1,2,3,4,5,6,7,8,9],[1,2,4,2,1,6,3,1,3,2,3,6]]가 주어졌을 때 짝수만 남기면?
+#+BEGIN_SRC haskell
+:{
+xxs = [[1,3,5,2,3,1,2,4,5],[1,2,3,4,5,6,7,8,9],[1,2,4,2,1,6,3,1,3,2,3,6]]
+:}
+:{
+
+:}
+#+END_SRC
+
+*** Q.
+세변의 길이가 모두 정수이고, 각변의 길이는 10보다 작거나 같은 삼각형을 변을 튜플의 리스트로 나타내면?
+#+BEGIN_SRC haskell
+:{
+
+:}
+#+END_SRC
+
+
+** 함수를 정의하는 구문은?
+*** .
+**** <함수이름> <본문에서 쓰일 인자1> <인자2> ... = <본문>
+**** ex
+#+BEGIN_SRC haskell
+:{
+doubleMe x = x + x
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+doubleUs x y = x*2 + y*2
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+doubleUs 28 88 + doubleMe 123
+-- 478
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+doubleUs2 x y = doubleMe x + doubleMe y
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+doubleSmallNumber x = if x > 100
+                        then x
+                        else x*2
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+doubleSmallNumber' x = (if x > 100 then x else x*2) + 1
+:}
+#+END_SRC
+
+**** 출처
+***** pp.5~7
+
+
+** 참고
+*** .
+**** 하스켈에서 함수를 적용하는 것은 모든 연산자들 중에 가장 높은 우선순위를 갖는다
+**** ex
+#+BEGIN_SRC haskell
+:{
+succ 9 * 10
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+succ (9 * 10)
+:}
+#+END_SRC
+
+**** 출처
+***** pp.4
+
+
+
+*** .
+**** 파일 로드 방법
+**** ex
+#+BEGIN_SRC haskell
+:! ls
+#+END_SRC
+
+#+RESULTS:
+: app	 dist-newstyle	flake.nix  learnyouahaskell.cabal      learn-you-haskell_bak  result
+: baby.hs  flake.lock	hie.yaml   learnyouahaskell.github.io  Main.hs		      src
+
+#+BEGIN_SRC haskell
+:cd ..
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:l baby
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:l /path-to-Main/Main.hs
+#+END_SRC
+
+#+BEGIN_SRC haskell
+tripleTest 4
+#+END_SRC
+
+#+BEGIN_SRC haskell :results output
+:r
+#+END_SRC
+
+#+RESULTS:
+: [1 of 1] Compiling Main             ( Main.hs, interpreted )
+: Ok, one module loaded.
+
+#+BEGIN_SRC haskell :results output
+main
+#+END_SRC
+
+#+RESULTS:
+: Hello, Haedosa!
+
+**** 출처
+***** p.5
+
+
+
+*** . --
+**** 하스켈에서 모든 함수는 하나의 인자만 받는다
+**** 두개의 인자를 받으려면 커리된 함수(curried function)로 만들어야함
+**** 커리된 함수에서 인자를 부족하게 주면 부분 적용된 함수(partially applied function)이다
+**** 중위 함수에 인자를 부분적으로 적용하는 것을 섹션이라고 한다
+**** ex
+#+BEGIN_SRC haskell
+:{
+max 4 5
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+(max 4) 5
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+--multThree :: (Num a) => a -> a -> a -> a
+multThree x y z = x * y * z
+
+multTwoWithNine = multThree 9
+multWithEighteen = multTwoWithNine 2
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+multTwoWithNine 2 3
+#+END_SRC
+
+#+BEGIN_SRC haskell
+multWithEighteen 10
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+-- divideByTen :: (Floating a) => a -> a
+divideByTen = (/10)
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+-- isUpperAlphanum :: Char -> Bool
+isUpperAlphanum = (`elem` ['A'..'Z'])
+:}
+#+END_SRC
+
+**** 출처
+***** pp.63~67
+
+
+** 패턴 매칭의 구문은?
+*** .
+**** 패턴 매칭
+**** 'as' patterns
+**** ex
+#+BEGIN_SRC haskell
+:{
+-- lucky :: (Integral a) => a -> String
+lucky 7 = "LUCKY NUMBER SEVEN!"
+lucky x = "Sorry, you're out of luck, pal!"
+:}
+lucky 4
+#+END_SRC
+
+#+RESULTS:
+: Sorry, you're out of luck, pal!
+
+#+BEGIN_SRC haskell
+lucky 8
+#+END_SRC
+
+#+RESULTS:
+: Sorry, you're out of luck, pal!
+
+#+BEGIN_SRC haskell
+:{
+-- sayMe :: (Integral a) => a -> String
+sayMe 1 = "One!"
+sayMe 2 = "Two!"
+sayMe 3 = "Three!"
+sayMe 4 = "Four!"
+sayMe 5 = "Five!"
+sayMe x = "Not between 1 and 5"
+:}
+sayMe 'a'
+#+END_SRC
+
+#+RESULTS:
+: <interactive>:140:1: error:
+:     • No instance for (Num Char) arising from a use of ‘sayMe’
+:     • In the expression: sayMe 'a'
+:       In an equation for ‘it’: it = sayMe 'a'
+
+#+BEGIN_SRC haskell
+:{
+-- factorial :: (Integral a) => a -> a
+factorial 0 = 1
+factorial n = n * factorial (n - 1)
+:}
+factorial 10
+#+END_SRC
+
+#+RESULTS:
+: 3628800
+
+#+BEGIN_SRC haskell
+:{
+-- charName :: Char -> String
+charName 'a' = "Albert"
+charName 'b' = "Broseph"
+charName 'c' = "Cecil"
+:}
+charName 'h'
+#+END_SRC
+
+#+RESULTS:
+: "*** Exception: <interactive>:(114,1)-(116,22): Non-exhaustive patterns in function charName
+
+#+BEGIN_SRC haskell
+:{
+-- addVectors :: (Num a) => (a, a) -> (a, a) -> (a, a)
+addVectors a b = (fst a + fst b, snd a + snd b)
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+-- addVectors :: (Num a) => (a, a) -> (a, a) -> (a, a)
+addVectors (x1, y1) (x2, y2) = (x1 + x2, y1 + y2)
+:}
+addVectors (1,2) (3,6)
+#+END_SRC
+
+#+RESULTS:
+| 4 | 8 |
+
+#+BEGIN_SRC haskell
+:{
+--first :: (a, b, c) -> a
+first (x, _, _) = x
+
+--second :: (a, b, c) -> b
+second (_, y, _) = y
+
+--third :: (a, b, c) -> c
+third (_, _, z) = z
+:}
+second (1,2,3)
+#+END_SRC
+
+#+RESULTS:
+: 2
+
+#+BEGIN_SRC haskell
+:{
+xs = [(1,3), (4,3), (2,4), (5,3), (5,6), (3,1)]
+:}
+:{
+[a+b | (a,b) <- xs]
+:}
+#+END_SRC
+
+#TODO: xs의 짝수개 뽑으면서 위에거 해보기
+
+#+BEGIN_SRC haskell
+:{
+-- capital :: String -> String
+capitalsaa "" = "Empty string, whoops!"
+capitalsaa a@(x:y:xs) = "The first letter of " ++ a ++ " is " ++ [x] ++ " a " ++ xs
+:}
+capitalsaa "Dracula"
+#+END_SRC
+
+#+RESULTS:
+: The first letter of Dracula is D and acula
+
+**** 출처
+***** pp.37~43
+
+
+
+*** Q.
+숫자의 리스트가 비어있으면 0, 요소가 1개면 그 값, 요소가 2개면 두 값의 합, 요소가 3개 이상이면 -1을 돌려주는 함수 tell을 만들면?
+#+BEGIN_SRC haskell
+:{
+
+:}
+tell [3,4]
+#+END_SRC
+
+*** Q.
+리스트를 받아서 그 리스트의 길이를 알려주는 함수 length를 만들면?
+#+BEGIN_SRC haskell
+:{
+
+:}
+length' [3,4]
+#+END_SRC
+
+*** Q.
+sum 함수를 패턴매칭과 간단한 재귀로 만들어보면?
+#+BEGIN_SRC haskell
+:{
+
+:}
+sum' [3..13]
+#+END_SRC
+
+
+** `map`을 쓰는 방법은? --
+*** .
+**** 함수와 리스트를 받아서 리스트의 각 원소에 함수를 적용함
+#+BEGIN_SRC haskell
+:{
+-- map :: (a -> b) -> [a] -> [b]
+map _ [] = []
+map f (x:xs) = f x : map f xs
+:}
+#+END_SRC
+
+**** ex
+#+BEGIN_SRC haskell
+:{
+[x+3 | x <- [1,5,3,1,6]]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+map (+3) [1,5,3,1,6]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+  map (+3) [1,5,3,1,6]
+= [(+3) 1,(+3) 5,(+3) 3,(+3) 1,(+3) 6]
+= [4, 8, 6, 4, 6]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+map fst [(1,2),(3,5),(6,3),(2,6),(2,5)]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+map (++ "!") ["BIFF", "BANG", "POW"]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+map (replicate 3) [3..6]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+map (map (^2)) [[1,2],[3,4,5,6],[7,8]]
+:}
+#+END_SRC
+
+**** 출처
+***** pp.70~75
+
+
+*** Q.
+0을 곱하는 함수, 1을 곱하는 함수, 3을 곱하는 함수 ... 로 구성된 무한 리스트를 만들면?
+#+BEGIN_SRC haskell
+:{
+listOfFuns =
+:}
+(listOfFuns !! 4) 5
+#+END_SRC
+
+
+** 람다의 구문은? --
+*** .
+**** 단 한 번만 함수가 필요할 때 사용하는 익명 함수
+**** \<인자1> <인자2> ... -> <본문>
+**** ex
+#+BEGIN_SRC haskell
+:{
+-- addThree :: (Num a) => a -> a -> a -> a
+addThree x y z = x + y + z
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+-- addThree :: (Num a) => a -> a -> a -> a
+addThree = \x -> \y -> \z -> x + y + z
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+map (\(a,b) -> a + b) [(1,2),(3,5),(6,3),(2,6),(2,5)]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+--flip' :: (a -> b -> c) -> b -> a -> c
+flip' f = \x y -> f y x
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+--flip' :: (a -> b -> c) -> b -> a -> c
+flip' f x y = f y x
+:}
+#+END_SRC
+**** 출처
+***** pp.75~77
+
+
+** `foldl`, `foldr`를 쓰는 방법은? --
+*** .
+**** 이진 함수(ex. `+`), 시작값(or 누적값), 리스트를 받아서 하나의 값을 반환
+**** ex
+#+BEGIN_SRC haskell
+:{
+-- sumByFold :: (Num a) => [a] -> a
+sumByFold xs = foldl (\acc x -> acc + x) 0 xs
+:}
+sumByFold [3,5,2,1]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+  foldl (\acc x -> acc + x) 0 [3,5,2,1]
+= foldl (\acc x -> acc + x) (0+3) [5,2,1]
+= foldl (\acc x -> acc + x) ((0+3)+5) [2,1]
+= foldl (\acc x -> acc + x) (((0+3)+5)+2) [1]
+= foldl (\acc x -> acc + x) ((((0+3)+5)+2)+1) []
+= ((((0+3)+5)+2)+1)
+#+END_SRC
+
+#+BEGIN_SRC haskell
+  foldr (\x acc -> x + acc) 0 [3,5,2,1]
+= foldr (\x acc -> x + acc) (1+0) [3,5,2]
+= foldr (\x acc -> x + acc) (2+(1+0)) [3,5]
+= foldr (\x acc -> x + acc) (5+(2+(1+0))) [3]
+= foldr (\x acc -> x + acc) (3+(5+(2+(1+0)))) []
+= (3+(5+(2+(1+0))))
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+sumByFold :: (Num a) => [a] -> a
+sumByFold = foldl (+) 0
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+elem' :: (Eq a) => a -> [a] -> Bool
+elem' y ys = foldl (\acc x -> if x == y then True else acc) False ys
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+map' :: (a -> b) -> [a] -> [b]
+map' f xs = foldr (\x acc -> f x : acc) [] xs
+:}
+#+END_SRC
+**** 출처
+***** pp.77~84
+
+*** Q.
+product 함수를 foldl로 구현하면?
+#+BEGIN_SRC haskell
+:{
+:}
+productByFold [3,5,2,1]
+#+END_SRC
+*** Q1.
+product 함수를 foldl로 구현하면?
+#+BEGIN_SRC haskell
+:{
+-- productByFold :: (Num a) => [a] -> a
+productByFold xs = foldl (\acc x -> acc * x) 1 xs
+:}
+productByFold [3,5,2,1]
+#+END_SRC
+*** Q1.
+reverse 함수를 foldl로 구현하면?
+#+BEGIN_SRC haskell
+:{
+reverse' =
+:}
+:{
+reverse' [1..10]
+:}
+#+END_SRC
+
+
+** `filter`를 쓰는 방법은? --
+*** .
+**** 함수와 리스트를 받아서 리스트의 각 원소에 함수를 적용한 결과가 `True`일 경우에만 포함
+#+BEGIN_SRC haskell
+:{
+-- filter :: (a -> Bool) -> [a] -> [a]
+filter _ [] = []
+filter p (x:xs)
+    | p x       = x : filter p xs
+    | otherwise = filter p xs
+:}
+#+END_SRC
+**** ex
+#+BEGIN_SRC haskell
+:{
+filter (>3) [1,5,3,2,1,6,4,3,2,1]
+-- [5,6,4]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+filter (==3) [1,2,3,4,5]
+-- [3]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+filter even [1..10]
+-- [2,4,6,8,10]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+let notNull x = not (null x) in filter notNull [[1,2,3],[],[3,4,5],[2,2],[],[],[]]
+-- [[1,2,3],[3,4,5],[2,2]]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+filter (`elem` ['a'..'z']) "u LaUgH aT mE BeCaUsE I aM diFfeRent"
+-- "uagameasadifeent"
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+filter (`elem` ['A'..'Z']) "i Laugh At you Because u R All The Same"
+-- "LABRATS"
+:}
+#+END_SRC
+**** 출처
+***** pp.70~75
+
+
+* 타입
+** 타입이란?
+*** .
+**** 하스켈에서 값(value)을 반환하는 코드 조각을 표현식(expression)이라고 한다
+**** 모든 표현식은 타입을 갖는다
+**** 타입은 값의 종류를 뜻하는 레이블이라 생각할 수 있다
+**** 함수도 표현식이기 때문에 타입을 갖는다
+**** 튜플은 요소들의 길이와 타입에 따라 정의되는 타입을 갖는다
+**** 대표적인 하스켈 타입
+***** `Int`
+: 최솟값, 최댓값 존재
+***** `Integer`
+: 한계가 없음
+***** `Float`
+: 단정밀도(single precision) 부동소수점수
+***** `Double`
+: 배정밀도(double precision) 부동소수점수
+***** `Bool`
+: 불리언 타입
+***** `Char`
+: 유니코드 문자
+**** ex
+#+BEGIN_SRC haskell
+:{
+:t 'a'
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t True
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t "HELLO!"
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t (True, 'a')
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t ('a','b','c')
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t 4 == 5
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+removeNonUppercase st = [ c | c <- st, c `elem` ['A'..'Z']]
+:}
+:t removeNonUppercase
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+--removeNonUppercase :: [Char] -> [Char]
+removeNonUppercase st = [ c | c <- st, c `elem` ['A'..'Z']]
+:}
+:t removeNonUppercase
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+addThree :: Int -> Int -> Int -> Int
+addThree x y z = x + y + z
+:}
+#+END_SRC
+
+**** 출처
+******* Ch 2 pp.25~29
+
+
+
+** 타입을 새롭게 선언하는 구문은?
+*** .
+**** data <타입 생성자 + (타입 매개변수)> = <값 생성자 + (타입 or 타입 매개변수), `|`의 조합>
+#+BEGIN_SRC haskell
+data Bool = False | True
+#+END_SRC
+
+#+BEGIN_SRC haskell
+data Shape = Circle Float Float Float | Rectangle Float Float Float Float
+#+END_SRC
+
+#+BEGIN_SRC haskell
+data Maybe a = Nothing | Just a
+#+END_SRC
+
+**** 값 생성자(value constructor)는 입력값으로 0개 이상의 타입을 받아 타입을 출력하는 함수이다
+#+BEGIN_SRC haskell
+:t Circle
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:t Rectangle
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:t Just
+#+END_SRC
+
+**** 타입 매개변수는 값 생성자들에 다양한 타입이 적용될 수 있는 타입일 때 쓰인다.
+**** ex
+#+BEGIN_SRC haskell
+:{
+surface :: Shape -> Float
+surface (Circle _ _ r) = pi * r ^ 2
+surface (Rectangle x1 y1 x2 y2) = (abs $ x2 - x1) * (abs $ y2 - y1)
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+surface $ Circle 10 20 10
+#+END_SRC
+
+#+BEGIN_SRC haskell
+surface $ Rectangle 0 0 100 100
+#+END_SRC
+
+#+BEGIN_SRC haskell
+Circle 10 20 5
+#+END_SRC
+
+#+BEGIN_SRC haskell
+data Shape = Circle Float Float Float | Rectangle Float Float Float Float deriving (Show)
+#+END_SRC
+
+#+BEGIN_SRC haskell
+Circle 10 20 5
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+map (Circle 10 20) [4,5,6,6]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t Just "Haha"
+-- Just "Haha" :: Maybe [Char]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t Just 84
+-- Just 84 :: (Num t) => Maybe t
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t Nothing
+-- Nothing :: Maybe a
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+Just 10 :: Maybe Double
+-- Just 10.0
+:}
+#+END_SRC
+**** 출처
+***** Ch 7 pp.113~117,121~125
+
+
+
+
+*** .
+**** 어떤 타입클래스에서 정의된 함수를 값 생성자의 타입들이 모두 활용할 수 있을 때
+**** 타입 선언 구문의 뒤에 `deriving <typeclass>`를 붙여서 타입클래스를 파생한다.
+**** ex
+#+BEGIN_SRC haskell
+:{
+data Person = Person { firstName :: String
+                     , lastName :: String
+                     , age :: Int
+                     } deriving (Eq)
+
+mikeD = Person {firstName = "Michael", lastName = "Diamond", age = 43}
+adRock = Person {firstName = "Adam", lastName = "Horovitz", age = 41}
+mca = Person {firstName = "Adam", lastName = "Yauch", age = 44}
+mikeD2 = Person {firstName = "Michael", lastName = "Diamond", age = 43}
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+mca == adRock
+#+END_SRC
+
+#+BEGIN_SRC haskell
+mikeD == mikeD2
+#+END_SRC
+
+#+BEGIN_SRC haskell
+mikeD == Person {firstName = "Michael", lastName = "Diamond", age = 43}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+beastieBoys = [mca, adRock, mikeD]
+mikeD `elem` beastieBoys
+#+END_SRC
+
+#+BEGIN_SRC haskell
+mikeD
+#+END_SRC
+
+#+BEGIN_SRC haskell
+"mikeD is: " ++ show mikeD
+#+END_SRC
+
+#+BEGIN_SRC haskell
+read "Person {firstName = \"Michael\", lastName = \"Diamond\", age = 43}" :: Person
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+data Person3 = Person3 { firstName :: String
+                     , lastName :: String
+                     , age :: Int
+                     } deriving (Eq, Show, Read)
+:}
+
+mikeD3 = Person3 {firstName = "Michael", lastName = "Diamond", age = 43}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+mikeD3
+#+END_SRC
+
+#+BEGIN_SRC haskell
+"mikeD3 is: " ++ show mikeD3
+#+END_SRC
+
+#+BEGIN_SRC haskell
+read "Person3 {firstName = \"Michael\", lastName = \"Diamond\", age = 43}" :: Person3
+#+END_SRC
+
+**** 출처
+***** Ch 7 pp.113~117,121~132,135~138
+
+
+
+*** Q.
+#+BEGIN_SRC haskell
+:{
+data Shape = Circle Float Float Float | Rectangle Float Float Float Float
+
+surface :: Shape -> Float
+surface (Circle _ _ r) = pi * r ^ 2
+surface (Rectangle x1 y1 x2 y2) = (abs $ x2 - x1) * (abs $ y2 - y1)
+:}
+surface (Circle 10 20 10)
+#+END_SRC
+
+위의 `Shape` 타입을 아래와 같이 바꿨을 때 그에 맞춰서 `surface` function을 다시 짜면?
+#+BEGIN_SRC haskell
+:{
+data Point = Point Float Float deriving (Show)
+data Shape = Circle Point Float | Rectangle Point Point deriving (Show)
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:}
+surface
+#+END_SRC
+
+** 참고
+*** .
+**** 타입 동의어(type synonym)
+**** ex
+#+BEGIN_SRC haskell
+type String = [Char]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+type AssocList k v = [(k,v)]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+type IntMap v = Map Int v
+#+END_SRC
+
+#+BEGIN_SRC haskell
+type IntMap = Map Int
+#+END_SRC
+
+**** 출처
+***** Ch 7 pp.132~135
+
+
+** 재귀적인 데이터 구조란?
+*** .
+**** 값 생성자는 여러 타입(혹은 타입 매개변수)를 받을 수 있는 함수이다
+**** 타입을 자기 자신으로 표현하여 선언할 수 있다.
+**** ex
+#+BEGIN_SRC haskell
+-- data List a = Empty | a : (List a) deriving (Show, Read, Eq, Ord)
+-- data List a = Empty | (:) a (List a) deriving (Show, Read, Eq, Ord)
+data List a = Empty | Cons a (List a) deriving (Show, Read, Eq, Ord)
+#+END_SRC
+
+#+BEGIN_SRC haskell
+5 `Cons` Empty
+#+END_SRC
+
+#+BEGIN_SRC haskell
+4 `Cons` (5 `Cons` Empty)
+#+END_SRC
+
+**** 출처
+***** Ch 7 pp.138~143$
+
+
+** 참고
+*** .
+**** 대수적 데이터 타입(Algebraic Data Type)
+***** 타입에 대해 덧셈 뺄셈 곱셈 나눗셈을 할 수 있다
+**** ex
+#+BEGIN_SRC haskell
+data List a = [] | a:(List a)
+
+data List a = [] | (:) a (List a)
+
+data List a = Nil | Cons a (List a)
+#+END_SRC
+
+      $L = 1 + X \cdot L$
+
+
+
+$\Leftrightarrow L \cdot (1 - X) = 1$
+
+
+$\Leftrightarrow L = \frac{1}{1-X} = 1 + X  + X^2 + X^3 + \cdots = 1 + X\cdot 1 + X^2\cdot 1 + X^3\cdot 1 + \cdots$
+
+#+BEGIN_SRC haskell
+data List a = [] | a:[] | a:a:[] | a:a:a:[] | ...
+#+END_SRC
+
+**** 출처
+***** https://math.stackexchange.com/questions/50375/whats-the-meaning-of-algebraic-data-type/106889#106889
+
+
+** 타입클래스란?
+*** .
+**** 어떤 동작을 정의하는 인터페이스
+**** A 타입이 B 타입클래스의 인스턴스라면 A 타입은 B 타입클래스가 기술한 동작(=함수)을 지원하며 구현한다
+**** 타입클래스가 어떤 함수를 구현하기를 요구하는지가 핵심!
+**** 대표적인 타입클래스
+***** `Eq`
+: 값이 같은지 다른지 확인할 수 있는 타입들
+#+BEGIN_SRC haskell
+:i Eq
+#+END_SRC
+
+***** `Ord`
+: 값들에 순서가 있는 타입들
+#+BEGIN_SRC haskell
+:i Ord
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:i Ordering
+#+END_SRC
+
+***** `Show`
+: 문자열처럼 표시될 수 있는 타입들
+#+BEGIN_SRC haskell
+:i Show
+#+END_SRC
+
+***** `Read`
+: 문자열을 받아서 타입으로 바꿀 수 있는 타입들
+#+BEGIN_SRC haskell
+:i Read
+#+END_SRC
+
+***** `Enum`
+: 연속적으로 순서가 있는 타입들
+#+BEGIN_SRC haskell
+:i Enum
+#+END_SRC
+
+***** `Bounded`
+: 상한과 하한이 있는 타입들
+#+BEGIN_SRC haskell
+:i Read
+#+END_SRC
+
+***** `Num`
+: 사칙연산을 하는 숫자처럼 동작할 수 있거나, 그런 연산을 다루는 숫자인 타입들
+#+BEGIN_SRC haskell
+:i Num
+#+END_SRC
+
+***** `Floating`
+: 부동소수점수를 구현하는 타입들
+#+BEGIN_SRC haskell
+:i Floating
+#+END_SRC
+
+***** `Integral`
+: 정수에서 쓰이는 연산을 하는 숫자처럼 동작할 수 있거나, 그런 연산을 다루는 숫자인 타입들
+#+BEGIN_SRC haskell
+:i Integral
+#+END_SRC
+
+**** ex
+#+BEGIN_SRC haskell
+:{
+:t (==)
+-- (==) :: (Eq a) => a -> a -> Bool
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+5 == 5
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+5 /= 5
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t (>)
+-- (>) :: (Ord a) => a -> a -> Bool
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t compare
+-- compare :: Ord a => a -> a -> Ordering
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+"Abrakadabra" < "Zebra"
+#+END_SRC
+
+#+BEGIN_SRC haskell
+"Abrakadabra" `compare` "Zebra"
+#+END_SRC
+
+#+BEGIN_SRC haskell
+5 >= 2
+#+END_SRC
+
+#+BEGIN_SRC haskell
+5 `compare` 3
+#+END_SRC
+
+#+BEGIN_SRC haskell
+EQ `compare` LT
+#+END_SRC
+
+#+BEGIN_SRC haskell
+show 3
+#+END_SRC
+
+#+BEGIN_SRC haskell
+show True
+#+END_SRC
+
+#+BEGIN_SRC haskell
+read "True" || False
+#+END_SRC
+
+#+BEGIN_SRC haskell
+read "8.2" + 3.8
+#+END_SRC
+
+#+BEGIN_SRC haskell
+read "[1,2,3,4]" ++ [3]
+#+END_SRC
+
+#+BEGIN_SRC haskell
+read "4"
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t read
+-- read :: (Read a) => String -> a
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+read "5" :: Int
+#+END_SRC
+
+#+BEGIN_SRC haskell
+read "5" :: Float
+#+END_SRC
+
+#+BEGIN_SRC haskell
+(read "5" :: Float) * 4
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+['a'..'e']
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+[LT .. GT]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+[3 .. 5]
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+succ 'B'
+#+END_SRC
+
+#+BEGIN_SRC haskell
+minBound :: Int
+#+END_SRC
+
+#+BEGIN_SRC haskell
+maxBound :: Char
+#+END_SRC
+
+#+BEGIN_SRC haskell
+maxBound :: Bool
+#+END_SRC
+
+#+BEGIN_SRC haskell
+minBound :: Bool
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+maxBound :: (Bool, Int, Char)
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+:{
+:t 20
+-- 20 :: (Num t) => t
+:}
+#+END_SRC
+:}
+#+END_SRC
+
+#+BEGIN_SRC haskell
+20 :: Int
+#+END_SRC
+
+#+BEGIN_SRC haskell
+20 :: Float
+#+END_SRC
+
+#+BEGIN_SRC haskell
+(5:: Int) * (6 :: Integer)
+#+END_SRC
+
+**** 출처
+***** Ch 2 pp.29~36
+
+
+* 함수
+
+* 펑터
+
+* 어플리커티브 펑터와 모나드
+
+* List, Tuple and Basics of Function
+** list,tuple comprehension
+** pattern matching and recursion
+** fold and map (lazy, strict, thunk)
+* Types and Typeclasses
+** data, type, and newtype
+** type and value constructors
+** algebraic data type
+** recursive data structures
+** type class and type instance
+* Function
+* Functor
+* Applicative Functor and Monad
+* Etc

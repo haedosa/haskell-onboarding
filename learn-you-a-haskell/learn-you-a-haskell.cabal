@@ -1,0 +1,30 @@
+cabal-version: 2.4
+name: learn-you-a-haskell
+version: 0.1.0.0
+license: MIT
+license-file: LICENSE
+author: Su-Won Park
+maintainer: Su-Won Park
+category: Public
+
+common common
+  build-depends:    base
+  default-language: Haskell2010
+  ghc-options:      -O2
+
+library
+  import:          common
+  hs-source-dirs:  src
+  exposed-modules: First
+
+executable first
+  import:         common
+  hs-source-dirs: app
+  main-is:        first.hs
+  build-depends:  learn-you-a-haskell
+
+executable hello
+  import:         common
+  hs-source-dirs: app
+  main-is:        hello.hs
+  build-depends:  learn-you-a-haskell

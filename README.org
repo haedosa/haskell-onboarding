@@ -1,0 +1,5 @@
+* haskell-onboarding
+Haskell Onboarding Repository for Haedosa Inc.
+
+** Resources
+- Learn You a Haskell for Great Good!: A Beginner's Guide
