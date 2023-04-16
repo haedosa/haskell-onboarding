@@ -4,6 +4,10 @@
     haedosa.url = "github:haedosa/flakes";
     nixpkgs.follows = "haedosa/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
   };
 
   outputs = {self, nixpkgs, flake-utils, ...}@inputs: {
@@ -26,7 +30,14 @@
           packages = p:[
             p.learn-you-a-haskell
           ];
-          buildInputs = (import ./replit.nix { inherit pkgs; }).deps;
+          buildInputs = [
+            pkgs.cowsay
+            #(pkgs.haskellPackages.ghcWithPackages (pkgs: [
+            #  # Put your dependencies here!
+            #]))
+            #pkgs.haskell-language-server
+          ];
+          #(import ./replit.nix { inherit pkgs; }).deps;
         };
       };
       packages = {
