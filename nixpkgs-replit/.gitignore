@@ -1,0 +1,6 @@
+result
+result-*
+
+*.sw[lmnop]
+
+nixpkgs-*.tar.gz

@@ -1,0 +1,21 @@
+# pack-refs with: peeled fully-peeled sorted 
+d070f0eaa36bfd0889bb4cebfc36c739486cbcd6 refs/remotes/origin/cad/bun
+d45658a0c29881598cb39568ef881cf91cb1b396 refs/remotes/origin/cb-java-language-server
+89d487749b2014aacf21c1f7eb1687b963bbfe1c refs/remotes/origin/cb-stable-nodepackages-test
+55538ecca93d6c5121cdc43cfc346098347cbffa refs/remotes/origin/main
+9cdce175ccfa109ba7d6fe04c6189c1dd1b233c5 refs/remotes/origin/nixpkgs-legacy
+8b49bb49adce7a2325816a68ee8c70323de42984 refs/remotes/origin/nixpkgs-stable-21.11
+38c73c9ccbf21ac0168d7327a610b9fe03bd4260 refs/remotes/origin/rtm-12-2-scheme-lsp-server
+3878d1689781ab5e52b0e645f6e93035233924ad refs/remotes/origin/stable
+3c66ef2124c31701f1fb0ac8c294482aa46d8bfe refs/remotes/origin/th-add-python-deps
+b23233fffa2f43a6a64ac93637f7e2515850be9f refs/remotes/origin/th-cpp-tools
+6808562f27e6d027fdcc3496d3dd5511e8e3a207 refs/remotes/origin/th-default-back-to-unstable
+bf483ab959f7df1590be92658a1253a0bd0da5df refs/remotes/origin/th-modules-registry
+2e75e1be8388327195a8233d8fe220012da52a0b refs/remotes/origin/th-nodejs-tools
+114e1a372d59f12db7fec81a414fb0df693d8164 refs/remotes/origin/th-python-tools
+d24d2380c2bd40238b53d09afda4a0cb51665ee3 refs/remotes/origin/th-update-unstable
+fa19863fbabe26fdba8bb25e2635e28f265af04e refs/remotes/origin/za-update
+56e9aac31e44a7c6e003d4ead02e0de8c62cfb52 refs/tags/1.0.1
+f071f7c13b85ea44cda00cac1a1ab7ebc8a4adf4 refs/tags/v0.0.1
+29a438ea7228af31452de836d15aa680478d0712 refs/tags/v0.0.2
+15c50a6337c31e40894f76cb2d901ab14e60f410 refs/tags/v1.0.0
