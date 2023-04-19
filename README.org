@@ -1,5 +1,14 @@
+[[https://replit.com/@sepiabrown/haskell-onboarding?v=1][https://replit.com/badge/github/haedosa/haskell-onboarding.svg]]
+
 * haskell-onboarding
-Haskell Onboarding Repository for Haedosa Inc.
+Haskell Onboarding Repository for [[https://github.com/haedosa/][Haedosa Inc]].
 
 ** Resources
 - Learn You a Haskell for Great Good!: A Beginner's Guide
+
+** Available Platform
+- [[https://replit.com/~][Replit]]
+  - Press the green `Run` button to start ghci.
+  - Inside `ghci`, run `:l Main` to load `Main.hs`
+  - Alternatively, run `:l learn-you-a-haskell/src/First` to load `learn-you-a-haskell/src/First.hs`
+  - Although `.envrc` file is not in `git`, it is needed for `direnv` 
