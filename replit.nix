@@ -1,9 +1,6 @@
-{ pkgs, replit-overlay ? import ./nixpkgs-replit/default.nix { } } : {
+{ pkgs } : {
   deps = [
-    replit-overlay.ponysay
-    (pkgs.haskellPackages.ghcWithPackages (pkgs: [
-      # Put your dependencies here!
-    ]))
-    pkgs.haskell-language-server
+    pkgs.nix
+    pkgs.direnv
   ];
 }
