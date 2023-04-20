@@ -1,0 +1,10 @@
+cradle:
+  cabal:
+    - path: "learn-you-a-haskell/src"
+      component: "lib:learn-you-a-haskell"
+
+    - path: "learn-you-a-haskell/app/first.hs"
+      component: "learn-you-a-haskell:exe:first"
+
+    - path: "learn-you-a-haskell/app/hello.hs"
+      component: "learn-you-a-haskell:exe:hello"

@@ -9,7 +9,7 @@ pkgs.haskellPackages.shellFor {
       [
         # Put your dependencies here!
       ]))
-    pkgs.haskell-language-server
+    pkgs.haskellPackages.haskell-language-server
     pkgs.haskellPackages.cabal-install
   ];
 

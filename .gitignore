@@ -1,3 +1,10 @@
+.DS_Store
+.idea
+*.log
+tmp/
+.direnv/
+.envrc
+
 dist
 dist-*
 cabal-dev
