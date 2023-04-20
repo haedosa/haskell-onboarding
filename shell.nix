@@ -12,12 +12,4 @@ pkgs.haskellPackages.shellFor {
     pkgs.haskellPackages.haskell-language-server
     pkgs.haskellPackages.cabal-install
   ];
-
-  shellHook = pkgs.lib.optionalString enableReplit ''
-    if [ -z ''${BASHCHECK+x} ]
-    then
-      export BASHCHECK=true
-      ./ghci_wrapper.sh
-    fi
-  '';
 }

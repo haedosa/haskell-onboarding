@@ -1,4 +1,4 @@
-run = "bash --init-file <(echo \". ~/.bashrc; eval '$(direnv hook bash)'; direnv allow;\")"
+run = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow\")"
 
 entrypoint = "Main.hs"
 
@@ -7,8 +7,8 @@ hidden = [".ghci", "ghci_wrapper.sh"]
 [nix]
 channel = "stable-22_11"
 
-#[interpreter]
-#command = ["./ghci_wrapper.sh"]
+[interpreter]
+command = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow\")"
 
 [languages.haskell]
 pattern = "**/*.hs"

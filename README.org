@@ -8,7 +8,8 @@ Haskell Onboarding Repository for [[https://github.com/haedosa/][Haedosa Inc]].
 
 ** Available Platform
 - [[https://replit.com/~][Replit]]
-  - Press the green `Run` button to start ghci.
-  - Inside `ghci`, run `:l Main` to load `Main.hs`
-  - Alternatively, run `:l learn-you-a-haskell/src/First` to load `learn-you-a-haskell/src/First.hs`
-  - Although `.envrc` file is not in `git`, it is needed for `direnv` 
+  - If there is no startup =Console=, press the green =Run= button to start =ghci=.
+  - Inside =ghci=, run =:l Main= to load =Main.hs=
+  - Alternatively, run =:l learn-you-a-haskell/src/First= to load =learn-you-a-haskell/src/First.hs=
+  - If you quit the first =ghci=, then =devShells.x86_64-linux.replit= is run by =direnv=
+  - Although =.envrc= file is not in =git=, it is needed for =direnv=
