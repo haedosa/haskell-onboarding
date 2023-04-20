@@ -11,5 +11,14 @@ pkgs.haskellPackages.shellFor {
       ]))
     pkgs.haskellPackages.haskell-language-server
     pkgs.haskellPackages.cabal-install
+  ] ++ pkgs.lib.optionals enableReplit [
+  # required dependencies
+  pkgs.git
+  pkgs.emacs
+  pkgs.ripgrep
+  # optional dependencies
+  pkgs.coreutils # basic GNU utilities
+  pkgs.fd
+  pkgs.clang
   ];
 }

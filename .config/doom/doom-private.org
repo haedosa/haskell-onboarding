@@ -1,0 +1,1271 @@
+#+title: DOOM Emacs Configuration
+#+author: JJ Kim
+#+description: A Doom Emacs Configuration
+#+startup: fold
+#+property: header-args:emacs-lisp :tangle yes :comments no
+
+* Doom Configuration
+** Modules
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle no
+:END:
+
+#+name: init.el
+#+attr_html: :collapsed t
+#+begin_src emacs-lisp :tangle "init.el" :noweb no-export
+;;; init.el -*- lexical-binding: t; -*-
+
+;; This file controls what Doom modules are enabled and what order they load in.
+;; Press 'K' on a module to view its documentation, and 'gd' to browse its directory.
+
+(doom! :completion
+       <<doom-completion>>
+
+       :ui
+       <<doom-ui>>
+
+       :editor
+       <<doom-editor>>
+
+       :emacs
+       <<doom-emacs>>
+
+       :term
+       <<doom-term>>
+
+       :checkers
+       <<doom-checkers>>
+
+       :tools
+       <<doom-tools>>
+
+       :os
+       <<doom-os>>
+
+       :lang
+       <<doom-lang>>
+
+       :email
+       <<doom-email>>
+
+       :app
+       <<doom-app>>
+
+       :config
+       <<doom-config>>)
+
+#+end_src
+
+*** app
+
+#+name: doom-app
+#+begin_src emacs-lisp
+
+calendar
+;;emms
+;;everywhere        ; *leave* Emacs!? You must be joking
+;;irc               ; how neckbeards socialize
+;;(rss +org)        ; emacs as an RSS reader
+;;twitter           ; twitter client https://twitter.com/vnought
+
+#+end_src
+
+*** config
+
+#+name: doom-config
+#+begin_src emacs-lisp
+
+literate
+(default +bindings +smartparens)
+
+#+end_src
+
+*** completion
+
+#+name: doom-completion
+#+begin_src emacs-lisp
+
+(company                     ; the ultimate code completion backend
+ +childframe)                ; ... when your children are better than you
+(vertico +icons)             ; the search engine of the future
+;;helm              ; the *other* search engine for love and life
+;;ido               ; the other *other* search engine...
+;;ivy               ; a search engine for love and life
+
+#+end_src
+
+*** ui
+
+#+name: doom-ui
+#+begin_src emacs-lisp
+
+;;deft              ; notational velocity for Emacs
+doom              ; what makes DOOM look the way it does
+doom-dashboard    ; a nifty splash screen for Emacs
+doom-quit         ; DOOM quit-message prompts when you quit Emacs
+(emoji +unicode)  ; 🙂
+hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+hydra
+indent-guides     ; highlighted indent columns
+;;(ligatures +extra); ligatures and symbols to make your code pretty again
+minimap           ; show a map of the code on the side
+modeline          ; snazzy, Atom-inspired modeline, plus API
+nav-flash         ; blink cursor line after big motions
+neotree           ; a project drawer, like NERDTree for vim
+ophints            ; highlight the region an operation acts on
+(popup +defaults)   ; tame sudden yet inevitable temporary windows
+;;tabs              ; a tab bar for Emacs
+;;treemacs          ; a project drawer, like neotree but cooler
+unicode           ; extended unicode support for various languages
+vc-gutter         ; vcs diff in the fringe
+vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+window-select     ; visually switch windows
+workspaces        ; tab emulation, persistence & separate workspaces
+zen               ; distraction-free coding or writing
+
+#+end_src
+
+*** editor
+
+#+name: doom-editor
+#+begin_src emacs-lisp
+
+(evil +everywhere); come to the dark side, we have cookies
+file-templates    ; auto-snippets for empty files
+fold              ; (nigh) universal code folding
+;;(format +onsave)  ; automated prettiness
+;;god               ; run Emacs commands without modifier keys
+;;lispy             ; vim for lisp, for people who don't like vim
+multiple-cursors  ; editing in many places at once
+;;objed             ; text object editing for the innocent
+;;parinfer          ; turn lisp into python, sort of
+;;rotate-text       ; cycle region at point between text candidates
+snippets          ; my elves. They type so I don't have to
+;;word-wrap         ; soft wrapping with language-aware indent
+
+#+end_src
+
+*** emacs
+
+#+name: doom-emacs
+#+begin_src emacs-lisp
+
+(dired +icons)    ; making dired pretty [functional]
+electric          ; smarter, keyword-based electric-indent
+(ibuffer +icons)  ; interactive buffer management
+undo              ; persistent, smarter undo for your inevitable mistakes
+vc                ; version-control and Emacs, sitting in a tree
+
+#+end_src
+
+*** term
+
+#+name: doom-term
+#+begin_src emacs-lisp
+
+eshell            ; the elisp shell that works everywhere
+;;shell             ; simple shell REPL for Emacs
+term              ; basic terminal emulator for Emacs
+vterm             ; the best terminal emulation in Emacs
+
+#+end_src
+
+*** checkers
+
+#+name: doom-checkers
+#+begin_src emacs-lisp
+
+syntax              ; tasing you for every semicolon you forget
+(:if (executable-find "aspell") spell) ; tasing you for misspelling mispelling
+(:if (executable-find "languagetool") grammar) ; tasing grammar mistake every you make
+
+#+end_src
+
+*** tools
+
+#+name: doom-tools
+#+begin_src emacs-lisp
+
+;;ansible
+(debugger +lsp)   ; stepping through code, to help you add bugs
+direnv
+;;docker
+editorconfig      ; let someone else argue about tabs vs spaces
+;;ein               ; tame Jupyter notebooks with emacs
+(eval +overlay)     ; run code, run (also, repls)
+;;gist              ; interacting with github gists
+(lookup           ; helps you navigate your code and documentation
+ +dictionary      ; dictionary/thesaurus is nice
+ +docsets)        ; ...or in Dash docsets locally
+(lsp +eglot)               ; M-x vscode
+magit             ; a git porcelain for Emacs
+;;make              ; run make tasks from Emacs
+;;pass              ; password manager for nerds
+pdf               ; pdf enhancements
+;;prodigy           ; managing external services & code builders
+rgb               ; creating color strings
+;;taskrunner        ; taskrunner for all your projects
+;;terraform         ; infrastructure as code
+;;tmux              ; an API for interacting with tmux
+;;upload            ; map local to remote projects via ssh/ftp
+tree-sitter       ; Syntax and Parsing sitting in a tree
+
+#+end_src
+
+*** os
+
+#+name: doom-os
+#+begin_src emacs-lisp
+
+(:if IS-MAC macos) ; improve compatibility with macOS
+
+#+end_src
+
+*** lang
+
+#+name: doom-lang
+#+begin_src emacs-lisp
+
+(agda +local)          ; types of types of types of types...
+;;beancount         ; mind the GAAP
+cc                ; C > C++ == 1
+;;clojure           ; java with a lisp
+common-lisp       ; if you've seen one lisp, you've seen them all
+coq               ; proofs-as-programs
+;;crystal           ; ruby at the speed of c
+(csharp +lsp)      ; unity, .NET, and mono shenanigans
+;;data              ; config/data formats
+;;(dart +flutter)   ; paint ui and not much else
+elixir            ; erlang done right
+elm               ; care for a cup of TEA?
+emacs-lisp        ; drown in parentheses
+erlang            ; an elegant language for a more civilized age
+;;ess               ; emacs speaks statistics
+;;factor
+;;faust             ; dsp, but you get to keep your soul
+fsharp            ; ML stands for Microsoft's Language
+;;fstar             ; (dependent) types and (monadic) effects and Z3
+;;gdscript          ; the language you waited for
+(go +lsp)         ; the hipster dialect
+;; (haskell +dante)  ; a language that's lazier than I am
+(haskell +lsp) ; a language that's lazier than I am
+;;hy                ; readability of scheme w/ speed of python
+idris             ; a language you can depend on
+json              ; At least it ain't XML
+;;(java +meghanada) ; the poster child for carpal tunnel syndrome
+javascript        ; all(hope(abandon(ye(who(enter(here))))))
+julia             ; a better, faster MATLAB
+kotlin            ; a better, slicker Java(Script)
+(latex            ; writing papers in Emacs has never been so fun
+ ;;+fold          ; fold the clutter away nicities
+ +latexmk         ; modern latex plz
+ ;;+cdlatex       ; quick maths symbols
+ +lsp)
+;;lean              ; for folks with too much to prove
+;;ledger            ; be audit you can be
+lua               ; one-based indices? one-based indices
+markdown          ; writing docs for people to ignore
+;;nim               ; python + lisp at the speed of c
+nix               ; I hereby declare "nix geht mehr!"
+ocaml             ; an objective camel
+(org              ; organize your plain life in plain text
+ ;;+pretty        ; yessss my pretties! (nice unicode symbols)
+ +dragndrop       ; drag & drop files/images into org buffers
+ +hugo          ; use Emacs for hugo blogging
+ ;;+noter         ; enhanced PDF notetaking
+ +jupyter         ; ipython/jupyter support for babel
+ +pandoc          ; export-with-pandoc support
+ +gnuplot         ; who doesn't like pretty pictures
+ +pomodoro        ; be fruitful with the tomato technique
+ +present       ; using org-mode for presentations
+ +roam2)          ; wander around notes
+;;php               ; perl's insecure younger brother
+;;plantuml          ; diagrams for confusing people more
+purescript        ; javascript, but functional
+(python           ; beautiful is better than ugly
+ +lsp
+ +pyright
+ +tree-sitter
+ +cython)
+;;qt                ; the 'cutest' gui framework ever
+racket            ; a DSL for DSLs
+;;raku              ; the artist formerly known as perl6
+;;rest              ; Emacs as a REST client
+;;rst               ; ReST in peace
+(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+(rust +lsp +tree-sitter)  ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+;;scala             ; java, but good
+(scheme +guile)   ; a fully conniving family of lisps
+sh                ; she sells {ba,z,fi}sh shells on the C xor
+;;sml
+;;solidity          ; do you need a blockchain? No.
+;;swift             ; who asked for emoji variables?
+;;terra             ; Earth and Moon in alignment for performance.
+;;web               ; the tubes
+yaml              ; JSON, but readable
+;;zig               ; C, but simpler
+
+#+end_src
+
+*** email
+
+#+name: doom-email
+#+begin_src emacs-lisp
+
+;;(mu4e +gmail)
+;;notmuch
+;;(wanderlust +gmail)
+
+#+end_src
+
+** Packages
+
+#+begin_src emacs-lisp :tangle packages.el :comments no
+;; -*- no-byte-compile: t; -*-
+;;; $DOOMDIR/packages.el
+
+;; To install a package with Doom you must declare them here and run 'doom sync'
+;; on the command line, then restart Emacs for the changes to take effect -- or
+;; use 'M-x doom/reload'.
+
+
+;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
+;(package! some-package)
+
+;; To install a package directly from a remote git repo, you must specify a
+;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
+;; https://github.com/raxod502/straight.el#the-recipe-format
+;(package! another-package
+;  :recipe (:host github :repo "username/repo"))
+
+;; If the package you are trying to install does not contain a PACKAGENAME.el
+;; file, or is located in a subdirectory of the repo, you'll need to specify
+;; `:files' in the `:recipe':
+;(package! this-package
+;  :recipe (:host github :repo "username/repo"
+;           :files ("some-file.el" "src/lisp/*.el")))
+
+;; If you'd like to disable a package included with Doom, you can do so here
+;; with the `:disable' property:
+;(package! builtin-package :disable t)
+
+;; You can override the recipe of a built in package without having to specify
+;; all the properties for `:recipe'. These will inherit the rest of its recipe
+;; from Doom or MELPA/ELPA/Emacsmirror:
+;(package! builtin-package :recipe (:nonrecursive t))
+;(package! builtin-package-2 :recipe (:repo "myfork/package"))
+
+;; Specify a `:branch' to install a package from a particular branch or tag.
+;; This is required for some packages whose default branch isn't 'master' (which
+;; our package manager can't deal with; see raxod502/straight.el#279)
+;(package! builtin-package :recipe (:branch "develop"))
+
+;; Use `:pin' to specify a particular commit to install.
+;(package! builtin-package :pin "1a2b3c4d5e")
+
+
+;; Doom's packages are pinned to a specific commit and updated from release to
+;; release. The `unpin!' macro allows you to unpin single packages...
+;(unpin! pinned-package)
+;; ...or multiple packages
+;(unpin! pinned-package another-pinned-package)
+;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
+;(unpin! t)
+
+#+end_src
+
+* Emacs Configuration
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle "config.el"
+:END:
+** Name and Address
+
+#+begin_src emacs-lisp
+
+(setq user-full-name "JJ Kim"
+      user-mail-address "jj@haedosa.xyz")
+
+#+end_src
+** Hangul
+
+#+begin_src emacs-lisp
+
+(setq default-input-method "korean-hangul3f")
+
+#+end_src
+
+** Backup
+
+#+begin_src emacs-lisp
+
+(setq-default backup-directory-alist '(("" . "~/.backup"))
+              make-backup-files t
+              vc-make-backup-files t
+              backup-by-copying t
+              version-control t
+              delete-old-versions t
+              kept-new-versions 99
+              kept-old-versions 0
+)
+
+(defun force-backup-of-buffer ()
+  (setq buffer-backed-up nil)
+  (backup-buffer))
+(add-hook 'before-save-hook  'force-backup-of-buffer)
+
+#+end_src
+
+** Visualization
+*** theme
+
+#+begin_src emacs-lisp
+
+(setq doom-theme 'doom-one)
+
+#+end_src
+
+*** Font
+
+#+begin_src emacs-lisp
+
+(setq doom-font (font-spec :family "Mononoki Nerd Font" :size 22)
+      doom-big-font (font-spec :family "Mononoki Nerd Font" :size 36)
+      doom-variable-pitch-font (font-spec :family "Mononoki Nerd Font" :size 22))
+
+#+end_src
+
+*** Display Line Number
+
+#+begin_src emacs-lisp
+
+(setq display-line-numbers-type t)
+
+#+end_src
+*** Windsize
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! windsize)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package! windsize
+  :custom
+  (windsize-cols 1)
+  (windsize-rows 1)
+  :commands windsize-left windsize-right
+            windsize-up windsize-down
+)
+
+(map!
+  "C-S-h" #'windsize-left
+  "C-S-l" #'windsize-right
+  "C-S-k" #'windsize-up
+  "C-S-j" #'windsize-down
+)
+
+#+end_src
+
+*** Winum
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! winum)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package! winum
+  :config
+  (winum-mode 1)
+)
+
+#+end_src
+
+*** Transparency
+
+#+begin_src emacs-lisp
+
+(add-to-list 'default-frame-alist '(alpha 97 80))
+
+(defun my/display-transparency (a b)
+  (interactive "nAlpha Active:\nnAlpha Inactive:")
+  (set-frame-parameter nil 'alpha `(,a . ,b)))
+
+#+end_src
+** Programming
+*** Envrc
+
+#+begin_src emacs-lisp
+
+(use-package! envrc
+  :hook (after-init . envrc-global-mode))
+
+#+end_src
+
+*** lsp
+**** lsp
+
+#+begin_src emacs-lisp
+
+(use-package! lsp-mode
+  :custom
+  (lsp-completion-enable-additional-text-edit nil)
+  (lsp-lens-enable nil)
+  (lsp-keymap-prefix "C-c l")
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-ui-sideline-enable nil)
+  (lsp-ui-sideline-show-diagnostics nil)
+  (lsp-modeline-diagnostics-enable nil)
+  ;;(lsp-eldoc-enable-hover nil)
+  :config
+  (map! "C-,"       #'lsp-execute-code-action)
+)
+
+
+#+end_src
+
+**** lsp-ui
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! lsp-ui)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package! lsp-ui
+  :disabled t)
+
+#+end_src
+
+**** Lsp-ui-doc
+
+#+begin_src emacs-lisp
+
+(after! lsp-ui
+  (setq lsp-ui-doc-position 'top)
+  (setq lsp-ui-doc-show-with-cursor t)
+  (setq lsp-ui-sideline-show-code-actions t))
+
+(defun my/cycle-lsp-ui-doc-position ()
+  (interactive)
+  (setq lsp-ui-doc-position
+     (let ((x lsp-ui-doc-position))
+        (cond ((eq x 'top) 'bottom)
+              ((eq x 'bottom) 'at-point)
+              ((eq x 'at-point) 'top))))
+)
+
+(defun set-lsp-ui-doc-size()
+  (interactive)
+  (setq lsp-ui-doc-text-scale-level 2)
+  (setq lsp-ui-doc-max-width 300)
+  (setq lsp-ui-doc-max-height 50))
+
+#+end_src
+
+**** lsp-haskell
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! lsp-haskell)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package! haskell-mode
+  :hook ((haskell-mode . lsp-deferred)
+         (haskell-mode . (lambda ()
+                           (set-tab-width)
+                           (turn-off-smartparens-mode)
+                           (setq lsp-haskell-formatting-provider "fourmolu")
+                           (global-subword-mode)
+                           ))))
+
+(add-hook 'lsp-after-open-hook (lambda ()
+   (lsp-ui-mode -1)
+   ))
+
+#+end_src
+**** consult-lsp
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! consult-lsp)
+
+#+end_src
+
+**** consult-eglot
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! consult-eglot)
+
+#+end_src
+
+**** lsp-mode issue
+
+https://github.com/hlissner/doom-emacs/issues/5904
+
+#+begin_src emacs-lisp
+
+;; add to $DOOMDIR/config.el
+(after! lsp-mode
+  (advice-remove #'lsp #'+lsp-dont-prompt-to-install-servers-maybe-a))
+
+#+end_src
+** Org Mode
+*** Org Archive
+
+#+begin_src emacs-lisp
+
+  (defun my/org-archive()
+    (setq
+      org-archive-mark-done nil
+      org-archive-location "%s_arxiv::"
+    )
+  )
+
+#+end_src
+
+*** Org Capture
+
+#+begin_src emacs-lisp
+
+  (defun my/org-capture()
+    (setq org-capture-templates `(
+      ("h" "Haedosa" entry
+        (file+olp+datetree ,(concat org-directory "/haedosa/README.org"))
+        "* %? %U\n%a\n%i"
+      )
+      ("m" "Memo" entry
+        (file+olp+datetree ,(concat org-directory "/memo/memo.org"))
+        "* %? %U\n%a\n%i"
+      )
+      ("s" "Self" entry
+        (file+olp+datetree ,(function buffer-file-name))
+        "* %? %U\n%a\n%i"
+      )
+  )))
+
+#+end_src
+
+*** Org Agenda
+
+#+begin_src emacs-lisp
+
+  (defun my/org-agenda()
+    (setq org-agenda-files
+       (list
+          (concat org-directory "/haedosa/README.org")
+          (concat org-directory "/memo/memo.org")
+       )
+    )
+
+    (setq org-agenda-ndays 7
+          org-agenda-show-all-dates t)
+  )
+
+#+end_src
+
+*** Org Babel
+
+#+begin_src emacs-lisp
+
+  (defun my/org-babel()
+
+    (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((haskell . t)
+        (emacs-lisp . t)
+        (shell . t)
+        (sql . t)
+        (ruby . t)
+        (python . t)
+        (maxima . t)
+        (C . t)
+        (R . t)
+        (latex . t)
+        (ditaa . t)
+        (java . t))
+    )
+
+    (setq org-catch-invisible-edits           'show
+          org-src-preserve-indentation        t
+          org-src-tab-acts-natively           t
+          org-fontify-quote-and-verse-blocks  t
+          org-return-follows-link             t
+          org-edit-src-content-indentation    0
+          org-src-fontify-natively            t
+          org-confirm-babel-evaluate          nil
+    )
+  )
+
+#+end_src
+
+*** Org id
+
+=org-id-new= creates an uuid (e.g. A11DC7CB-D0ED-4C63-9941-8E692945823A), which
+is served as org-attach path. What bugged me for while is that the uuid is in
+the downcase on linux (e.g. a11dc7cb-d0ed-4c63-9941-8e692945823a) while it is in
+the upcase on mac (e.g. A11DC7CB-D0ED-4C63-9941-8E692945823A). This discrepancy
+causes conflict in syncing files between linux and mac.
+
+#+begin_src emacs-lisp
+
+  (defun my/org-id()
+    (advice-add 'org-id-new :filter-return #'upcase)
+  )
+
+#+end_src
+
+*** Org Format Style
+
+#+begin_src emacs-lisp
+
+(defun my/org-header-size()
+  (dolist (face '((org-level-1 . 1.3)
+                  (org-level-2 . 1.2)
+                  (org-level-3 . 1.1)
+                  (org-level-4 . 1.1)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.0)
+                  (org-level-7 . 1.0)
+                  (org-level-8 . 1.0)))
+    (set-face-attribute (car face) nil :height (cdr face)))
+
+    (setq org-format-latex-options
+      '(:foreground default :background default :scale 4
+        :html-foreground "Black" :html-background "Transparent" :html-scale 1.0
+        :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
+)
+
+#+end_src
+*** Org
+
+#+begin_src emacs-lisp
+
+(use-package! org
+  :custom
+  (org-directory                       "~/Ocean/Org")
+  (org-ellipsis                        " ▾")
+  (org-src-fontify-natively            t)
+  (org-src-tab-acts-natively           t)
+  (org-hide-block-startup              nil)
+  (org-src-preserve-indentation        t)
+  (org-startup-folded                  'content)
+  (org-startup-indented                t)
+  (org-startup-with-inline-images      nil)
+  (org-hide-leading-stars              t)
+  (org-attach-id-dir                   "data/")
+  (org-export-with-sub-superscripts (quote {}))
+  :config
+  (my/org-archive)
+  (my/org-capture)
+  (my/org-agenda)
+  (my/org-babel)
+  (my/org-id)
+  (my/org-header-size)
+)
+
+#+end_src
+
+*** Swagger to Org
+
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! swagger-to-org)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package! swagger-to-org)
+
+#+end_src
+
+*** Org Roam
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! org-roam)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(defun my/org-roam-directory ()
+  (let ((org-roam-directory (expand-file-name "Dropbox/roam" (getenv "HOME"))))
+    (unless (file-exists-p org-roam-directory)
+      (make-directory org-roam-directory t))
+    org-roam-directory))
+
+(use-package! org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (my/org-roam-directory))
+  (org-roam-completion-everywhere t)
+  :bind (("C-c n b" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ;;("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n a" . org-roam-alias-add)
+         ("C-c n u" . org-roam-ui-open)
+         ("C-c n g" . org-id-get-create)
+         ("C-c n t" . org-roam-tag-add)
+         :map org-mode-map
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+    (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+    (org-roam-db-autosync-mode)
+;;   ;; If using org-roam-protocol
+   (require 'org-roam-protocol))
+
+#+end_src
+
+*** Org Roam UI
+
+#+begin_src emacs-lisp :tangle packages.el
+
+;; (unpin! org-roam)
+(package! org-roam-ui)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+
+(use-package! websocket
+    :after org-roam)
+
+(use-package! org-roam-ui
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
+#+end_src
+
+** Editing
+*** Evil
+**** Evil-shift-width
+
+#+begin_src emacs-lisp
+
+(setq-default tab-width 2)
+(setq-default evil-shift-width tab-width)
+(setq-default indent-tabs-mode nil)
+
+(defun set-tab-width()
+  (interactive)
+  (setq tab-width 2)
+  (setq evil-shift-width tab-width)
+  (setq indent-tabs-mode nil))
+
+
+#+end_src
+
+**** Evil-Snipe
+
+#+begin_src emacs-lisp
+
+(setq-default evil-snipe-scope 'buffer)
+
+#+end_src
+
+*** Company
+
+#+begin_src emacs-lisp
+
+(use-package! company
+  ;; :config (company-box-mode)
+  :custom (company-idle-delay nil))
+
+(map! :map company-active-map
+  "TAB"        #'company-complete-common-or-cycle
+  "<tab>"      #'company-complete-common-or-cycle
+  "C-SPC"      #'company-complete
+  "<C-space>"  #'company-complete
+)
+
+#+end_src
+
+**** company-math
+
+#+begin_src emacs-lisp
+
+(use-package! company-math
+  :config
+  (defun my/latex-mode-setup ()
+    (interactive)
+    (setq-local company-backends
+                (append '((company-math-symbols-latex company-latex-commands))
+                        company-backends)))
+  )
+
+#+end_src
+
+*** Compeletion-at-point
+
+#+begin_src emacs-lisp
+
+(map! :map global-map "C-M-i"   #'completion-at-point)
+
+#+end_src
+
+*** Whitespace
+
+#+begin_src emacs-lisp
+
+(use-package! whitespace
+  :custom (whitespace-style '(face tabs trailing
+                              space-before-tab
+                              newline empty
+                              space-after-tab))
+  :hook (((prog-mode org-mode) . whitespace-mode)
+         (before-save . delete-trailing-whitespace))
+)
+
+#+end_src
+
+*** String-Inflection
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! string-inflection)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package! string-inflection)
+
+#+end_src
+** Search
+*** Additional Lookup Providers
+
+#+begin_src emacs-lisp
+
+(mapc (lambda (x) (add-to-list '+lookup-provider-url-alist x))
+      (list
+        '("Hackage"           "http://hackage.haskell.org/package/%s")
+        '("Hoogle"            "http://www.haskell.org/hoogle/?q=%s")
+        '("Haedosa Gitlab"    "https://gitlab.com/search?group_id=12624055&search=%s")
+        '("Dictionary"        "http://dictionary.reference.com/browse/%s")
+        '("Thesaurus"         "http://thesaurus.reference.com/search?q=%s")
+        '("Google Scholar"    "https://scholar.google.com/scholar?q=%s")
+        '("Nix Packages"      "https://search.nixos.org/packages?channel=unstable&query=%s")
+        '("Nix Options"       "https://search.nixos.org/options?channel=unstable&query=%s")
+        '("Libgen"            "http://libgen.rs/search.php?req=%s")))
+
+#+end_src
+
+** Navigation
+*** Rg
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! rg)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package! rg
+  :commands (rg rg-menu)
+  :bind ("C-c s" . rg-menu)
+  :config
+  (message "rg loaded")
+)
+
+#+end_src
+*** Avy Keybindings
+
+#+begin_src emacs-lisp
+
+(map! :leader
+      (:prefix-map ("a" . "avy")
+        :desc "avy-goto-char-2" "2" #'avy-goto-char-2
+        :desc "avy-goto-char-timer" "a" #'avy-goto-char-timer
+        :desc "avy-goto-line" "l" #'avy-goto-line
+        :desc "avy-goto-word-0" "w" #'avy-goto-word-0
+        :desc "avy-goto-subword-0" "s" #'avy-goto-subword-0
+        :desc "avy-resume" "r" #'avy-resume
+        :desc "avy-transpose-lines-in-region" "t" #'avy-transpose-lines-in-region
+        (:prefix ("c" . "copy")
+           :desc "avy-copy-region" "r" #'avy-copy-region
+           :desc "avy-copy-line" "l" #'avy-copy-line)
+        (:prefix ("m" . "move")
+           :desc "avy-move-region" "r" #'avy-move-region
+           :desc "avy-move-line" "l" #'avy-move-line)
+      ))
+
+#+end_src
+
+*** fzf
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! fzf)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(map! :leader
+      (:prefix ("z" . "zoxide/fzf")
+        :desc "fzf-directory"     "d" #'fzf-directory
+        :desc "fzf-grep"          "g" #'fzf-grep
+        :desc "fzf-git-grep"      "G" #'fzf-git-grep
+        :desc "fzf-switch-buffer" "b" #'fzf-switch-buffer)
+      ">" #'fzf-directory)
+
+#+end_src
+
+*** zoxide
+
+https://github.com/Vonfry/zoxide.el
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! zoxide)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+  (map! :leader
+        (:prefix ("z" . "zoxide/fzf")
+          :desc "zoxide-add"                    "a" #'zoxide-add
+          :desc "zoxide-cd"                     "c" #'zoxide-cd
+          :desc "zoxide-find-file"              "f" #'zoxide-find-file
+          :desc "zoxide-travel"                 "t" #'zoxide-travel
+          :desc "zoxide-remove"                 "x" #'zoxide-remove
+          :desc "zoxide-add-with-query"         "A" #'zoxide-add-with-query
+          :desc "zoxide-cd-with-query"          "C" #'zoxide-cd-with-query
+          :desc "zoxide-find-file-with-query"   "F" #'zoxide-find-file-with-query
+          :desc "zoxide-travel-with-query"      "T" #'zoxide-travel-with-query
+        ))
+
+#+end_src
+*** Dired
+
+#+begin_src emacs-lisp
+
+(map! :leader "d" #'dired-jump)
+
+#+end_src
+
+**** Dired-hide-dotfiles
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! dired-hide-dotfiles)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package! dired-hide-dotfiles
+  :after dired
+  :hook (dired-mode . dired-hide-dotfiles-mode)
+  :config
+    (map! (:map dired-mode-map
+           :n "H" #'dired-hide-dotfiles-mode)))
+
+#+end_src
+
+**** Dired-ranger
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! dired-ranger)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package! dired-ranger
+  :after dired
+  :bind (:map dired-mode-map
+          ("C-c C-b" . dired-ranger-bookmark)
+          ("C-c C-v" . dired-ranger-bookmark-visit)
+          ("C-c C-p" . dired-ranger-paste)
+          ("C-c C-y" . dired-ranger-copy)
+          ("C-c C-x" . dired-ranger-move))
+)
+#+end_src
+
+**** All-the-icons-dired
+
+#+begin_src emacs-lisp :tangle packages.el
+
+(package! all-the-icons-dired)
+
+#+end_src
+
+#+begin_src emacs-lisp
+
+(use-package! all-the-icons-dired
+  :after all-the-icons dired
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+#+end_src
+
+*** Which-key
+
+#+begin_src emacs-lisp
+
+(setq which-key-idle-delay 0.1)
+
+#+end_src
+
+*** vterm
+
+#+begin_src emacs-lisp
+
+
+(use-package! vterm
+  :bind
+    ("C-c C-j" . vterm-send-C-j)
+    ("C-c C-k" . vterm-send-C-k)
+  :config
+    (map! :after vterm
+          :map vterm-mode-map
+          :ni "C-j"    #'vterm-send-down
+          :ni "C-k"    #'vterm-send-up
+          :ni "<down>" #'vterm-send-down
+          :ni "<up>"   #'vterm-send-up
+          :ni "C-r"    #'vterm-send-C-r
+          :ni "C-t"    #'vterm-send-C-t
+          )   )
+
+#+end_src
+**** vterm-complete
+
+https://aldama.hashnode.dev/vterm-completion-for-files-directories-command-history-and-programs-in-emacs
+https://gist.github.com/ram535/a2153fb86f33ecec587d593c1c5e1623
+
+#+begin_src emacs-lisp
+
+(use-package! vterm
+  :config
+    (defun get-full-list ()
+      (let ((program-list (split-string (shell-command-to-string "compgen -c") "\n" t ))
+            (file-directory-list (split-string (shell-command-to-string "compgen -f") "\n" t ))
+            (history-list (with-temp-buffer
+                            (insert-file-contents "~/.bash_history")
+                            (split-string (buffer-string) "\n" t))))
+
+        (delete-dups (append program-list file-directory-list history-list))))
+
+    (defun vterm-completion-choose-item ()
+      (completing-read "Choose: " (get-full-list) nil nil (thing-at-point 'word 'no-properties)))
+
+    (defun vterm-completion ()
+      (interactive)
+      (vterm-directory-sync)
+      (let ((vterm-chosen-item (vterm-completion-choose-item)))
+        (when (thing-at-point 'word)
+          (vterm-send-meta-backspace))
+        (vterm-send-string vterm-chosen-item)))
+
+    (defun vterm-directory-sync ()
+      "Synchronize current working directory."
+      (interactive)
+      (when vterm--process
+        (let* ((pid (process-id vterm--process))
+               (dir (file-truename (format "/proc/%d/cwd/" pid))))
+              (setq default-directory dir))))
+
+    (map! :after vterm
+          :map vterm-mode-map
+          :ni "C-TAB"      #'vterm-completion
+          :ni "C-<tab>"    #'vterm-completion
+          :ni "C-RET"      #'vterm-directory-sync
+          :ni "C-<return>" #'vterm-directory-sync))
+
+#+end_src
+
+*** workspace
+
+#+begin_src emacs-lisp
+
+  (defun get-current-workspace-name()
+    (safe-persp-name (get-current-persp)))
+
+  (map! :map (global-map vterm-mode-map org-mode-map)
+        "M-["     #'+workspace/switch-left
+        "M-]"     #'+workspace/switch-right
+        "M-{"     #'+workspace/swap-left
+        "M-}"     #'+workspace/swap-right
+        "M-`"     #'+workspace/other
+        "M-,"     #'+workspace/switch-to
+        "M-TAB"   #'+workspace/switch-to
+        "M-<tab>" #'+workspace/switch-to)
+
+#+end_src
+
+*** buffer
+
+#+begin_src emacs-lisp
+
+  (map! "C-{"      #'previous-buffer
+        "C-}"      #'next-buffer)
+
+  (map! :leader
+        :desc "previous-buffer" "[" #'previous-buffer
+        :desc "next-buffer"     "]" #'next-buffer)
+
+#+end_src
+
+*** paragraph
+
+  #+begin_src emacs-lisp
+
+  (map! :map (global-map org-mode-map)
+        "C-j"  #'forward-paragraph
+        "C-K"  #'backward-paragraph)
+
+#+end_src
+
+*** minibuffer
+
+#+begin_src emacs-lisp
+
+  (map! :map minibuffer-mode-map
+        "M-j"  #'next-history-element
+        "M-k"  #'previous-history-element)
+
+#+end_src
+
+*** temporary
+
+Temporary fixes for broken keybindings in the process of packages updating
+
+#+begin_src emacs-lisp
+
+  (map! :leader "r" #'consult-ripgrep)
+
+#+end_src
+
+* Appendix
+;; Local Variables:
+;; eval: (add-hook 'after-save-hook (lambda () (org-babel-tangle)))
+;; End:
