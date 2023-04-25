@@ -1,4 +1,4 @@
-module List where
+module ListAnswer where
 
 -- data [] a =
 
@@ -26,9 +26,11 @@ module List where
 --
 -- ghci> 1 `headOr` [0..] == 0
 --
+-- hint: const :: a -> b -> a
+-- ghci> const "first argument" "always ignores second argument"
+-- "first argument"
 headOr :: a -> [a] -> a
-headOr =
-  error "todo: Course.List#headOr"
+headOr = foldr const
 
 
 
@@ -41,8 +43,7 @@ headOr =
 -- 6
 --
 product' :: Num a => [a] -> a
-product' =
-  error "todo: Course.List#product"
+product' = foldl (*) 1
 
 
 
@@ -57,8 +58,7 @@ product' =
 -- ghci> f3 xs = foldl (-) (sum' xs) xs
 -- ghci> f3 [1,2,3] ?
 sum' :: Num a => [a] -> a
-sum' =
-  error "todo: Course.List#sum"
+sum' = foldl (+) 0
 
 
 
@@ -67,8 +67,8 @@ sum' =
 -- ghci> length' [1, 2, 3]
 -- 3
 length' :: [a] -> Int
-length' =
-  error "todo: Course.List#length"
+length' xs = sum [1 | x <- xs]
+-- length' = foldl (const . (+1)) 0
 
 
 
@@ -80,8 +80,9 @@ length' =
 -- ghci> f5 x = headOr x (map (+1) [0..])
 -- ghci> f5 10 ?
 map' :: (a -> b) -> [a] -> [b]
-map' =
-  error "todo: Course.List#map"
+-- map' _ [] = []
+-- map' f (x:xs) = f x : map' f xs
+map' f = foldr (\x ys -> f x:ys) []
 
 
 

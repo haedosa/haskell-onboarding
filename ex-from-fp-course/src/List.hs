@@ -26,6 +26,9 @@ module List where
 --
 -- ghci> 1 `headOr` [0..] == 0
 --
+-- hint: const :: a -> b -> a
+-- ghci> const "first argument" "always ignores second argument"
+-- "first argument"
 -- headOr ::
 headOr =
   error "todo: Course.List#headOr"
