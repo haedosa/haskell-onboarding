@@ -3,17 +3,21 @@ module List where
 -- data [] a =
 
 -- foldr :: (a -> b -> b) -> b -> [a] -> b
+-- foldr f z []           == z
 -- foldr f z [x1, x2, x3] == f x1 (f x2 (f x3 z))
 -- foldr f z [x1, x2, x3] == f x1 (foldr f z [x2, x3])
 --                        == f x1 (f x2 (foldr f z [x3]))
 --                        == f x1 (f x2 (f x3 (foldr f z [])))
+--                        == f x1 (f x2 (f x3 z))
 -- foldr f z xs = ?
 
 -- foldl :: (b -> a -> b) -> b -> [a] -> b
+-- foldl f z []           == z
 -- foldl f z [x1, x2, x3] == f (f (f z x1) x2) x3
 -- foldl f z [x1, x2, x3] == foldl f (f z x1) [x2, x3]
 --                        == foldl f (f (f z x1) x2) [x3]
 --                        == foldl f (f (f (f z x1) x2) x3) []
+--                        == f (f (f z x1) x2) x3
 -- foldl f z xs = ?
 
 -- | 1. Returns the head of the list or the given default.
@@ -120,7 +124,7 @@ infixr 5 +++
 -- ghci> flatten [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 -- [1,2,3,4,5,6,7,8,9]
 --
--- ghci> f7 xxs = sum (map length xss)
+-- ghci> f7 xss = sum' (map' length' xss)
 -- ghci> f7 [[1,2,3],[3,2],[9]] ?
 -- flatten ::
 flatten =
