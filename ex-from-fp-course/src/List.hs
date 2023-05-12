@@ -164,7 +164,7 @@ flattenAgain =
 -- ghci> seqMaybe []
 -- Just []
 --
--- ghci> seqMaybe [1, 10, Nothing]
+-- ghci> seqMaybe [Just 1, Just 10, Nothing]
 -- Nothing
 --
 -- ghci> seqMaybe (Nothing: map Just [0..])
