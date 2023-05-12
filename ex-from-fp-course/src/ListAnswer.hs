@@ -40,6 +40,15 @@ module ListAnswer where
 headOr :: a -> [a] -> a
 headOr = foldr const
 
+headOr' :: a -> [a] -> a
+headOr' x [] = x
+headOr' _ (y:ys) = y
+
+headOr'' :: a -> [a] -> a
+headOr'' x y
+  | null y = x
+  | otherwise = head y
+
 
 
 -- | 2. The product of the elements of a list.
@@ -77,8 +86,8 @@ sum' = foldl (+) 0
 -- ghci> length' [1, 2, 3]
 -- 3
 length' :: [a] -> Int
-length' xs = sum [1 | x <- xs]
--- length' = foldl (const . (+1)) 0
+-- length' xs = sum [1 | x <- xs]
+length' = foldl (const . (+1)) 0
 
 
 
@@ -92,7 +101,7 @@ length' xs = sum [1 | x <- xs]
 map' :: (a -> b) -> [a] -> [b]
 -- map' _ [] = []
 -- map' f (x:xs) = f x : map' f xs
-map' f = foldr (\x ys -> f x:ys) []
+map' f = foldr (\x acc -> f x:acc) []
 
 
 
@@ -104,12 +113,12 @@ map' f = foldr (\x ys -> f x:ys) []
 -- ghci> filter' (const True) [0, 1, 2] ?
 -- ghci> filter' (const False) [0, 1, 2] ?
 filter' :: (a -> Bool) -> [a] -> [a]
-filter' p [] = []
-filter' p (x:xs)
-  | p x = x : filter' p xs
-  | otherwise = filter' p xs
+-- filter' p [] = []
+-- filter' p (x:xs)
+--   | p x = x : filter' p xs
+--   | otherwise = filter' p xs
 
--- filter' f = foldr (\x -> if f x then (x:) else id) []
+filter' f = foldr (\x acc -> if f x then x:acc else acc) []
 
 
 
@@ -120,10 +129,10 @@ filter' p (x:xs)
 --
 -- ghci> [] ++ [1, 2, 3] ?
 (+++) :: [a] -> [a] -> [a]
-(+++) [] ys = ys
-(+++) (x:xs) ys = x:xs +++ ys
+-- (+++) [] ys = ys
+-- (+++) (x:xs) ys = x:xs +++ ys
 -- (+++) xs ys = foldr (:) ys xs
--- (+++) = flip (foldr (:))
+(+++) = flip (foldr (:))
 infixr 5 +++
 
 
@@ -172,7 +181,7 @@ flattenAgain = flatMap id
 -- ghci> seqMaybe []
 -- Just []
 --
--- ghci> seqMaybe [1, 10, Nothing]
+-- ghci> seqMaybe [Just 1, Just 10, Nothing]
 -- Nothing
 --
 -- ghci> seqMaybe (Nothing: map Just [0..])
@@ -194,6 +203,8 @@ applyMaybe f a = bindMaybe (\g -> mapMaybe g a) f
 twiceMaybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
 twiceMaybe f = applyMaybe . mapMaybe f
 
+seqMaybe' :: [Maybe a] -> Maybe [a]
+seqMaybe' = foldr ((<*>) . fmap (:)) (Just [])
 
 -- | 11. Find the first element in the list matching the predicate.
 --
@@ -212,8 +223,13 @@ twiceMaybe f = applyMaybe . mapMaybe f
 -- ghci> find (const True) [0..]
 -- Just 0
 find :: (a -> Bool) -> [a] -> Maybe a
-find =
-  error "todo: Course.List#find"
+-- find p [] = Nothing
+-- find p (x:xs)
+--   | p x = Just x
+--   | otherwise = find p xs
+find p xs = case filter' p xs of
+  [] -> Nothing
+  (x:_) -> Just x
 
 
 
@@ -228,8 +244,7 @@ find =
 -- ghci> lengthGT4 [0..]
 -- True
 lengthGT4 :: [a] -> Bool
-lengthGT4 =
-  error "todo: Course.List#lengthGT4"
+lengthGT4 xs = length' xs > 4
 
 
 
@@ -241,8 +256,8 @@ lengthGT4 =
 -- ghci> reverse' [1, 2, 3]
 -- [3, 2, 1]
 reverse' :: [a] -> [a]
-reverse' =
-  error "todo: Course.List#reverse"
+reverse' = foldl (flip (:)) []
+-- reverse' = foldl (\acc x -> x:acc) []
 
 
 
@@ -255,7 +270,6 @@ reverse' =
 -- ghci> take 4 $ produce (*2) 1
 -- [1,2,4,8]
 produce :: (a -> a) -> a -> [a]
-produce f x =
-  error "todo: Course.List#produce"
+produce f x = x : produce f (f x)
 
 ---- End of list exercises

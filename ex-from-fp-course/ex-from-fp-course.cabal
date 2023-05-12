@@ -16,3 +16,5 @@ library
   import:          common
   hs-source-dirs:  src
   exposed-modules: List
+                   Functor
+                   ExactlyOne
