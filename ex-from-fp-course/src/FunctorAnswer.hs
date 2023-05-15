@@ -12,6 +12,10 @@ class Functor' k where
 
 infixl 4 <$$>
 
+instance Functor' Maybe where
+  fmap' _ Nothing = Nothing
+  fmap' f (Just a) = Just (f a)
+
 
 -- | 1. Maps a function on the ExactlyOne functor
 --
@@ -26,15 +30,16 @@ data List a = Nil | Cons a (List a) deriving (Show, Foldable)
 
 -- | 2. Maps a function on the List functor
 --
--- >>> (+1) <$$> Nil
--- Nil
--- >>> (+1) <$$> Cons 1 (Cons 2 (Cons 3 Nil))
--- Cons 2 (Cons 3 (Cons 4 Nil))
+-- >>> (+1) <$$> []
+-- []
+-- >>> (+1) <$$> [1,2,3]
+-- [2,3,4]
 
-instance Functor' List where
-  -- fmap' _ Nil = Nil
-  -- fmap' f (Cons x xs) = Cons (f x) (fmap' f xs)
-  fmap' f = foldr (Cons . f) Nil
+instance Functor' [] where
+  -- fmap' _ [] = []
+  -- fmap' f (x:xs) = f x : fmap' f xs
+  fmap' f = foldr ((:) . f) []
+
 
 -- newtype Reader r a = Reader { runReader :: r -> a }
 
@@ -73,9 +78,8 @@ instance Functor' ((->) r) where
 --
 -- >>> Nothing ??? 2
 -- Nothing
-(???) :: Functor' k => k (a -> b) -> a -> k b
-(???) ff a =
-  error "todo"
+(???) :: Applicative k => k (a -> b) -> a -> k b
+(???) ff a = ff <*> pure a
 infixl 1 ???
 
 
@@ -93,5 +97,4 @@ infixl 1 ???
 -- >>> void (+10) 5
 -- ()
 void :: Functor' k => k a -> k ()
-void =
-  error "todo"
+void = (<$$) ()

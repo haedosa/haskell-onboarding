@@ -11,6 +11,10 @@ class Functor' k where
 
 infixl 4 <$$>
 
+instance Functor' Maybe where
+  fmap' _ Nothing = Nothing
+  fmap' f (Just a) = Just (f a)
+
 
 -- | 1. Maps a function on the ExactlyOne functor
 --
@@ -21,17 +25,14 @@ instance Functor' ExactlyOne where
   fmap' =
     error "todo"
 
-data List a = Nil | Cons a (List a)
-
-
 -- | 2. Maps a function on the List functor
 --
--- >>> (+1) <$> Nil
--- Nil
--- >>> (+1) <$> Cons 1 (Cons 2 (Cons 3 Nil))
--- Cons 2 (Cons 3 (Cons 4 Nil))
+-- >>> (+1) <$$> []
+-- []
+-- >>> (+1) <$$> [1,2,3]
+-- [2,3,4]
 
-instance Functor' List where
+instance Functor' [] where
   fmap' =
     error "todo"
 
