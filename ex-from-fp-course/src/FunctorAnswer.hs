@@ -42,6 +42,7 @@ instance Functor' [] where
 
 
 -- newtype Reader r a = Reader { runReader :: r -> a }
+-- newtype Reader env a
 
 -- | 3. Maps a function on the reader ((->) r) functor
 --

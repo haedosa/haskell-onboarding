@@ -113,12 +113,12 @@ map' f = foldr (\x acc -> f x:acc) []
 -- ghci> filter' (const True) [0, 1, 2] ?
 -- ghci> filter' (const False) [0, 1, 2] ?
 filter' :: (a -> Bool) -> [a] -> [a]
--- filter' p [] = []
--- filter' p (x:xs)
---   | p x = x : filter' p xs
---   | otherwise = filter' p xs
+filter' p [] = []
+filter' p (x:xs)
+  | p x = x : filter' p xs
+  | otherwise = filter' p xs
 
-filter' f = foldr (\x acc -> if f x then x:acc else acc) []
+-- filter' f = foldr (\x acc -> if f x then x:acc else acc) []
 
 
 
@@ -229,7 +229,7 @@ find :: (a -> Bool) -> [a] -> Maybe a
 --   | otherwise = find p xs
 find p xs = case filter' p xs of
   [] -> Nothing
-  (x:_) -> Just x
+  ys -> Just (head ys)
 
 
 
@@ -244,7 +244,8 @@ find p xs = case filter' p xs of
 -- ghci> lengthGT4 [0..]
 -- True
 lengthGT4 :: [a] -> Bool
-lengthGT4 xs = length' xs > 4
+lengthGT4 (_:_:_:_:_) = True
+lengthGT4 _ = False
 
 
 
