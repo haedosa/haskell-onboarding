@@ -43,10 +43,28 @@ instance Functor' [] where
 -- >>> ((+1) <$$> (*2)) 8
 -- 17
 instance Functor' ((->) r) where
-  -- fmap' :: (a -> b) -> (->) r a -> (->) r b
-  -- fmap' :: (a -> b) -> (r -> a) -> (r -> b)
   fmap' =
     error "todo"
+
+-- Some from Learn you a haskell
+-- What is (->) r ?
+-- The function type r -> a can be rewritten as (->) r a
+-- (->) is a type constructor that takes two type parameters
+-- To be a Functor instance, the type constructor has to take exactly one type parameter
+-- (->) r can be a Functor instance
+-- instance Functor ((->) r) where
+--   fmap f g = (\x -> f (g x))
+-- instance Functor (r ->) is not an allowed syntax
+-- fmap :: (a -> b) -> ((->) r a) -> ((->) r b)
+-- fmap :: (a -> b) -> (r -> a) -> (r -> b)
+-- We pipe the output of r -> a into input of a -> b to get a function r -> b
+-- What does it do?
+
+-- The fact that fmap is function composition when used on functions
+-- bends our minds a bit and let us see how things that
+-- act more like computations than boxes (IO and (->) r) can be functors.
+-- The function being mapped over a computation results in the same computation
+-- but the result of that computation is modified with the function.
 
 
 -- | 4. Anonymous map. Maps a constant value on a functor

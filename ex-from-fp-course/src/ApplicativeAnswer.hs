@@ -5,6 +5,7 @@ import ExactlyOne
 
 class Functor k => Applicative' k where
   pure' :: a -> k a
+  -- Pronounced, apply.
   (<**>) :: k (a -> b) -> k a -> k b
   infixl 4 <**>
 
@@ -12,15 +13,15 @@ class Functor k => Applicative' k where
 -- >>> ExactlyOne (+10) <**> ExactlyOne 8
 -- ExactlyOne 18
 instance Applicative' ExactlyOne where
-  pure' = undefined
-  (<**>) = undefined
+  pure' = ExactlyOne
+  (ExactlyOne f) <**> (ExactlyOne a) = ExactlyOne (f a)
 
 -- | 2. Insert into a List
 -- >>> [(+1), (*2)] <**> [1,2,3]
 -- [2,3,4,2,4,6]
 instance Applicative' [] where
-  pure' = undefined
-  (<**>) = undefined
+  pure' a = [a]
+  fs <**> as = [f a | f <- fs, a <- as]
 
 -- | 3. Insert into a Maybe
 -- >>> Just (+8) <**> Jut 7
@@ -32,8 +33,11 @@ instance Applicative' [] where
 -- >>> Just (+8) <**> Nothing
 -- Nothing
 instance Applicative' Maybe where
-  pure' = undefined
-  (<**>) = undefined
+  pure' = Just
+  Nothing <**> _ = Nothing
+  -- _ <**> Nothing = Nothing
+  -- (Just f) <**> (Just a) = Just (f a)
+  (Just f) <**> a = fmap f a
 
 -- | 4. Insert into a function
 -- >>> ((+) <**> (+10)) 3
@@ -51,8 +55,9 @@ instance Applicative' Maybe where
 -- >>> (+) <$> (+3) <**> (*100) $ 5
 -- 508
 instance Applicative' ((->) r) where
-  pure' = undefined
-  (<**>) = undefined
+  -- pure' a = (\_ -> a)
+  pure' = const
+  f <**> g = \x -> f x (g x)
 
 -- | 5. Apply a binary function in the environment
 -- >>> lift2 (+) (Just 7) (Just 8)
