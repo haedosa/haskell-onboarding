@@ -41,12 +41,9 @@ instance Functor' [] where
   fmap' f = foldr ((:) . f) []
 
 
--- newtype Reader r a = Reader { runReader :: r -> a }
--- newtype Reader env a
-
--- | 3. Maps a function on the reader ((->) r) functor
+-- | 3. Maps a function on the function functor
 --
--- >>> ((+1) <$$> (*2)) 8
+-- >>> ((+1) <$$> (*2)) 8 (== (+1) <$$> (*2) $ 8)
 -- 17
 instance Functor' ((->) r) where
   -- fmap' :: (a -> b) -> (->) r a -> (->) r b

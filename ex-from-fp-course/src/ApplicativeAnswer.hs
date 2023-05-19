@@ -72,7 +72,8 @@ instance Applicative' ((->) r) where
 -- >>> lift2 (+) length sum [4,5,6]
 -- 18
 lift2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-lift2 = undefined
+lift2 f fa fb = k <*> fb
+  where k = f <$> fa
 
 -- | 6. Apply a ternary function in the environment.
 -- /can be written using `lift2` and `(<*>)`./
@@ -97,7 +98,7 @@ lift2 = undefined
 -- >>> lift3 (\a b c -> a + b + c) length sum product [4,5,6]
 -- 138
 lift3 :: Applicative f => (a -> b -> c -> d) -> f a -> f b -> f c -> f d
-lift3 = undefined
+lift3 f fa fb fc = lift2 f fa fb <*> fc
 
 -- | 7. Apply a quaternary function in the environment.
 -- /can be written using `lift3` and `(<*>)`./
@@ -114,7 +115,7 @@ lift3 = undefined
 -- 148
 lift4 :: Applicative f => (a -> b -> c -> d -> e)
          -> f a -> f b -> f c -> f d -> f e
-lift4 = undefined
+lift4 f fa fb fc fd = lift3 f fa fb fc <*> fd
 
 -- | 8. Apply a nullary function in the environment
 lift0 :: Applicative f => a -> f a
