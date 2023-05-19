@@ -93,4 +93,128 @@ lift3 = undefined
 
 -- | 7. Apply a quaternary function in the environment.
 -- /can be written using `lift3` and `(<*>)`./
--- >>>
+-- >>> lift4 (\a b c d -> a + b + c + d) (Just 7) (Just 8) (Just 9) (Just 10)
+-- Just 34
+--
+-- >>> lift4 (\a b c d -> a + b + c + d) (Just 7) (Just 8) Nothing (Just 10)
+-- Nothing
+--
+-- >>> lift4 (\a b c d -> a + b + c + d) [1,2,3] [4,5] [6,7,8] [9,10]
+-- [20,21,21,22,22,23,21,22,22,23,23,24,21,22,22,23,23,24,22,23,23,24,24,25,22,23,23,24,24,25,23,24,24,25,25,26]
+--
+-- >>> lift4 (\a b c d -> a + b + c + d) length sum product (sum .filter even) [4,5,6]
+-- 148
+lift4 :: Applicative f => (a -> b -> c -> d -> e)
+         -> f a -> f b -> f c -> f d -> f e
+lift4 = undefined
+
+-- | 8. Apply a nullary function in the environment
+lift0 :: Applicative f => a -> f a
+lift0 = undefined
+
+-- | 9. Apply a unary function in the environment
+-- /can be written using `lift0` and `(<*>)`./
+--
+-- >>> lift1 (+1) (Just 2)
+-- Just 3
+--
+-- >>> lift1 (+1) []
+-- []
+-- >>> lift1 (+1) [1,2,3]
+-- [2,3,4]
+lift1 :: Applicative f => (a -> b) -> f a -> f b
+lift1 = undefined
+
+-- | 10. Apply, discarding the value of the first argument.
+-- Pronounced, right apply.
+--
+-- >>> [1,2,3] **> [4,5,6]
+-- [4,5,6,4,5,6,4,5,6]
+--
+-- >>> [1,2] **> [4,5,6]
+-- [4,5,6,4,5,6]
+--
+-- >>> [1,2,3] **> [4,5]
+-- [4,5,4,5,4,5]
+--
+-- >>> Just 7 **> Just 8
+-- Just 8
+(**>) :: Applicative f => f a -> f b -> f b
+(**>) = undefined
+
+-- | 11. Apply, discarding the value of the second argument.
+-- Pronounced, left apply.
+--
+-- >>> [1,2,3] <** [4,5,6]
+-- [1,1,1,2,2,2,3,3,3]
+--
+-- >>> [1,2] <** [4,5,6]
+-- [1,1,1,2,2,2]
+--
+-- >>> [1,2,3] <** [4,5]
+-- [1,1,2,2,3,3]
+-- >>> Just 7 <** Just 8
+-- Just 7
+(<**) :: Applicative f => f a -> f b -> f a
+(<**) = undefined
+
+-- | 12. Sequences a list of structure to a structure of list.
+--
+-- >>> sequence' [ExactlyOne 7, ExactlyOne 8, ExactlyOne 9]
+-- ExactlyOne [7,8,9]
+--
+-- >>> sequence' [[1,2,3],[1,2]]
+-- [[1,1],[1,2],[2,1],[2,2],[3,1],[3,2]]
+--
+-- >>> sequence' [Just 7, Nothing]
+-- Nothing
+--
+-- >>> sequence' [Just 7, Just 8]
+-- Just [7,8]
+--
+-- >>> sequence' [(*10), (+2)] 6
+-- [60, 8]
+sequence' :: Applicative f => [f a] -> f [a]
+sequence' = undefined
+
+-- | 13. Replicate an effect a given number of times
+--
+-- /Tip:/ Use replicate function
+-- >>> replicateA 4 (ExactlyOne "hi")
+-- ExactlyOne ["hi","hi","hi","hi"]
+--
+-- >>> replcateA 4 (Just "hi")
+-- Just ["hi","hi","hi","hi"]
+--
+-- >>> replicateA 4 Nothing
+-- Nothing
+--
+-- >>> replicateA 4 (*2) 5
+-- [10,10,10,10]
+--
+-- >>> replicateA 3 ['a','b','c']
+-- ["aaa","aab","aac","aba","abb","abc","aca","acb","acc","baa","bab","bac","bba","bbb","bbc","bca","bcb","bcc","caa","cab","cac","cba","cbb","cbc","cca","ccb","ccc"]
+replicateA :: Applicative f => Int -> f a -> f [a]
+replicateA = undefined
+
+-- | 14. Filter a list with a predicate that produces an effect.
+--
+-- >>> fitering (ExactlyOne . even) [4,5,6]
+-- ExactlyOne [4,6]
+--
+-- >>> filtering (\a -> if a > 13 then Nothing else Just (a <= 7)) [4,5,6]
+-- Just [4,5,6]
+--
+-- >>> filtering (\a -> if a > 13 then Nothing else Just (a <= 7)) [4,5,6,7,8,9]
+-- Just [4,5,6,7]
+--
+-- >>> filtering (\a -> if a > 13 then Nothing else Just (a <= 7)) [4,5,6,13,14]
+-- Nothing
+--
+-- >>> filtering (>) [4,5,6,7,8,9,10,11,12] 8
+-- [9,10,11,12]
+--
+-- >>> filtering [const $ True,True] [1,2,3]
+-- [[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3]]
+filtering :: Applicative f => (a -> f Bool) -> [a] -> f [a]
+filtering = undefined
