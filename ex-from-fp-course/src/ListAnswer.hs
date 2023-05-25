@@ -247,7 +247,7 @@ lengthGT4 :: [a] -> Bool
 lengthGT4 (_:_:_:_:_) = True
 lengthGT4 _ = False
 
-
+-- lengthGT4 xs = length' xs > 4  --> This fails for lengthGT4 [0..]
 
 -- | 13. Reverse a list.
 --

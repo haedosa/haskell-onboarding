@@ -118,7 +118,7 @@ lift4 f fa fb fc fd = lift3 f fa fb fc <*> fd
 
 -- | 8. Apply a nullary function in the environment
 lift0 :: Applicative f => a -> f a
-lift0 = undefined
+lift0 = pure
 
 -- | 9. Apply a unary function in the environment
 -- /can be written using `lift0` and `(<*>)`./
@@ -131,7 +131,7 @@ lift0 = undefined
 -- >>> lift1 (+1) [1,2,3]
 -- [2,3,4]
 lift1 :: Applicative f => (a -> b) -> f a -> f b
-lift1 = undefined
+lift1 f x = pure f <*> x
 
 -- | 10. Apply, discarding the value of the first argument.
 -- Pronounced, right apply.
@@ -148,7 +148,8 @@ lift1 = undefined
 -- >>> Just 7 **> Just 8
 -- Just 8
 (**>) :: Applicative f => f a -> f b -> f b
-(**>) = undefined
+(**>) = lift2 (\ _ x -> x)
+-- (**>) = lift2 (const id)
 
 -- | 11. Apply, discarding the value of the second argument.
 -- Pronounced, left apply.
@@ -164,7 +165,7 @@ lift1 = undefined
 -- >>> Just 7 <** Just 8
 -- Just 7
 (<**) :: Applicative f => f a -> f b -> f a
-(<**) = undefined
+(<**) = lift2 const
 
 -- | 12. Sequences a list of structure to a structure of list.
 --
