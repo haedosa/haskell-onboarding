@@ -72,7 +72,7 @@ instance Functor' ((->) r) where
 -- [7,7,7]
 -- >>> 3 <$$ Just 2
 -- Just 3
-(<$$) :: Functor' k => a -> k b -> k a
+(<$$) :: Functor f => a -> f b -> f a
 (<$$) =
   error "todo"
 
@@ -85,12 +85,12 @@ instance Functor' ((->) r) where
 -- "inside" the Functor:
 -- (<*>) :: Applicative k => k (a -> b) -> k a -> k b
 --
--- >>> (*2) : (+1) : const 99 : [] ??? 8
+-- >>> [(*2), (+1), const 99] ??? 8
 -- [16, 9, 99]
 --
 -- >>> Nothing ??? 2
 -- Nothing
-(???) :: Functor' k => k (a -> b) -> a -> k b
+(???) :: Functor f => f (a -> b) -> a -> f b
 (???) ff a =
   error "todo"
 infixl 1 ???
@@ -109,6 +109,6 @@ infixl 1 ???
 --
 -- >>> void (+10) 5
 -- ()
-void :: Functor' k => k a -> k ()
+void :: Functor f => f a -> f ()
 void =
   error "todo"

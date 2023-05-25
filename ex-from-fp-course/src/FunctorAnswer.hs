@@ -78,9 +78,9 @@ instance Functor' ((->) r) where
 -- [7,7,7]
 -- >>> 3 <$$ Just 2
 -- Just 3
-(<$$) :: Functor' k => a -> k b -> k a
+(<$$) :: Functor f => a -> f b -> f a
 -- (<$$) x = fmap' (const x)
-(<$$) = fmap' . const
+(<$$) = fmap . const
 
 
 -- | 5. Apply a value to a functor-of-functions.
@@ -91,13 +91,15 @@ instance Functor' ((->) r) where
 -- "inside" the Functor:
 -- (<*>) :: Applicative k => k (a -> b) -> k a -> k b
 --
--- >>> (*2) : (+1) : const 99 : [] ??? 8
+-- >>> [(*2), (+1), const 99] ??? 8
 -- [16, 9, 99]
 --
 -- >>> Nothing ??? 2
 -- Nothing
-(???) :: Applicative k => k (a -> b) -> a -> k b
-(???) ff a = ff <*> pure a
+(???) :: Functor f => f (a -> b) -> a -> f b
+-- (???) ff a = ff <*> pure a
+(???) ff x = apply x <$> ff
+  where apply x' f = f x'
 infixl 1 ???
 
 
@@ -114,5 +116,5 @@ infixl 1 ???
 --
 -- >>> void (+10) 5
 -- ()
-void :: Functor' k => k a -> k ()
+void :: Functor f => f a -> f ()
 void = (<$$) ()

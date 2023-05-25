@@ -72,8 +72,7 @@ instance Applicative' ((->) r) where
 -- >>> lift2 (+) length sum [4,5,6]
 -- 18
 lift2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-lift2 f fa fb = k <*> fb
-  where k = f <$> fa
+lift2 f fa fb = f <$> fa <*> fb
 
 -- | 6. Apply a ternary function in the environment.
 -- /can be written using `lift2` and `(<*>)`./
