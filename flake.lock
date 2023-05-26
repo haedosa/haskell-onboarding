@@ -118,17 +118,14 @@
     },
     "replit-nixpkgs": {
       "locked": {
-        "lastModified": 1670276674,
-        "narHash": "sha256-FqZ7b2RpoHQ/jlG6JPcCNmG/DoUPCIvyaropUDFhF3Q=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "52e3e80afff4b16ccb7c52e9f0f5220552f03d04",
-        "type": "github"
+        "lastModified": 1,
+        "narHash": "sha256-LB2KvEEDY4ZCkOyPZpbQbs2tAfWD+ULkEH0s6m4KMxc=",
+        "path": "nixpkgs",
+        "type": "path"
       },
       "original": {
-        "id": "nixpkgs",
-        "rev": "52e3e80afff4b16ccb7c52e9f0f5220552f03d04",
-        "type": "indirect"
+        "path": "nixpkgs",
+        "type": "path"
       }
     },
     "root": {

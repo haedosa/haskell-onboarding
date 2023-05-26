@@ -2,9 +2,11 @@
   deps = [
     pkgs.nix
     pkgs.direnv
+    pkgs.gnugrep
     (pkgs.haskellPackages.ghcWithPackages (pkgs: [
         # Put your dependencies here!
     ]))
-    pkgs.haskell-language-server
+    pkgs.haskellPackages.cabal-install
+    pkgs.haskellPackages.haskell-language-server
   ];
 }

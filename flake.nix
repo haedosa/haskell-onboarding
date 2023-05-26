@@ -6,8 +6,11 @@
 
     # Reference for replit-nixpkgs :
     # - https://github.com/replit/nixpkgs-replit/blob/main/nix/sources.json
-    # - https://github.com/replit/nixpkgs-replit/pull/72 (Updated at 221207)
-    replit-nixpkgs.url = "nixpkgs/52e3e80afff4b16ccb7c52e9f0f5220552f03d04";
+    # - https://github.com/replit/nixpkgs-replit/pull/72
+    # - https://github.com/NixOS/nixpkgs/commits/nixos-22.11?after=99fe1b870522d6ee3e692c2b6e663d6868a3fde4+3604&branch=nixos-22.11&qualified_name=refs%2Fheads%2Fnixos-22.11
+    #   - Merge pull request #204428 from NixOS/backport-204350-to-release-22.11 (221206)
+    replit-nixpkgs.url = "path:nixpkgs";
+    #replit-nixpkgs.url = "nixpkgs/52e3e80afff4b16ccb7c52e9f0f5220552f03d04";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -59,4 +62,3 @@
         };
       });
 }
-
