@@ -163,17 +163,14 @@ lift1 = undefined
 
 -- | 12. Sequences a list of structure to a structure of list.
 --
--- >>> sequence' [ExactlyOne 7, ExactlyOne 8, ExactlyOne 9]
--- ExactlyOne [7,8,9]
---
 -- >>> sequence' [[1,2,3],[1,2]]
 -- [[1,1],[1,2],[2,1],[2,2],[3,1],[3,2]]
 --
--- >>> sequence' [Just 7, Nothing]
--- Nothing
---
 -- >>> sequence' [Just 7, Just 8]
 -- Just [7,8]
+--
+-- >>> sequence' [Just 7, Nothing]
+-- Nothing
 --
 -- >>> sequence' [(*10), (+2)] 6
 -- [60, 8]
@@ -183,10 +180,7 @@ sequence' = undefined
 -- | 13. Replicate an effect a given number of times
 --
 -- /Tip:/ Use replicate function
--- >>> replicateA 4 (ExactlyOne "hi")
--- ExactlyOne ["hi","hi","hi","hi"]
---
--- >>> replcateA 4 (Just "hi")
+-- >>> replicateA 4 (Just "hi")
 -- Just ["hi","hi","hi","hi"]
 --
 -- >>> replicateA 4 Nothing
@@ -208,16 +202,19 @@ replicateA = undefined
 -- >>> filtering (\a -> if a > 13 then Nothing else Just (a <= 7)) [4,5,6]
 -- Just [4,5,6]
 --
--- >>> filtering (\a -> if a > 13 then Nothing else Just (a <= 7)) [4,5,6,7,8,9]
+-- >>> filtering (\a -> if a > 13 then Nothing else Just (a <= 7)) [4..13]
 -- Just [4,5,6,7]
 --
--- >>> filtering (\a -> if a > 13 then Nothing else Just (a <= 7)) [4,5,6,13,14]
+-- >>> filtering (\a -> if a > 13 then Nothing else Just (a <= 7)) [4..14]
 -- Nothing
 --
--- >>> filtering (>) [4,5,6,7,8,9,10,11,12] 8
+-- >>> filtering (>) [4..12] 8
 -- [9,10,11,12]
 --
--- >>> filtering [const $ True,True] [1,2,3]
+-- >>> filtering (const [True, True]) [1,2,3]
 -- [[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3],[1,2,3]]
+--
+-- >>> filtering (const [True, False]) [1,2,3]
+-- [[1,2,3],[1,2],[1,3],[1],[2,3],[2],[3],[]]
 filtering :: Applicative f => (a -> f Bool) -> [a] -> f [a]
 filtering = undefined
