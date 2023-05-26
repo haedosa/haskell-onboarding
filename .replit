@@ -1,4 +1,6 @@
-run = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow\")"
+run = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow\") && cabal repl ex-from-fp-course"
+
+#run = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow\")"
 
 entrypoint = "Main.hs"
 
@@ -8,7 +10,7 @@ hidden = [".ghci", "ghci_wrapper.sh"]
 channel = "stable-22_11"
 
 [interpreter]
-command = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow\")"
+command = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow\") && cabal repl ex-from-fp-course"
 
 [languages.haskell]
 pattern = "**/*.hs"
