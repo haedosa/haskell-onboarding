@@ -1,6 +1,7 @@
-run = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow\") && cabal repl ex-from-fp-course"
+#"bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow;\")"
+#"bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; if [[ ! -d nixpkgs ]]; then ./make_custom_nixpkgs.sh; fi; eval '$(direnv hook bash)'; direnv allow;\")"
 
-#run = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow\")"
+run = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow;\")"
 
 entrypoint = "Main.hs"
 
@@ -10,7 +11,7 @@ hidden = [".ghci", "ghci_wrapper.sh"]
 channel = "stable-22_11"
 
 [interpreter]
-command = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow\") && cabal repl ex-from-fp-course"
+command = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow;\")"
 
 [languages.haskell]
 pattern = "**/*.hs"

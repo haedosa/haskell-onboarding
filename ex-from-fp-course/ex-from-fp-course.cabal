@@ -11,12 +11,14 @@ common common
   build-depends:    base
                   , bytestring
   default-language: Haskell2010
-  ghc-options:      -O2
+  ghc-options:      -O2 -Wno-missing-home-modules
 
 library
   import:          common
   hs-source-dirs:  src
-  exposed-modules: List
+  exposed-modules: Kata
+                   ExactlyOne
+                   List
                    Functor
                    Applicative
-                   ExactlyOne
+                   

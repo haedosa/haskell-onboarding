@@ -1,5 +1,4 @@
-{ pkgs, enableReplit ? false }: 
-# pkgs ? import ./nixpkgs-replit/default.nix { }
+{ pkgs }:
 
 pkgs.haskellPackages.shellFor {
   packages = p: [ p.learn-you-a-haskell ];
