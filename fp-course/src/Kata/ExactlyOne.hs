@@ -1,9 +1,7 @@
-{-# LANGUAGE ImportQualifiedPost #-}
 {-# OPTIONS_GHC -Wno-noncanonical-monad-instances #-}
 
-module ExactlyOne where
+module Kata.ExactlyOne where
 
-import Control.Applicative qualified as A
 import Control.Monad qualified as M
 
 

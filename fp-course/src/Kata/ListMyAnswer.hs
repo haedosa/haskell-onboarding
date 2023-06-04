@@ -1,6 +1,6 @@
-module ListAnswer where
+module Kata.ListMyAnswer where
 
--- data [] a = [] | a:[a]
+-- data [] a =
 
 -- foldr :: (a -> b -> b) -> b -> [a] -> b
 -- foldr f z []           == z
@@ -10,8 +10,6 @@ module ListAnswer where
 --                        == f x1 (f x2 (f x3 (foldr f z [])))
 --                        == f x1 (f x2 (f x3 z))
 -- foldr f z xs = ?
--- foldr _ b [] = b
--- foldr f b (x:xs) = f x (foldr f b xs)
 
 -- foldl :: (b -> a -> b) -> b -> [a] -> b
 -- foldl f z []           == z
@@ -21,8 +19,6 @@ module ListAnswer where
 --                        == foldl f (f (f (f z x1) x2) x3) []
 --                        == f (f (f z x1) x2) x3
 -- foldl f z xs = ?
--- foldl _ z [] = z
--- foldl f z (x:xs) = foldl f (f z x) xs
 
 -- | 1. Returns the head of the list or the given default.
 --
@@ -37,17 +33,9 @@ module ListAnswer where
 -- hint: const :: a -> b -> a
 -- ghci> const "first argument" "always ignores second argument"
 -- "first argument"
-headOr :: a -> [a] -> a
-headOr = foldr const
-
-headOr' :: a -> [a] -> a
-headOr' x [] = x
-headOr' _ (y:ys) = y
-
-headOr'' :: a -> [a] -> a
-headOr'' x y
-  | null y = x
-  | otherwise = head y
+-- headOr ::
+headOr =
+  error "todo: Course.List#headOr"
 
 
 
@@ -59,10 +47,9 @@ headOr'' x y
 -- ghci> product' [1:2:3:[])
 -- 6
 --
-product' :: Num a => [a] -> a
-product' = foldl (*) 1
--- product' [] = 1
--- product' (x:xs) = x * product' xs
+-- product' ::
+product' =
+  error "todo: Course.List#product"
 
 
 
@@ -76,8 +63,9 @@ product' = foldl (*) 1
 --
 -- ghci> f3 xs = foldl (-) (sum' xs) xs
 -- ghci> f3 [1,2,3] ?
-sum' :: Num a => [a] -> a
-sum' = foldl (+) 0
+-- sum' ::
+sum' =
+  error "todo: Course.List#sum"
 
 
 
@@ -85,9 +73,9 @@ sum' = foldl (+) 0
 --
 -- ghci> length' [1, 2, 3]
 -- 3
-length' :: [a] -> Int
--- length' xs = sum [1 | x <- xs]
-length' = foldl (const . (+1)) 0
+-- length' ::
+length' =
+  error "todo: Course.List#length"
 
 
 
@@ -98,10 +86,9 @@ length' = foldl (const . (+1)) 0
 --
 -- ghci> f5 x = headOr x (map (+1) [0..])
 -- ghci> f5 10 ?
-map' :: (a -> b) -> [a] -> [b]
--- map' _ [] = []
--- map' f (x:xs) = f x : map' f xs
-map' f = foldr (\x acc -> f x:acc) []
+-- map' ::
+map' =
+  error "todo: Course.List#map"
 
 
 
@@ -112,13 +99,9 @@ map' f = foldr (\x acc -> f x:acc) []
 --
 -- ghci> filter' (const True) [0, 1, 2] ?
 -- ghci> filter' (const False) [0, 1, 2] ?
-filter' :: (a -> Bool) -> [a] -> [a]
-filter' p [] = []
-filter' p (x:xs)
-  | p x = x : filter' p xs
-  | otherwise = filter' p xs
-
--- filter' f = foldr (\x acc -> if f x then x:acc else acc) []
+-- filter' ::
+filter' =
+  error "todo: Course.List#filter"
 
 
 
@@ -128,11 +111,10 @@ filter' p (x:xs)
 -- [1,2,3,4,5,6]
 --
 -- ghci> [] ++ [1, 2, 3] ?
-(+++) :: [a] -> [a] -> [a]
--- (+++) [] ys = ys
--- (+++) (x:xs) ys = x:xs +++ ys
--- (+++) xs ys = foldr (:) ys xs
-(+++) = flip (foldr (:))
+-- (+++) ::
+(+++) =
+  error "todo: Course.List#(+++)"
+
 infixr 5 +++
 
 
@@ -144,26 +126,27 @@ infixr 5 +++
 --
 -- ghci> f7 xss = sum' (map' length' xss)
 -- ghci> f7 [[1,2,3],[3,2],[9]] ?
-flatten :: [[a]] -> [a]
-flatten = foldl (+++) []
--- flatten = foldr (+++) []
+-- flatten ::
+flatten =
+  error "todo: Course.List#flatten"
 
 
 
 -- | 8. Map a function then flatten to a list.
 --
--- ghci> flatMap (\x -> x:x + 1:x + 2:[]) [1, 2, 3]
+-- ghci> flatMap (\x -> x:x+1:x+2:[]) [1, 2, 3]
 -- [1,2,3,2,3,4,3,4,5]
-flatMap :: (a -> [b]) -> [a] -> [b]
--- flatMap f xs = flatten (map' f xs)
-flatMap f = flatten . map' f
+-- flatMap ::
+flatMap =
+  error "todo: Course.List#flatMap"
 
 
 
 -- | 9. Flatten a list of lists to a list (again).
 -- HOWEVER, this time use the /flatMap/ function that you just wrote.
-flattenAgain :: [[a]] -> [a]
-flattenAgain = flatMap id
+-- flattenAgain ::
+flattenAgain =
+  error "todo: Course.List#flattenAgain"
 
 
 
@@ -186,25 +169,11 @@ flattenAgain = flatMap id
 --
 -- ghci> seqMaybe (Nothing: map Just [0..])
 -- Nothing
-seqMaybe :: [Maybe a] -> Maybe [a]
-seqMaybe = foldr (twiceMaybe (:)) (Just [])
+-- seqMaybe ::
+seqMaybe =
+  error "todo: Course.List#seqMaybe"
 
-mapMaybe :: (a -> b) -> Maybe a -> Maybe b
-mapMaybe _ Nothing = Nothing
-mapMaybe f (Just a) = Just (f a)
 
-bindMaybe :: (a -> Maybe b) -> Maybe a -> Maybe b
-bindMaybe _ Nothing = Nothing
-bindMaybe f (Just a) = f a
-
-applyMaybe :: Maybe (a -> b) -> Maybe a -> Maybe b
-applyMaybe f a = bindMaybe (\g -> mapMaybe g a) f
-
-twiceMaybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
-twiceMaybe f = applyMaybe . mapMaybe f
-
-seqMaybe' :: [Maybe a] -> Maybe [a]
-seqMaybe' = foldr ((<*>) . fmap (:)) (Just [])
 
 -- | 11. Find the first element in the list matching the predicate.
 --
@@ -222,14 +191,9 @@ seqMaybe' = foldr ((<*>) . fmap (:)) (Just [])
 --
 -- ghci> find (const True) [0..]
 -- Just 0
-find :: (a -> Bool) -> [a] -> Maybe a
--- find p [] = Nothing
--- find p (x:xs)
---   | p x = Just x
---   | otherwise = find p xs
-find p xs = case filter' p xs of
-  [] -> Nothing
-  ys -> Just (head ys)
+-- find ::
+find =
+  error "todo: Course.List#find"
 
 
 
@@ -243,11 +207,11 @@ find p xs = case filter' p xs of
 --
 -- ghci> lengthGT4 [0..]
 -- True
-lengthGT4 :: [a] -> Bool
-lengthGT4 (_:_:_:_:_) = True
-lengthGT4 _ = False
+-- lengthGT4 ::
+lengthGT4 =
+  error "todo: Course.List#lengthGT4"
 
--- lengthGT4 xs = length' xs > 4  --> This fails for lengthGT4 [0..]
+
 
 -- | 13. Reverse a list.
 --
@@ -256,9 +220,9 @@ lengthGT4 _ = False
 --
 -- ghci> reverse' [1, 2, 3]
 -- [3, 2, 1]
-reverse' :: [a] -> [a]
-reverse' = foldl (flip (:)) []
--- reverse' = foldl (\acc x -> x:acc) []
+-- reverse' ::
+reverse' =
+  error "todo: Course.List#reverse"
 
 
 
@@ -270,7 +234,8 @@ reverse' = foldl (flip (:)) []
 --
 -- ghci> take 4 $ produce (*2) 1
 -- [1,2,4,8]
-produce :: (a -> a) -> a -> [a]
-produce f x = x : produce f (f x)
+-- produce ::
+produce f x =
+  error "todo: Course.List#produce"
 
 ---- End of list exercises

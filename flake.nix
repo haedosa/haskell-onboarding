@@ -22,8 +22,8 @@
             learn-you-a-haskell =
               hfinal.callCabal2nix "learn-you-a-haskell" ./learn-you-a-haskell
               { };
-            ex-from-fp-course =
-              hfinal.callCabal2nix "ex-from-fp-course" ./ex-from-fp-course
+            fp-course =
+              hfinal.callCabal2nix "fp-course" ./fp-course
               { };
           });
         })
@@ -34,8 +34,8 @@
       };
 
       packages.${system} = {
-        default = self.packages.${system}.ex-from-fp-course;
-        ex-from-fp-course = pkgs.haskellPackages.ex-from-fp-course;
+        default = self.packages.${system}.fp-course;
+        fp-course = pkgs.haskellPackages.fp-course;
         learn-you-a-haskell = pkgs.haskellPackages.learn-you-a-haskell;
       };
 

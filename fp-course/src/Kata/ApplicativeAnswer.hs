@@ -1,7 +1,6 @@
+module Kata.ApplicativeAnswer where
 
-module Applicative where
-
-import ExactlyOne
+import Kata.ExactlyOne
 
 class Functor k => Applicative' k where
   pure' :: a -> k a

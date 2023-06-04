@@ -1,7 +1,6 @@
+module Kata.FunctorMyAnswer where
 
-module Functor where
-
-import ExactlyOne
+import Kata.ExactlyOne
 
 class Functor' k where
   fmap' :: (a -> b) -> k a -> k b

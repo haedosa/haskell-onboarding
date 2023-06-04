@@ -1,8 +1,8 @@
 {-# LANGUAGE DeriveFoldable #-}
 
-module FunctorAnswer where
+module Kata.FunctorAnswer where
 
-import ExactlyOne
+import Kata.ExactlyOne
 
 class Functor' k where
   fmap' :: (a -> b) -> k a -> k b
@@ -97,7 +97,7 @@ instance Functor' ((->) r) where
 -- >>> Nothing ??? 2
 -- Nothing
 (???) :: Functor f => f (a -> b) -> a -> f b
--- (???) ff a = ff <*> pure a
+-- (???) ff a = (\f -> f a) <$> ff
 (???) ff x = apply x <$> ff
   where apply x' f = f x'
 infixl 1 ???

@@ -1,7 +1,7 @@
 cradle:
   cabal:
-    - path: "ex-from-fp-course/src"
-      component: "lib:ex-from-fp-course"
+    - path: "fp-course/src"
+      component: "lib:fp-course"
 
     - path: "learn-you-a-haskell/src"
       component: "lib:learn-you-a-haskell"
