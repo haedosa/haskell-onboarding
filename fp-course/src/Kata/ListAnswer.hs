@@ -87,7 +87,7 @@ sum' = foldl (+) 0
 -- 3
 length' :: [a] -> Int
 -- length' xs = sum [1 | x <- xs]
-length' = foldl (const . (+1)) 0
+length' = foldl (const . (+ 1)) 0
 
 
 

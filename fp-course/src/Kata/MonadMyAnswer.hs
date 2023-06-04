@@ -1,1 +1,0 @@
-module Kata.MonadMyAnswer where

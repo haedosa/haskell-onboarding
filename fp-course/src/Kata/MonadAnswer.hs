@@ -1,4 +1,4 @@
-module Kata.Monad where
+module Kata.MonadAnswer where
 
 import Kata.ExactlyOne
 
