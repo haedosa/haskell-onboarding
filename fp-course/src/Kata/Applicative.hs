@@ -22,7 +22,7 @@ instance Applicative' [] where
   (<**>) = undefined
 
 -- | 3. Insert into a Maybe
--- >>> Just (+8) <**> Jut 7
+-- >>> Just (+8) <**> Just 7
 -- Just 15
 --
 -- >>> Nothing <**> Just 7
@@ -73,7 +73,7 @@ lift2 = undefined
 -- >>> lift3 (\a b c -> a + b + c) (ExactlyOne 7) (ExactlyOne 8) (ExactlyOne 9)
 -- ExactlyOne 24
 --
--- >>> lift3 (\a b c -> a + b + c) [1,2,3] [4,5,6] [6,7,8]
+-- >>> lift3 (\a b c -> a + b + c) [1,2,3] [4,5] [6,7,8]
 -- [11,12,13,12,13,14,12,13,14,13,14,15,13,14,15,14,15,16]
 --
 -- >>> lift3 (\a b c -> a + b + c) (Just 7) (Just 8) (Just 9)
