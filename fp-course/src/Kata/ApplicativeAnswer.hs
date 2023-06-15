@@ -9,27 +9,27 @@ class Functor k => Applicative' k where
   infixl 4 <**>
 
 -- | 1. Insert into ExactlyOne
--- >>> ExactlyOne (+10) <**> ExactlyOne 8
+-- >>> ExactlyOne (+ 10) <**> ExactlyOne 8
 -- ExactlyOne 18
 instance Applicative' ExactlyOne where
   pure' = ExactlyOne
   (ExactlyOne f) <**> (ExactlyOne a) = ExactlyOne (f a)
 
 -- | 2. Insert into a List
--- >>> [(+1), (*2)] <**> [1,2,3]
+-- >>> [(+ 1), (* 2)] <**> [1,2,3]
 -- [2,3,4,2,4,6]
 instance Applicative' [] where
   pure' a = [a]
   fs <**> as = [f a | f <- fs, a <- as]
 
 -- | 3. Insert into a Maybe
--- >>> Just (+8) <**> Jut 7
+-- >>> Just (+ 8) <**> Jut 7
 -- Just 15
 --
 -- >>> Nothing <**> Just 7
 -- Nothing
 --
--- >>> Just (+8) <**> Nothing
+-- >>> Just (+ 8) <**> Nothing
 -- Nothing
 instance Applicative' Maybe where
   pure' = Just
@@ -39,19 +39,19 @@ instance Applicative' Maybe where
   (Just f) <**> a = fmap f a
 
 -- | 4. Insert into a function
--- >>> ((+) <**> (+10)) 3
+-- >>> ((+) <**> (+ 10)) 3
 -- 16
 --
--- >>> (+) <**> (+5) $ 3
+-- >>> (+) <**> (+ 5) $ 3
 -- 11
 --
--- >>> ((*) <**> (+10)) 3
+-- >>> ((*) <**> (+ 10)) 3
 -- 39
 --
--- >>> (*) <**> (+2) $ 3
+-- >>> (*) <**> (+ 2) $ 3
 -- 15
 --
--- >>> (+) <$> (+3) <**> (*100) $ 5
+-- >>> (+) <$> (+ 3) <**> (* 100) $ 5
 -- 508
 instance Applicative' ((->) r) where
   -- pure' a = (\_ -> a)
@@ -122,12 +122,12 @@ lift0 = pure
 -- | 9. Apply a unary function in the environment
 -- /can be written using `lift0` and `(<*>)`./
 --
--- >>> lift1 (+1) (Just 2)
+-- >>> lift1 (+ 1) (Just 2)
 -- Just 3
 --
--- >>> lift1 (+1) []
+-- >>> lift1 (+ 1) []
 -- []
--- >>> lift1 (+1) [1,2,3]
+-- >>> lift1 (+ 1) [1,2,3]
 -- [2,3,4]
 lift1 :: Applicative f => (a -> b) -> f a -> f b
 lift1 f x = pure f <*> x
@@ -177,7 +177,7 @@ lift1 f x = pure f <*> x
 -- >>> sequence' [Just 7, Nothing]
 -- Nothing
 --
--- >>> sequence' [(*10), (+2)] 6
+-- >>> sequence' [(* 10), (+ 2)] 6
 -- [60, 8]
 sequence' :: Applicative f => [f a] -> f [a]
 -- sequence' [] = pure []
@@ -193,7 +193,7 @@ sequence' = foldr (lift2 (:)) (pure [])
 -- >>> replicateA 4 Nothing
 -- Nothing
 --
--- >>> replicateA 4 (*2) 5
+-- >>> replicateA 4 (* 2) 5
 -- [10,10,10,10]
 --
 -- >>> replicateA 3 ['a','b','c']
