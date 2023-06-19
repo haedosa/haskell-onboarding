@@ -53,35 +53,35 @@ instance Monad' ((->) t) where
   f >>== g = \x -> g (f x) x
 
 
--- | 5. Witness that all thins with (>>=) and (<$>) also have (<*>)
+-- | 5. Witness that all things with (>>=) and (<$>) also have (<*>)
 --
--- >>> [1,2,3] <***> [(+ 1),(* 2)]
+-- >>> [1,2,3] <**> [(+ 1),(* 2)]
 -- [2,3,4,2,4,6]
 --
--- >>> Just 7 <***> Just (+ 8)
+-- >>> Just 7 <**> Just (+ 8)
 -- Just 15
 --
--- >>> Just 7 <***> Nothing
+-- >>> Just 7 <**> Nothing
 -- Nothing
 --
--- >>> Nothing <***> Just (+ 8)
+-- >>> Nothing <**> Just (+ 8)
 -- Nothing
 --
--- >>> ((+ 5) <***> (+)) 1
+-- >>> ((+ 5) <**> (+)) 1
 -- 7
 --
--- >>> ((+ 10) <***> (*)) 3
+-- >>> ((+ 10) <**> (*)) 3
 -- 39
-(<***>) :: Monad m => m a -> m (a -> b) -> m b
-a <***> f = f >>= \f' -> a >>= \a' -> pure (f' a')
+(<**>) :: Monad m => m a -> m (a -> b) -> m b
+a <**> f = f >>= \f' -> a >>= \a' -> pure (f' a')
 
-(<****>) :: Monad m => m a -> m (a -> b) -> m b
-a <****> f = f >>= c
+(<***>) :: Monad m => m a -> m (a -> b) -> m b
+a <***> f = f >>= c
   where c = \f' -> a >>= \a' -> pure (f' a')
 
   -- a >>= \f' -> a >>= \a' -> pure (f' a')
 
-infixl 4 <***>
+infixl 4 <**>
 
 
 -- | 6. Flattens a combined structure to a single structure
@@ -89,8 +89,8 @@ infixl 4 <***>
 -- >>> join [[1,2,3], [1,2]]
 -- [1,2,3,1,2]
 --
--- >>> join (Just [])
--- []
+-- >>> join (Just Nothing)
+-- Nothing
 --
 -- >>> join (Just (Just 7))
 -- Just 7
@@ -116,7 +116,7 @@ infixr 1 ==<<
 -- | 9. Implement composition within the Monad environment.
 -- Pronounced, Kleisli composition.
 --
--- >>> ((\n -> [n,n])) <==< (\n -> [n+1,n+2]) 1
+-- >>> ((\n -> [n,n]) <==< (\n -> [n + 1,n + 2])) 1
 -- [2,2,3,3]
 (<==<) :: Monad m => (b -> m c) -> (a -> m b) -> a -> m c
 f <==< g = \x -> f ==<< g x

@@ -82,8 +82,8 @@ infixl 4 <***>
 -- >>> join [[1,2,3], [1,2]]
 -- [1,2,3,1,2]
 --
--- >>> join (Just [])
--- []
+-- >>> join (Just Nothing)
+-- Nothing
 --
 -- >>> join (Just (Just 7))
 -- Just 7
@@ -109,7 +109,7 @@ infixr 1 ==<<
 -- | 9. Implement composition within the Monad environment.
 -- Pronounced, Kleisli composition.
 --
--- >>> ((\n -> [n,n])) <==< (\n -> [n + 1,n + 2]) 1
+-- >>> ((\n -> [n,n]) <==< (\n -> [n + 1,n + 2])) 1
 -- [2,2,3,3]
 (<==<) :: Monad m => (b -> m c) -> (a -> m b) -> a -> m c
 (<==<) = undefined
