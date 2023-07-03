@@ -1,0 +1,48 @@
+cabal-version: 2.4
+name: algorithm-design-with-haskell
+version: 0.1.0.0
+license: MIT
+license-file: LICENSE
+author: Su-Won Park
+maintainer: Su-Won Park
+category: Public
+
+common common
+  build-depends:    base
+                  , bytestring
+  default-language: Haskell2010
+  ghc-options:
+    -O2
+    -Weverything
+    -Wno-missing-home-modules
+    -Wno-unused-matches
+    -Wno-missing-signatures
+    -Wno-missing-kind-signatures
+    -Wno-missing-exported-signatures
+    -Wno-missing-local-signatures
+    -Wno-missing-export-lists
+    -Wno-missing-import-lists
+    -Wno-missing-safe-haskell-mode
+    -Wno-safe
+    -Wno-unsafe
+    -Wno-implicit-prelude
+    -Wno-redundant-constraints
+    -Wno-missing-deriving-strategies
+    -Wno-unused-packages
+    -Wno-unused-imports
+    -Wno-type-defaults
+
+  default-extensions:
+      DataKinds
+    , EmptyCase
+    , ExistentialQuantification
+    , FlexibleContexts
+    , FlexibleInstances
+    , GeneralizedNewtypeDeriving
+    , ImportQualifiedPost
+    , DerivingStrategies
+
+library
+  import:          common
+  hs-source-dirs:  src
+  exposed-modules: Kata

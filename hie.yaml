@@ -1,5 +1,8 @@
 cradle:
   cabal:
+    - path: "algorithm-design-with-haskell/src"
+      component: "lib:algorithm-design-with-haskell"
+
     - path: "fp-course/src"
       component: "lib:fp-course"
 
