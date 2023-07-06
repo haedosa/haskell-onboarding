@@ -1,5 +1,8 @@
 module Kata.Ch1ExAnswer where
 
+type Nat = Int
+
+
 -- Ex 1.1 Here are some other basic list-porcessing functions we will need.
 -- To check your understanding, just give appropriate types.
 -- maximum, minimum :: Ord a => [a] -> a
@@ -98,3 +101,84 @@ takeWhile' p = foldr op []
 dropWhileEnd' :: (a -> Bool) -> [a] -> [a]
 dropWhileEnd' p = foldr op []
   where op x acc = if p x && null acc then [] else x:acc
+
+
+
+-- Ex 1.9 An alternative definition of 'foldr' is
+-- foldr f e xs = if null xs then e else f (head xs) (foldr f e (tail xs))
+-- Dually, an alternative definition of 'foldl' is
+-- foldl f e xs = if null xs then e else f (foldl f e (init xs)) (last xs)
+-- where 'last' and 'init' are dual to 'head' and 'tail'.
+-- What is the problem with this definition of 'foldl'?
+
+-- While
+-- head :: [a] -> a
+-- head (x:xs) = x
+-- tail :: [a] -> [a]
+-- tail (x:xs) = xs
+-- both take constant time, the dual functions
+-- last :: [a] -> a
+-- last [x] = [x]
+-- last (x:xs) = last xs
+-- init :: [a] -> [a]
+-- init [x] = []
+-- init (x:xs) = x:init xs
+-- both take linear time because the whole list has to be traversed.
+-- That makes the alternative definition of 'foldl' very inefficient.
+
+
+-- Ex 1.10 Bearing the examples
+-- foldr (@) e [x,y,z] = x @ (y @ (z @ e))
+-- foldl (@) e [x,y,z] = ((e @ x) @ y) @ z
+-- in mind, under what simple conditions on @ and 'e' do we have
+-- foldr (@) e xs = foldl (@) e xs
+-- for all finite lists xs?
+
+-- One simple condition is that @ is associative operation with
+-- identity element 'e'.
+-- For example, addition is an associative operation with identity element 0,
+-- so foldr (+) 0 xs = foldl (+) 0 xs for all finite lists xs.
+
+
+
+-- Ex 1.11 Given a list of digits representing a natural number,
+-- constructs a function 'integer' which converts the digits
+-- into that number. For example,
+-- integer [1,4,8,4,9,3] = 148493
+-- Next, given a list of digits representing a real number r
+-- in range 0 <= r < 1, construct a function 'fraction'
+-- which converts the digits into the corresponding fraction.
+-- For example,
+-- fraction [1,4,8,4,9,3] = 0.148493
+
+integer :: [Int] -> Int
+integer = foldl shiftl 0
+  where shiftl acc d = 10 * acc + d
+
+fraction :: [Int] -> Double
+fraction = foldr shiftr 0.0
+  where shiftr d acc = (fromIntegral d + acc) / 10
+
+
+
+-- Ex 1.12 Complete the right-hand sides of
+-- map (foldl f e) . inits = scanl f e
+-- map (foldr f e) . tails = scanr f e
+-- Scan Lemma
+-- very useful in text-processing algorithms
+
+
+
+-- Ex 1.13 Define the function
+-- apply :: Nat -> (a -> a) -> a -> a
+-- that applies a function a specified number of times to a value
+apply :: Nat -> (a -> a) -> a -> a
+apply n f x = if n == 0 then x else apply (n - 1) f (f x)
+
+apply' :: Nat -> (a -> a) -> a -> a
+apply' 0 f = id
+apply' n f = f . apply (n - 1) f
+
+apply'' :: Nat -> (a -> a) -> a -> a
+apply'' 0 f = id
+apply'' n f = apply (n - 1) f . f
