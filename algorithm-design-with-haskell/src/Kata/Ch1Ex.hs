@@ -135,5 +135,38 @@ fraction = undefined
 -- Ex 1.13 Define the function
 -- apply :: Nat -> (a -> a) -> a -> a
 -- that applies a function a specified number of times to a value
+-- hint: apply 3 f x = (f . f . f) x
+
 apply :: Nat -> (a -> a) -> a -> a
 apply = undefined
+
+
+
+-- Ex 1.14 Can the function 'inserts' associated with the inductive definition
+-- 'perms1' be expressed as an instance of foldr?
+-- inserts :: a -> [a] -> [[a]]
+-- inserts x [] = [[x]]
+-- inserts x (y:ys) = (x:y:ys):map (y:) (inserts x ys)
+
+inserts' :: a -> [a] -> [[a]]
+inserts' = undefined
+
+
+-- Ex 1.15 Give a definition of 'remove' for which
+-- perms3 [] = [[]]
+-- perms3 xs = [x:ys | x <- xs, y <- perms3 (remove x xs)]
+-- computes the permutations of a list.
+-- Is the first clause necessary?
+-- What is the type of 'perm3',
+-- and can one generate the permutations of a list
+-- of functions with this definition?
+remove :: Eq a => a -> [a] -> [a]
+remove = undefined
+-- The first clause of 'perm3' is indeed necessary;
+-- without it we have perm3 [] = [].
+-- From this one can show that 'perm3' returns the
+-- empty list for all arguments.
+-- The type of perms3 is perms3 :: Eq a => [a] -> [[a]],
+-- so, no, one cannot generate the permutations of
+-- a list of functions using this definition since
+-- functions cannot be tested for equality.

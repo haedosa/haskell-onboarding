@@ -101,7 +101,21 @@ takeWhile' p = foldr op []
 dropWhileEnd' :: (a -> Bool) -> [a] -> [a]
 dropWhileEnd' p = foldr op []
   where op x acc = if p x && null acc then [] else x:acc
-
+-- dropWhileEnd even [1,4,3,6,2,4]
+-- = op 1 (dropWhileEnd even [4,3,6,2,4])
+-- = 1:(op 4 (dropWhileEnd even [3,6,2,4]))
+-- = 1:(op 4 (op 3 (dropWhileEnd even [6,2,4])))
+-- = 1:(op 4 3:(op 6 (dropWhileEnd even [2,4])))
+-- = 1:(op 4 3:(op 6 (2 (dropWhileEnd even [4]))))
+-- = 1:(op 4 3:(op 6 (2 (op 4 (dropWhileEnd even [])))))   { foldr _ e [] = e }
+-- = 1:(op 4 3:(op 6 (2 (op 4 []))))
+-- = 1:(op 4 3:(op 6 (2 [])))
+-- = 1:(op 4 3:(op 6 []))
+-- = 1:(op 4 3:[])
+-- = 1:(op 4 [3])
+-- = 1:(4:[3])
+-- = 1:[4,3]
+-- = [1,4,3]
 
 
 -- Ex 1.9 An alternative definition of 'foldr' is
@@ -172,13 +186,48 @@ fraction = foldr shiftr 0.0
 -- Ex 1.13 Define the function
 -- apply :: Nat -> (a -> a) -> a -> a
 -- that applies a function a specified number of times to a value
+-- hint: apply 3 f x = (f . f . f) x
+
 apply :: Nat -> (a -> a) -> a -> a
-apply n f x = if n == 0 then x else apply (n - 1) f (f x)
+apply 0 f = id
+apply n f = f . apply (n - 1) f
 
 apply' :: Nat -> (a -> a) -> a -> a
 apply' 0 f = id
-apply' n f = f . apply (n - 1) f
+apply' n f = apply' (n - 1) f . f
 
-apply'' :: Nat -> (a -> a) -> a -> a
-apply'' 0 f = id
-apply'' n f = apply (n - 1) f . f
+
+
+-- Ex 1.14 Can the function 'inserts' associated with the inductive definition
+-- 'perms1' be expressed as an instance of foldr?
+-- inserts :: a -> [a] -> [[a]]
+-- inserts x [] = [[x]]
+-- inserts x (y:ys) = (x:y:ys):map (y:) (inserts x ys)
+
+inserts' :: a -> [a] -> [[a]]
+inserts' x = foldr step [[x]]
+  where
+    step y yss = (x:y:ys):map (y:) yss
+      where
+        ys = tail (head yss)
+
+
+-- Ex 1.15 Give a definition of 'remove' for which
+-- perms3 [] = [[]]
+-- perms3 xs = [x:ys | x <- xs, y <- perms3 (remove x xs)]
+-- computes the permutations of a list.
+-- Is the first clause necessary?
+-- What is the type of 'perm3',
+-- and can one generate the permutations of a list
+-- of functions with this definition?
+remove :: Eq a => a -> [a] -> [a]
+remove _ [] = []
+remove x (y:ys) = if x == y then ys else y:remove x ys
+-- The first clause of 'perm3' is indeed necessary;
+-- without it we have perm3 [] = [].
+-- From this one can show that 'perm3' returns the
+-- empty list for all arguments.
+-- The type of perms3 is perms3 :: Eq a => [a] -> [[a]],
+-- so, no, one cannot generate the permutations of
+-- a list of functions using this definition since
+-- functions cannot be tested for equality.
