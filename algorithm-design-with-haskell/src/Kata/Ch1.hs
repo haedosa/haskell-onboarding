@@ -149,3 +149,37 @@ until' p f x = if p x then x else until p f (f x)
 
 while :: (a -> Bool) -> (a -> a) -> a -> a
 while p = until (not . p)
+
+
+
+
+
+
+
+-- 1.4 Fusion
+
+-- 'fuse' two computations together into one computations
+-- map f . map g = map (f . g)
+-- concatMap f . map g = concatMap (f . g)
+-- foldr f e . map g = foldr (f . g) e
+
+-- foldr f e . concat = ????
+-- foldr f e (xs ++ ys) = ????
+
+
+-- The master fusion rule is the fusion law of foldr
+-- h (f x y) = g x (h y) (fusion condition)
+-- =>
+-- h (foldr f e xs) = foldr g (h e) xs
+--
+-- Proof by induction
+-- Base case
+--
+-- Induction step
+
+
+-- The answer to 'foldr f e (xs ++ ys)' is
+-- foldr f e (xs ++ ys) = foldr f (foldr f e ys) xs
+
+
+-- foldr f e . concat = ????

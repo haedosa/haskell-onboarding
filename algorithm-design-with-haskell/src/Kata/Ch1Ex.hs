@@ -170,3 +170,48 @@ remove = undefined
 -- so, no, one cannot generate the permutations of
 -- a list of functions using this definition since
 -- functions cannot be tested for equality.
+
+
+-- Ex 1.16 What extra condition is needed for the fusion law
+-- of foldr to be valid over all lists, finite and infinite?
+
+-- We would have to show the validity of fusion when
+-- the input is the undefined list.
+-- Since foldr f e undefined = undefined
+-- we require that h has to be a strict function,
+-- returning the undefined value if the argument is undefined.
+-- h (foldr f e xs) = foldr g (h e) xs
+-- h (foldr f e undefined) = foldr g (h e) undefined
+-- h undefined = undefined
+-- h is a strict function
+
+
+-- Ex 1.17 As stated, the fusion law for foldr requires the proviso
+-- h (f x y) = g x (h y)
+-- for all x and y.
+-- The proviso is actually too general. Can you spot what the necessary
+-- and sufficient fusion condition is?
+-- To help you, here is an example, admittedly a rather artificial one,
+-- where a more restriced version of the fusion condition is necessary.
+-- Define the function 'replace' by
+replace x = if even x then x else 0
+-- We claim that
+-- replace . foldr f 0 = foldr f 0
+-- on finite list, where
+f :: Int -> Int -> Int
+f x y = 2 * x + y
+-- Prove this fact by using the more restricted proviso.
+
+-- Taking the first example, the original fusion condition requires that
+-- (h (f x y) = f x (h y))
+-- replace (2 * x + y) = 2 * x + replace y
+-- which is not true if y is odd. But we do have
+-- (h (foldr f e xs) = foldr g (h e) xs)
+-- replace (f x (foldr f 0 xs)) = f x (replace (foldr f 0 xs))
+-- because foldr f 0 xs is always an even number.
+-- The more general fusion law, which we will call
+-- context-sensitive fusion, is that
+-- h (foldr f e xs) = foldr g (h e) xs
+-- provided that
+-- h (f x (foldr f e xs)) = g x (h (foldr f e xs))
+-- for all x and finite lists xs.
