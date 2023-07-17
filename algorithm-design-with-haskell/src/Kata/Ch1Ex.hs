@@ -215,3 +215,23 @@ f x y = 2 * x + y
 -- provided that
 -- h (f x (foldr f e xs)) = g x (h (foldr f e xs))
 -- for all x and finite lists xs.
+
+
+
+-- Ex 1.19 Is the following statement true or false?
+-- "The original definition of collapse is more efficient than the optimized versions in the best case,
+-- when the first prefix has positive sum, because the sums of the remaining lists are not required.
+-- In the optimized version the sums of all the component lists are required."
+
+
+
+-- Ex 1.20 Find a definition of 'op' so that
+-- concat xss = foldl op id xss []
+
+
+
+-- Ex 1.21 A list of numbers is said to be steep if each number is greater
+-- than the sum of the elements following it.
+-- Give a simple definition of te Boolean function 'steep'
+-- for determining whether a sequence of numbers is steep.
+-- What is the running time and how can you imporve it by tupling?

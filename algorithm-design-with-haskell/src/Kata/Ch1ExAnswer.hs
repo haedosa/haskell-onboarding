@@ -306,3 +306,64 @@ f x y = 2 * x + y
 -- for all x and y,
 -- require it to hold for all x and foldr f 0 xs
 -- replace (f x (foldr f 0 xs)) = f x (replace (foldr f 0 xs))
+
+
+
+-- Ex 1.18 We referred to the fusion rule of foldr as the master fusion rule,
+-- but there is another master rule, the fusion rule for foldl.
+-- What is this rule?
+
+-- We have
+-- h (foldl f e xs) = foldl g (h e) xs
+-- for all finite xs provided that
+-- h (f y x) = g (h y) x
+-- for all y and x.
+-- The proof that this proviso is sufficient is by induction,
+-- but we have to be careful and first generalise the induction
+-- hypothesis by replacing e by an arbitrary value y:
+-- h (foldl f y xs) = foldl g (h y) xs
+-- Then we have
+--
+
+
+
+-- Ex 1.19 Is the following statement true or false?
+-- "The original definition of collapse is more efficient than the optimized versions in the best case,
+-- when the first prefix has positive sum, because the sums of the remaining lists are not required.
+-- In the optimized version the sums of all the component lists are required."
+
+-- No, it is false. Haskell is a lazy language in which only those values
+-- which contribute to the answer are computed.
+-- In the best case of collapse the remaining sums are
+-- discarded so they are never computed.
+
+
+-- Ex 1.20 Find a definition of 'op' so that
+-- concat xss = foldl op id xss []
+
+-- op f xs ys = f (xs ++ ys)
+
+op f' xs ys = f' (xs ++ ys)
+tt xss = foldl op id xss []
+
+
+-- Ex 1.21 A list of numbers is said to be steep if each number is greater
+-- than the sum of the elements following it.
+-- Give a simple definition of te Boolean function 'steep'
+-- for determining whether a sequence of numbers is steep.
+-- What is the running time and how can you imporve it by tupling?
+
+-- a simple definition
+steep [] = True
+steep (x:xs) = x > sum xs && steep xs
+
+-- This definition computes sum on every tail of the list.
+-- Since computation of sum takes linear time, computation of steep
+-- takes quadratic time.
+-- To obtain a linear-time algorithm we can tuple sum and steep, leading to the definition
+
+steep' = snd . faststeep
+faststeep [] = (0, True)
+faststeep (x:xs) = (x + s, x > s && b)
+  where
+    (s, b) = faststeep xs
