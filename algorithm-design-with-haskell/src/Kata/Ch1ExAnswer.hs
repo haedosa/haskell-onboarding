@@ -363,7 +363,28 @@ steep (x:xs) = x > sum xs && steep xs
 -- To obtain a linear-time algorithm we can tuple sum and steep, leading to the definition
 
 steep' = snd . faststeep
+faststeep :: [Int] -> (Int, Bool)
 faststeep [] = (0, True)
 faststeep (x:xs) = (x + s, x > s && b)
   where
     (s, b) = faststeep xs
+
+-- faststeep [x,y,z] =
+-- (x + fst (faststeep [y,z]), x > fst (faststeep [y, z]) && snd (faststeep [y,z]))
+-- (x + y + fst (faststeep [z]), x > (y + fst (faststeep [z]) && (y > snd (faststeep (z)))))
+-- (x + y + z, x > y + z && y > z)
+
+
+-- faststeep [y,z] =
+-- (y + fst (faststeep [z]), y > fst (faststeep [z]) && snd (faststeep [z]))
+
+-- faststeep [z] =
+-- (z + fst (faststeep []), z > fst (faststeep []) && snd (faststeep []))
+-- (z + 0, z > 0 && True)
+-- (z, z > 0)
+
+-- faststeep [y,z] =
+-- (y + z, y > z && z > 0)
+
+-- faststeep [x,y,z] =
+-- (x + y + z, x > y + z && y > z && z> 0)
