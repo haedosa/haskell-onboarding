@@ -2,6 +2,9 @@ module Kata.Ch4 where
 
 type Nat = Int
 
+------------------ 4.1
+
+
 -- given a strictly increasing function
 -- x < y => f x < f y
 -- find x such that f x = t
@@ -107,3 +110,23 @@ smallest (a, b) f t
 -- 10
 
 -- search (2^) 1024 = if 2^10 = 1024 then [10] else [0]
+
+
+------------------ 4.2
+
+search2d :: ((Nat, Nat) -> Nat) -> Nat -> [(Nat, Nat)]
+search2d f t = undefined
+
+-- first improvement: start at the top-left
+search2d2 :: ((Nat, Nat) -> Nat) -> Nat -> [(Nat, Nat)]
+search2d2 f t = undefined
+
+
+-- make search interval explicit
+-- searchIn (a,b) f t = [(x,y) | x <- [a..t], y <- [b,b-1..0], f (x,y) == t];
+
+-- saddleback search
+search2d3 :: ((Nat, Nat) -> Nat) -> Nat -> [(Nat, Nat)]
+search2d3 f t = searchIn (0, t)
+  where
+    searchIn (x, y) = undefined

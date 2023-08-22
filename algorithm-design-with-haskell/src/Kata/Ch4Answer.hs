@@ -2,6 +2,8 @@ module Kata.Ch4Answer where
 
 type Nat = Int
 
+------------------ 4.1
+
 -- given a strictly increasing function
 -- x < y => f x < f y
 -- find x such that f x = t
@@ -85,3 +87,27 @@ smallest (a, b) f t
   | t <= f m = smallest (a, m) f t
   | otherwise = smallest (m, b) f t
   where m = (a + b) `div` 2
+
+
+------------------ 4.2
+
+search2d :: ((Nat, Nat) -> Nat) -> Nat -> [(Nat, Nat)]
+search2d f t = [(x,y) | x <- [0..t], y <- [0..t], f (x,y) == t];
+
+-- first improvement: start at the top-left
+search2d2 :: ((Nat, Nat) -> Nat) -> Nat -> [(Nat, Nat)]
+search2d2 f t = [(x,y) | x <- [0..t], y <- [t,t-1..0], f (x,y) == t];
+
+
+-- make search interval explicit
+-- searchIn (a,b) f t = [(x,y) | x <- [a..t], y <- [b,b-1..0], f (x,y) == t];
+
+-- saddleback search
+search2d3 :: ((Nat, Nat) -> Nat) -> Nat -> [(Nat, Nat)]
+search2d3 f t = searchIn (0, t)
+  where
+    searchIn (x, y)
+      | x > t || y < 0 = []
+      | f (x, y) < t = searchIn (x + 1, y)
+      | f (x, y) == t = (x,y):searchIn (x + 1, y - 1)
+      | f (x, y) > t = searchIn (x, y - 1)
