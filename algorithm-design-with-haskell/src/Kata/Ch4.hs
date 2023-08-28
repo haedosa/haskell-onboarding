@@ -1,6 +1,6 @@
 module Kata.Ch4 where
 
-type Nat = Int
+type Nat = Integer
 
 ------------------ 4.1
 
@@ -61,7 +61,7 @@ search3 f t = seek (0, t)
 -- until a value p is found for which f (2^(p-1)) < t <= f (2^p)
 -- If t <= f(0), then set (a,b) = (-1,0)
 
-bound :: (Nat -> Nat) -> Nat -> (Int, Nat)
+bound :: (Nat -> Nat) -> Nat -> (Integer, Nat)
 bound f t = undefined
   where b = undefined
         done b' = t <= f b'
@@ -82,7 +82,7 @@ search5 f t = [x | f x == t]
   where
     x = smallest (bound f t) f t
 
-smallest :: (Int, Nat) -> (Nat -> Nat) -> Nat -> Nat
+smallest :: (Integer, Nat) -> (Nat -> Nat) -> Nat -> Nat
 smallest (a, b) f t
   | a + 1 == b = undefined
   | t <= f m = undefined
@@ -130,3 +130,26 @@ search2d3 :: ((Nat, Nat) -> Nat) -> Nat -> [(Nat, Nat)]
 search2d3 f t = searchIn (0, t)
   where
     searchIn (x, y) = undefined
+
+
+search2d4 :: ((Nat, Nat) -> Nat) -> Nat -> [(Nat, Nat)]
+search2d4 f t = from (0, p) (q, 0) where
+  p = undefined
+  q = undefined
+  from (x1, y1) (x2, y2)
+    | x2 < x1 || y1 < y2 = []
+    | y1 - y2 <= x2 - x1 = row x
+    | otherwise = col y
+    where
+      x = undefined
+      y = undefined
+      c = undefined
+      r = undefined
+      row x' | z < t = undefined
+             | z == t = undefined
+             | otherwise = undefined
+             where z = f (x', r)
+      col y' | z < t = undefined
+             | z == t = undefined
+             | otherwise = undefined
+             where z = f (c, y')
