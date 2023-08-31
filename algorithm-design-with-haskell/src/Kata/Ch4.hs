@@ -153,3 +153,54 @@ search2d4 f t = from (0, p) (q, 0) where
              | z == t = undefined
              | otherwise = undefined
              where z = f (c, y')
+
+
+
+------------------ 4.3
+
+data Tree a
+
+
+size :: Tree a -> Nat
+size = undefined
+
+
+flatten :: Tree a -> [a]
+flatten = undefined
+
+-- if flatten a tree returns a list of values in strictly increasing order,
+-- the tree is a binary search tree
+
+-- each record contains a key field unique to that record
+-- the tree is ordered by key
+-- useful for dictionaries
+searchT :: Ord k => (a -> k) -> k -> Tree a -> Maybe a
+searchT = undefined
+
+
+-- in the worst case, the search takes time proportional to the height of the tree
+height :: Tree a -> Nat
+height = undefined
+
+-- show that size t < 2^height t for all binary trees t
+-- by structural induction
+
+-- base case: size Null = 0, 2^height Null = 2^0 = 1
+-- inductive step
+-- suppose size t < 2^height t for left and right subtrees
+
+-- for integer, a < b <=> a <= b - 1
+-- size (node l x y)
+-- = { def. of size }
+-- size l + 1 + size r
+-- <= { inductive hypothesis }
+-- 2^height l - 1 + 1 + 2^height r - 1
+-- = { 2^a, 2^b <= 2^max a b }
+-- <= 2*2^max (height l) (height r) - 1
+-- = { 2*2^a = 2^(1 + a) }
+-- 2^(1 + max (height l) (height r)) - 1
+-- = { def. of height }
+-- 2^height t - 1
+
+mkTree :: Ord a => [a] -> Tree a
+mkTree = undefined

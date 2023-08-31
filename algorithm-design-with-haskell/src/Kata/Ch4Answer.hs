@@ -133,3 +133,65 @@ search2d4 f t = from (0, p) (q, 0) where
              | z == t = (c, y'):from (x1, y1) (c - 1, y' + 1) ++ from (c + 1, y' - 1) (x2, y2)
              | otherwise = from (x1, y1) (c - 1, y') ++ from (c + 1, y' - 1) (x2, y2)
              where z = f (c, y')
+
+
+
+------------------ 4.3
+
+data Tree a = Null | Node (Tree a) a (Tree a) deriving (Show)
+
+
+size :: Tree a -> Nat
+size Null = 0
+size (Node l x r) = 1 + size l + size r
+
+
+flatten :: Tree a -> [a]
+flatten Null = []
+flatten (Node l x r) = flatten l ++ [x] ++ flatten r
+
+-- if flatten a tree returns a list of values in strictly increasing order,
+-- the tree is a binary search tree
+
+-- each record contains a key field unique to that record
+-- the tree is ordered by key
+-- useful for dictionaries
+searchT :: Ord k => (a -> k) -> k -> Tree a -> Maybe a
+searchT key k Null = Nothing
+searchT key k (Node l x r)
+  | key x < k  = searchT key k r
+  | key x == k = Just x
+  | otherwise  = searchT key k l
+
+
+-- in the worst case, the search takes time proportional to the height of the tree
+height :: Tree a -> Nat
+height Null = 0
+height (Node l x r) = 1 + max (height l) (height r)
+
+-- show that size t < 2^height t for all binary trees t
+-- by structural induction
+
+-- base case: size Null = 0, 2^height Null = 2^0 = 1
+-- inductive step
+-- suppose size t < 2^height t for left and right subtrees
+
+-- for integer, a < b <=> a <= b - 1
+-- size (node l x y)
+-- = { def. of size }
+-- size l + 1 + size r
+-- <= { inductive hypothesis }
+-- 2^height l - 1 + 1 + 2^height r - 1
+-- = { 2^a, 2^b <= 2^max a b }
+-- <= 2*2^max (height l) (height r) - 1
+-- = { 2*2^a = 2^(1 + a) }
+-- 2^(1 + max (height l) (height r)) - 1
+-- = { def. of height }
+-- 2^height t - 1
+
+mkTree :: Ord a => [a] -> Tree a
+mkTree [] = Null
+mkTree (x:xs) = Node (mkTree ys) x (mkTree zs)
+  where
+    (ys, zs) = partition (< x) xs
+    partition p xs' = (filter p xs', filter (not . p) xs')
