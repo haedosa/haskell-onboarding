@@ -158,14 +158,14 @@ search2d4 f t = from (0, p) (q, 0) where
 
 ------------------ 4.3
 
-data Tree a
+data Tree' a
 
 
-size :: Tree a -> Nat
+size :: Tree' a -> Nat
 size = undefined
 
 
-flatten :: Tree a -> [a]
+flatten :: Tree' a -> [a]
 flatten = undefined
 
 -- if flatten a tree returns a list of values in strictly increasing order,
@@ -174,13 +174,13 @@ flatten = undefined
 -- each record contains a key field unique to that record
 -- the tree is ordered by key
 -- useful for dictionaries
-searchT :: Ord k => (a -> k) -> k -> Tree a -> Maybe a
+searchT :: Ord k => (a -> k) -> k -> Tree' a -> Maybe a
 searchT = undefined
 
 
 -- in the worst case, the search takes time proportional to the height of the tree
-height :: Tree a -> Nat
-height = undefined
+height' :: Tree' a -> Nat
+height' = undefined
 
 -- show that size t < 2^height t for all binary trees t
 -- by structural induction
@@ -202,5 +202,42 @@ height = undefined
 -- = { def. of height }
 -- 2^height t - 1
 
+
+-- >> mkTree' [6, 4, 8, 2, 3, 5]
+-- Node' (Node' (Node' Null' 2 (Node' Null' 3 Null')) 4 (Node' Null' 5 Null')) 6 (Node' Null' 8 Null')
+mkTree' :: Ord a => [a] -> Tree' a
+mkTree' = undefined
+
+
+-- Modify the type Tree to store the height of tree
+data Tree a = Null | Node Nat (Tree a) a (Tree a)
+
+height :: Tree a -> Nat
+height = undefined
+
+-- smart constructor
+node :: Tree a -> a -> Tree a -> Tree a
+node l x r = undefined
+
+
 mkTree :: Ord a => [a] -> Tree a
-mkTree = undefined
+mkTree = foldr insert Null
+
+insert :: Ord a => a -> Tree a -> Tree a
+insert = undefined
+
+rotr :: Tree a -> Tree a
+rotr = undefined
+
+rotl :: Tree a -> Tree a
+rotl = undefined
+
+bias :: Tree a -> Integer
+bias = undefined
+
+
+balance :: Tree a -> a -> Tree a -> Tree a
+balance t1 x t2 = undefined
+
+-- >> mkTree [6, 4, 8, 2, 3, 5]
+-- Node 3 (Node 2 (Node 1 Null 2 Null) 3 (Node 1 Null 4 Null)) 5 (Node 2 (Node 1 Null 6 Null) 8 Null)

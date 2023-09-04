@@ -138,17 +138,17 @@ search2d4 f t = from (0, p) (q, 0) where
 
 ------------------ 4.3
 
-data Tree a = Null | Node (Tree a) a (Tree a) deriving (Show)
+data Tree' a = Null' | Node' (Tree' a) a (Tree' a) deriving (Show)
 
 
-size :: Tree a -> Nat
-size Null = 0
-size (Node l x r) = 1 + size l + size r
+size :: Tree' a -> Nat
+size Null' = 0
+size (Node' l x r) = 1 + size l + size r
 
 
-flatten :: Tree a -> [a]
-flatten Null = []
-flatten (Node l x r) = flatten l ++ [x] ++ flatten r
+flatten :: Tree' a -> [a]
+flatten Null' = []
+flatten (Node' l x r) = flatten l ++ [x] ++ flatten r
 
 -- if flatten a tree returns a list of values in strictly increasing order,
 -- the tree is a binary search tree
@@ -156,23 +156,23 @@ flatten (Node l x r) = flatten l ++ [x] ++ flatten r
 -- each record contains a key field unique to that record
 -- the tree is ordered by key
 -- useful for dictionaries
-searchT :: Ord k => (a -> k) -> k -> Tree a -> Maybe a
-searchT key k Null = Nothing
-searchT key k (Node l x r)
+searchT :: Ord k => (a -> k) -> k -> Tree' a -> Maybe a
+searchT key k Null' = Nothing
+searchT key k (Node' l x r)
   | key x < k  = searchT key k r
   | key x == k = Just x
   | otherwise  = searchT key k l
 
 
 -- in the worst case, the search takes time proportional to the height of the tree
-height :: Tree a -> Nat
-height Null = 0
-height (Node l x r) = 1 + max (height l) (height r)
+height' :: Tree' a -> Nat
+height' Null' = 0
+height' (Node' l x r) = 1 + max (height' l) (height' r)
 
 -- show that size t < 2^height t for all binary trees t
 -- by structural induction
 
--- base case: size Null = 0, 2^height Null = 2^0 = 1
+-- base case: size Null' = 0, 2^height Null' = 2^0 = 1
 -- inductive step
 -- suppose size t < 2^height t for left and right subtrees
 
@@ -189,9 +189,71 @@ height (Node l x r) = 1 + max (height l) (height r)
 -- = { def. of height }
 -- 2^height t - 1
 
-mkTree :: Ord a => [a] -> Tree a
-mkTree [] = Null
-mkTree (x:xs) = Node (mkTree ys) x (mkTree zs)
+-- >> mkTree' [6, 4, 8, 2, 3, 5]
+-- Node' (Node' (Node' Null' 2 (Node' Null' 3 Null')) 4 (Node' Null' 5 Null')) 6 (Node' Null' 8 Null')
+mkTree' :: Ord a => [a] -> Tree' a
+mkTree' [] = Null'
+mkTree' (x:xs) = Node' (mkTree' ys) x (mkTree' zs)
   where
     (ys, zs) = partition (< x) xs
     partition p xs' = (filter p xs', filter (not . p) xs')
+
+
+-- Modify the type Tree to store the height of tree
+data Tree a = Null | Node Nat (Tree a) a (Tree a) deriving (Show)
+
+height :: Tree a -> Nat
+height Null = 0
+height (Node h _ _ _) = h
+
+
+-- smart constructor
+node :: Tree a -> a -> Tree a -> Tree a
+node l x r = Node h l x r
+  where h = 1 + max (height l) (height r)
+
+
+mkTree :: Ord a => [a] -> Tree a
+mkTree = foldr insert Null
+
+insert :: Ord a => a -> Tree a -> Tree a
+insert x Null = node Null x Null
+insert x (Node h l y r)
+  | x < y = balance (insert x l) y r
+  | x == y = Node h l y r
+  | otherwise = balance l y (insert x r)
+
+rotr :: Tree a -> Tree a
+rotr Null = Null
+rotr (Node _ Null x r) = node Null x r
+rotr (Node _ (Node _ ll y rl) x r) = node ll y (node rl x r)
+
+rotl :: Tree a -> Tree a
+rotl Null = Null
+rotl (Node _ ll y Null) = node ll y Null
+rotl (Node _ ll y (Node _ lrl z rrl)) = node (node ll y lrl) z rrl
+
+bias :: Tree a -> Integer
+bias Null = 0
+bias (Node _ l x r) = height l - height r
+
+
+balance :: Tree a -> a -> Tree a -> Tree a
+balance t1 x t2
+  | abs (h1 - h2) <= 1 = node t1 x t2
+  | h1 == h2 + 2 = rotateR t1 x t2
+  | h2 == h1 + 2 = rotateL t1 x t2
+  where
+    h1 = height t1
+    h2 = height t2
+    rotateR t1' x' t2' =
+      if 0 <= bias t1
+      then rotr (node t1' x' t2')
+      else rotr (node (rotl t1') x' t2')
+    rotateL t1' x' t2' =
+      if bias t2 <= 0
+      then rotl (node t1' x' t2')
+      else rotl (node t1' x (rotr t2'))
+
+-- >> mkTree [6, 4, 8, 2, 3, 5]
+-- Node 3 (Node 2 (Node 1 Null 2 Null) 3 (Node 1 Null 4 Null)) 5 (Node 2 (Node 1 Null 6 Null) 8 Null)
