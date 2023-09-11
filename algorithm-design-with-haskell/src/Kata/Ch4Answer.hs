@@ -146,9 +146,9 @@ size Null' = 0
 size (Node' l x r) = 1 + size l + size r
 
 
-flatten :: Tree' a -> [a]
-flatten Null' = []
-flatten (Node' l x r) = flatten l ++ [x] ++ flatten r
+flatten' :: Tree' a -> [a]
+flatten' Null' = []
+flatten' (Node' l x r) = flatten' l ++ [x] ++ flatten' r
 
 -- if flatten a tree returns a list of values in strictly increasing order,
 -- the tree is a binary search tree
@@ -239,21 +239,55 @@ bias (Node _ l x r) = height l - height r
 
 
 balance :: Tree a -> a -> Tree a -> Tree a
-balance t1 x t2
-  | abs (h1 - h2) <= 1 = node t1 x t2
-  | h1 == h2 + 2 = rotateR t1 x t2
-  | h2 == h1 + 2 = rotateL t1 x t2
+balance l x r
+  | abs (h1 - h2) <= 1 = node l x r
+  | h1 == h2 + 2 = rotateR l x r
+  | h2 == h1 + 2 = rotateL l x r
   where
-    h1 = height t1
-    h2 = height t2
-    rotateR t1' x' t2' =
-      if 0 <= bias t1
-      then rotr (node t1' x' t2')
-      else rotr (node (rotl t1') x' t2')
-    rotateL t1' x' t2' =
-      if bias t2 <= 0
-      then rotl (node t1' x' t2')
-      else rotl (node t1' x (rotr t2'))
+    h1 = height l
+    h2 = height r
+    rotateR l' x' r' =
+      if 0 <= bias l'
+      then rotr (node l' x' r')
+      else rotr (node (rotl l') x' r')
+    rotateL l' x' r' =
+      if bias r' <= 0
+      then rotl (node l' x' r')
+      else rotl (node l' x (rotr r'))
 
 -- >> mkTree [6, 4, 8, 2, 3, 5]
 -- Node 3 (Node 2 (Node 1 Null 2 Null) 3 (Node 1 Null 4 Null)) 5 (Node 2 (Node 1 Null 6 Null) 8 Null)
+
+
+balanceR :: Tree a -> a -> Tree a -> Tree a
+balanceR Null _ _ = error "balanceR: left subtree is Null"
+balanceR (Node _ ll y rl) x r =
+  if height rl >= height r + 2
+  then balance ll y (balanceR rl x r)
+  else balance ll y (node rl x r)
+
+balanceL :: Tree a -> a -> Tree a -> Tree a
+balanceL _ _ Null = error "balanceL: right subtree is Null"
+balanceL l x (Node _ lr y rr) =
+  if height lr >= height l + 2
+  then balance (balanceL l x lr) y rr
+  else balance (node l x lr) y rr
+
+gbalance :: Tree a -> a -> Tree a -> Tree a
+gbalance l x r
+  | abs (h1 - h2) <= 2 = balance l x r
+  | h1 > h2 + 2 = balanceR l x r
+  | otherwise = balanceL l x r
+  where
+    h1 = height l
+    h2 = height r
+
+flatten :: Tree a -> [a]
+flatten Null = []
+flatten (Node _ l x r) = flatten l ++ [x] ++ flatten r
+
+sort :: (Ord a) => [a] -> [a]
+sort = flatten . mkTree
+
+-- for Tree of size n, n <= 2^h
+-- Stirling's approximation: log2(n!) = Theta(nlog2(n))

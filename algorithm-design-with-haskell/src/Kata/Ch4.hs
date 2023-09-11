@@ -165,8 +165,8 @@ size :: Tree' a -> Nat
 size = undefined
 
 
-flatten :: Tree' a -> [a]
-flatten = undefined
+flatten' :: Tree' a -> [a]
+flatten' = undefined
 
 -- if flatten a tree returns a list of values in strictly increasing order,
 -- the tree is a binary search tree
@@ -237,7 +237,49 @@ bias = undefined
 
 
 balance :: Tree a -> a -> Tree a -> Tree a
-balance t1 x t2 = undefined
+balance l x r
+  | abs (h1 - h2) <= 1 = undefined
+  | h1 == h2 + 2 = undefined
+  | h2 == h1 + 2 = undefined
+  where
+    h1 = height l
+    h2 = height r
+    rotateR l' x' r' = undefined
+    rotateL l' x' r' = undefined
 
 -- >> mkTree [6, 4, 8, 2, 3, 5]
 -- Node 3 (Node 2 (Node 1 Null 2 Null) 3 (Node 1 Null 4 Null)) 5 (Node 2 (Node 1 Null 6 Null) 8 Null)
+
+balanceR :: Tree a -> a -> Tree a -> Tree a
+balanceR Null _ _ = error "balanceR: left subtree is Null"
+balanceR (Node _ ll y rl) x r =
+  if height rl >= height r + 2
+  then undefined
+  else undefined
+
+balanceL :: Tree a -> a -> Tree a -> Tree a
+balanceL _ _ Null = error "balanceL: right subtree is Null"
+balanceL l x (Node _ lr y rr) =
+  if height lr >= height l + 2
+  then undefined
+  else undefined
+
+gbalance :: Tree a -> a -> Tree a -> Tree a
+gbalance l x r
+  | abs (h1 - h2) <= 2 = undefined
+  | h1 > h2 + 2 = undefined
+  | otherwise = undefined
+  where
+    h1 = height l
+    h2 = height r
+
+flatten :: Tree a -> [a]
+flatten Null = []
+flatten (Node _ l x r) = undefined
+
+sort :: (Ord a) => [a] -> [a]
+sort = undefined
+
+
+-- for Tree of size n, n <= 2^h
+-- Stirling's approximation: log2(n!) = Theta(nlog(n))
