@@ -210,7 +210,7 @@ mkTree' = undefined
 
 
 -- Modify the type Tree to store the height of tree
-data Tree a = Null | Node Nat (Tree a) a (Tree a)
+data Tree a = Null | Node Nat (Tree a) a (Tree a) deriving (Show)
 
 height :: Tree a -> Nat
 height = undefined
@@ -283,3 +283,49 @@ sort = undefined
 
 -- for Tree of size n, n <= 2^h
 -- Stirling's approximation: log2(n!) = Theta(nlog(n))
+
+
+------------------ 4.3
+
+type Set a = Tree a
+
+member :: Ord a => a -> Set a -> Bool
+member x Null = False
+member x (Node _ l y r) = undefined
+
+delete :: Ord a => a -> Set a -> Set a
+delete x Null = Null
+delete x (Node _ l y r) = undefined
+
+combine :: Ord a => Set a -> Set a -> Set a
+combine l Null = l
+combine Null r = r
+combine l r = undefined
+
+deleteMin :: Ord a => Set a -> (a, Set a)
+deleteMin Null = undefined
+deleteMin (Node _ Null x r) = (x, r)
+deleteMin (Node _ l x r) = undefined
+
+split :: Ord a => a -> Set a -> (Set a, Set a)
+split x t = sew (pieces x t)
+
+data Piece a = LP (Set a) a | RP a (Set a) deriving (Show)
+
+pieces :: Ord a => a -> Set a -> [Piece a]
+pieces x t = addPiece t []
+  where
+    addPiece = undefined
+
+-- >>> t = mkTree [6, 8, 9, 10, 14, 15, 20]
+-- >>> t
+-- Node 3 (Node 2 (Node 1 Null 6 Null) 8 (Node 1 Null 9 Null)) 10 (Node 2 (Node 1 Null 14 Null) 15 (Node 1 Null 20 Null))
+-- >>> ps = pieces 9 t
+-- >>> ps
+-- [LP Null 9,LP (Node 1 Null 6 Null) 8,RP 10 (Node 2 (Node 1 Null 14 Null) 15 (Node 1 Null 20 Null))]
+
+sew :: [Piece a] -> (Set a, Set a)
+sew = undefined
+
+-- >>> sew ps
+-- (Node 2 (Node 1 Null 6 Null) 8 (Node 1 Null 9 Null),Node 3 (Node 2 Null 10 (Node 1 Null 14 Null)) 15 (Node 1 Null 20 Null))

@@ -260,14 +260,14 @@ balance l x r
 
 
 balanceR :: Tree a -> a -> Tree a -> Tree a
-balanceR Null _ _ = error "balanceR: left subtree is Null"
+balanceR Null x r = balance Null x r
 balanceR (Node _ ll y rl) x r =
   if height rl >= height r + 2
   then balance ll y (balanceR rl x r)
   else balance ll y (node rl x r)
 
 balanceL :: Tree a -> a -> Tree a -> Tree a
-balanceL _ _ Null = error "balanceL: right subtree is Null"
+balanceL l x Null = balance l x Null
 balanceL l x (Node _ lr y rr) =
   if height lr >= height l + 2
   then balance (balanceL l x lr) y rr
@@ -291,3 +291,63 @@ sort = flatten . mkTree
 
 -- for Tree of size n, n <= 2^h
 -- Stirling's approximation: log2(n!) = Theta(nlog2(n))
+
+
+------------------ 4.3
+
+type Set a = Tree a
+
+member :: Ord a => a -> Set a -> Bool
+member x Null = False
+member x (Node _ l y r)
+  | x < y = member x l
+  | x == y = True
+  | otherwise = member x r
+
+delete :: Ord a => a -> Set a -> Set a
+delete x Null = Null
+delete x (Node _ l y r)
+  | x < y = balance (delete x l) y r
+  | x == y = combine l r
+  | otherwise = balance l y (delete x r)
+
+combine :: Ord a => Set a -> Set a -> Set a
+combine l Null = l
+combine Null r = r
+combine l r = balance l x t
+  where (x, t) = deleteMin r
+
+deleteMin :: Ord a => Set a -> (a, Set a)
+deleteMin Null = undefined
+deleteMin (Node _ Null x r) = (x, r)
+deleteMin (Node _ l x r) = (y, balance t x r)
+  where (y, t) = deleteMin l
+
+split :: Ord a => a -> Set a -> (Set a, Set a)
+split x t = sew (pieces x t)
+
+data Piece a = LP (Set a) a | RP a (Set a) deriving (Show)
+
+pieces :: Ord a => a -> Set a -> [Piece a]
+pieces x t = addPiece t []
+  where
+    addPiece Null ps = ps
+    addPiece (Node _ l y r) ps
+      | x < y = addPiece l (RP y r : ps)
+      | otherwise = addPiece r (LP l y : ps)
+
+-- >>> t = mkTree [6, 8, 9, 10, 14, 15, 20]
+-- >>> t
+-- Node 3 (Node 2 (Node 1 Null 6 Null) 8 (Node 1 Null 9 Null)) 10 (Node 2 (Node 1 Null 14 Null) 15 (Node 1 Null 20 Null))
+-- >>> ps = pieces 9 t
+-- >>> ps
+-- [LP Null 9,LP (Node 1 Null 6 Null) 8,RP 10 (Node 2 (Node 1 Null 14 Null) 15 (Node 1 Null 20 Null))]
+
+sew :: [Piece a] -> (Set a, Set a)
+sew = foldl step (Null, Null)
+  where
+    step (l, r) (LP t x) = (gbalance t x l, r)
+    step (l, r) (RP x t) = (l, gbalance r x t)
+
+-- >>> sew ps
+-- (Node 2 (Node 1 Null 6 Null) 8 (Node 1 Null 9 Null),Node 3 (Node 2 Null 10 (Node 1 Null 14 Null)) 15 (Node 1 Null 20 Null))
