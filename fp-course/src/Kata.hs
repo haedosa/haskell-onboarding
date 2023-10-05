@@ -5,3 +5,4 @@ import Kata.ListMyAnswer
 import Kata.FunctorMyAnswer
 import Kata.ApplicativeMyAnswer
 import Kata.MonadMyAnswer
+import Kata.StateMyAnswer

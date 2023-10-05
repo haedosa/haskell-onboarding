@@ -346,8 +346,8 @@ pieces x t = addPiece t []
 sew :: [Piece a] -> (Set a, Set a)
 sew = foldl step (Null, Null)
   where
-    step (l, r) (LP t x) = (gbalance t x l, r)
-    step (l, r) (RP x t) = (l, gbalance r x t)
+    step (t1, t2) (LP t x) = (gbalance t x t1, t2)
+    step (t1, t2) (RP x t) = (t1, gbalance t2 x t)
 
 -- >>> sew ps
 -- (Node 2 (Node 1 Null 6 Null) 8 (Node 1 Null 9 Null),Node 3 (Node 2 Null 10 (Node 1 Null 14 Null)) 15 (Node 1 Null 20 Null))
