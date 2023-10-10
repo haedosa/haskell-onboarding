@@ -104,8 +104,64 @@ put = undefined
 -- Maybe is a type constructor
 -- instance Functor Maybe where....
 -- not instance Functor (Maybe a) where
+-- Functor law
+-- 1: fmap id = id
+-- 2: fmap (f . g) = fmap f . fmap g
 
+-- | Implement the 'Functor' instance for 'State s'.
 -- >>> runState ((+1) <$> State (\s -> (9, s * 2))) 3
 -- (10, 6)
 instance Functor (State s) where
   fmap f (State rs) = undefined
+
+
+-- class (Functor f) => Applicative f where
+--   pure :: a -> f a
+--   (<*>) :: f (a -> b) -> f a -> f b
+-- >>> (+) <$> Just 1 <*> Just 2
+-- 3
+-- (+) <$> Just 1 <*> Just 2 = Just 3
+-- (+) 1 2 = 3
+-- (+) <$> (+ 3) <*> (* 100) ?????
+-- intance Applicative ((->) r) where
+--   pure x = (\_ -> x)
+--   f <*> g = \x -> f x (g x)
+-- >>> pure 3 "blah"
+-- ????
+-- >>> (+) <$> (+ 3) <*> (* 100) $ 5
+-- ????
+-- >>> (\x y z -> [x, y, z]) <$> (+ 3) <*> (* 2) <*> (/ 2) $ 5
+-- | Implement the 'Applicative' instance for'State s'.
+-- >>> runState (pure 2) 0
+-- (2,0)
+--
+-- >>> runState (pure (+1) <*> pure 0) 0
+-- (1,0)
+--
+-- >>> runState (State (\s -> ((+ 3), s ++ ["apple"])) <*> State (\s -> (7, s ++ ["banana"]))) []
+-- (10, ["apple","banana"])
+instance Applicative (State s) where
+  pure a = undefined
+  State f <*> State rs = undefined
+
+
+
+-- | Implement the 'Monad' instance for 'State s'.
+-- >>> let modify f = State (\s -> ((), f s)) in runState (modify (+ 1) >>= \() -> modify (* 2)) 7
+-- ((), 16)
+--
+-- >>> runState ((const $ put 2) =<< put 1) 0
+-- ((),2)
+instance Monad (State s) where
+  return = pure
+  (State h) >>= f = undefined
+
+
+pop :: State Stack Int
+pop = undefined
+
+push :: Int -> State Stack ()
+push a = undefined
+
+stackManip :: State Stack Int
+stackManip = undefined
