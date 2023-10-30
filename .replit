@@ -3,8 +3,6 @@
 
 run = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow;\")"
 
-entrypoint = "Main.hs"
-
 hidden = [".ghci", "ghci_wrapper.sh"]
 
 [nix]
