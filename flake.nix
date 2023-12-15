@@ -25,6 +25,9 @@
             fp-course =
               hfinal.callCabal2nix "fp-course" ./fp-course
               { };
+            algorithm-design-with-haskell =
+              hfinal.callCabal2nix "algorithm-design-with-haskell" ./algorithm-design-with-haskell
+              { };
           });
         })
       ];
