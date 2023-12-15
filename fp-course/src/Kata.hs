@@ -9,3 +9,4 @@ import Kata.StateMyAnswer
 import Kata.ExprT
 import Kata.Parser
 import Kata.StackVM
+import Kata.TypeClass

@@ -1,5 +1,7 @@
 module Kata.TypeClass where
 
+import Kata.ExprT
+import Kata.Parser
 
 -- class Eq a where
 --   (==), (/=) :: a -> a -> Bool
@@ -8,7 +10,23 @@ module Kata.TypeClass where
 
 data Foo = F Int | G Char
 
-instance Eq Foo where
-  (F i1) == (F i2) = i1 == i2
-  (G c1) == (G c2) = c1 == c2
-  _ == _ = False
+
+class Listable a where
+  toList :: a -> [Int]
+
+
+instance Listable Int where
+
+
+instance Listable Bool where
+
+
+instance Listable [Int] where
+
+
+data Tree a = Empty | Node a (Tree a) (Tree a)
+
+instance Listable (Tree Int) where
+
+
+instance (Listable a, Listable b) => Listable (a, b) where

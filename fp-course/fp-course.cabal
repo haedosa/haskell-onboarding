@@ -60,3 +60,4 @@ library
     Kata.ExprT
     Kata.Parser
     Kata.StackVM
+    Kata.TypeClass
