@@ -1,3 +1,3 @@
-module System.Random where
+module HelloWorld where
 
-hello = random (mkStdHen 100) :: (Int, StdGen)
+hello = "Hello, World!"

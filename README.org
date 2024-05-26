@@ -3,6 +3,38 @@
 * haskell-onboarding
 Haskell Onboarding Repository for [[https://github.com/haedosa/][Haedosa Inc]].
 
+** How to run
+#+begin_src bash :eval never-export
+->> nix run .#[Press tab twice]
+.#                               .#leap
+.#algorithm-design-with-haskell  .#learn-you-a-haskell
+.#default                        .#packages
+.#devShells                      .#test
+.#fp-course                      .#testproject
+.#hello-world                    .#testroot
+
+
+->> nix run .#leap.[Press tab twice]
+.#leap.combined-haddock    .#leap.read-the-docs-site
+.#leap.pre-commit-check    .#leap.test
+
+
+->> nix run .#leap.test
+isLeapYear
+  2015 - year not divisible by 4 in common year [✔]
+  1970 - year divisible by 2, not divisible by 4 in common year [✔]
+  1996 - year divisible by 4, not divisible by 100 in leap year [✔]
+  1960 - year divisible by 4 and 5 is still a leap year [✔]
+  2100 - year divisible by 100, not divisible by 400 in common year [✔]
+  1900 - year divisible by 100 but not by 3 is still not a leap year [✔]
+  2000 - year divisible by 400 in leap year [✔]
+  2400 - year divisible by 400 but not by 125 is still a leap year [✔]
+  1800 - year divisible by 200, not divisible by 400 in common year [✔]
+
+Finished in 0.0007 seconds
+9 examples, 0 failures
+#+end_src
+
 ** Resources
 - Learn You a Haskell for Great Good!: A Beginner's Guide
 

@@ -1,1 +1,4 @@
-packages: */*.cabal
+if(impl(ghc <= 9.2.7))
+  packages: exercism/*/*/*.cabal
+else
+  packages: */*.cabal
