@@ -3,7 +3,30 @@
 * haskell-onboarding
 Haskell Onboarding Repository for [[https://github.com/haedosa/][Haedosa Inc]].
 
-** How to run
+** Resources
+- Learn You a Haskell for Great Good!: A Beginner's Guide
+- Algorithm Design with Haskell
+- Functional Programming Course (github:system-f/fp-course)
+- Exercism
+
+** Available Platform
+- [[https://replit.com/~][Replit]]
+  - If there is no startup =Console=, press the green =Run= button to start =ghci=.
+  - Inside =ghci=, run =:l Main= to load =Main.hs=
+  - Alternatively, run =:l learn-you-a-haskell/src/First= to load =learn-you-a-haskell/src/First.hs=
+  - If you quit the first =ghci=, then =devShells.x86_64-linux.replit= is run by =direnv=
+  - Although =.envrc= file is not in =git=, it is needed for =direnv=
+
+
+** Exercism Guide
+
+*** Pull Exercism exercises
+- Start [[https://exercism.org/tracks/haskell][Haskell track in Exercism]] and run the below command
+#+begin_src bash :eval never-export
+->> nix shell nixpkgs#exercism && ./exercism/get-exercises.sh haskell
+#+end_src
+
+*** How to run test before submission
 #+begin_src bash :eval never-export
 ->> nix run .#[Press tab twice]
 .#                               .#leap
@@ -35,13 +58,8 @@ Finished in 0.0007 seconds
 9 examples, 0 failures
 #+end_src
 
-** Resources
-- Learn You a Haskell for Great Good!: A Beginner's Guide
+*** Submit Exercism exercises using exercism cli (Haskell)
 
-** Available Platform
-- [[https://replit.com/~][Replit]]
-  - If there is no startup =Console=, press the green =Run= button to start =ghci=.
-  - Inside =ghci=, run =:l Main= to load =Main.hs=
-  - Alternatively, run =:l learn-you-a-haskell/src/First= to load =learn-you-a-haskell/src/First.hs=
-  - If you quit the first =ghci=, then =devShells.x86_64-linux.replit= is run by =direnv=
-  - Although =.envrc= file is not in =git=, it is needed for =direnv=
+#+begin_src bash :eval never-export
+->> nix run nixpkgs#exercism -- submit ./exercism/haskell/<exercise>/src/<modified answer file>.hs <more files>
+#+end_src
