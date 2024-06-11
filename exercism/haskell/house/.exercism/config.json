@@ -1,0 +1,34 @@
+{
+  "authors": [
+    "sjakobi"
+  ],
+  "contributors": [
+    "etrepum",
+    "iHiD",
+    "kytrinyx",
+    "navossoc",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/House.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/House.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Output the nursery rhyme 'This is the House that Jack Built'.",
+  "source": "British nursery rhyme",
+  "source_url": "https://en.wikipedia.org/wiki/This_Is_The_House_That_Jack_Built"
+}

@@ -1,0 +1,32 @@
+{
+  "authors": [
+    "etrepum"
+  ],
+  "contributors": [
+    "ffflorian",
+    "iHiD",
+    "kytrinyx",
+    "lpalma",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Minesweeper.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Minesweeper.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Add the numbers to a minesweeper board."
+}

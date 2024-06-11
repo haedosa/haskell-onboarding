@@ -1,0 +1,36 @@
+{
+  "authors": [
+    "etrepum"
+  ],
+  "contributors": [
+    "hekrause",
+    "iHiD",
+    "julianandrews",
+    "kytrinyx",
+    "lpalma",
+    "petemcfarlane",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/SumOfMultiples.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/SumOfMultiples.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Given a number, find the sum of all the multiples of particular numbers up to but not including that number.",
+  "source": "A variation on Problem 1 at Project Euler",
+  "source_url": "https://projecteuler.net/problem=1"
+}

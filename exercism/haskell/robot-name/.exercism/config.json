@@ -1,0 +1,35 @@
+{
+  "authors": [
+    "etrepum"
+  ],
+  "contributors": [
+    "cmcaine",
+    "iHiD",
+    "khalilfazal",
+    "kytrinyx",
+    "lpalma",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "slava-sh",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Robot.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Robot.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Manage robot factory settings.",
+  "source": "A debugging session with Paul Blackwell at gSchool."
+}

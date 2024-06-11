@@ -1,0 +1,31 @@
+{
+  "authors": [
+    "Average-user"
+  ],
+  "contributors": [
+    "cmccandless",
+    "iHiD",
+    "petertseng",
+    "ppartarr",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/ComplexNumbers.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/ComplexNumbers.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Implement complex numbers.",
+  "source": "Wikipedia",
+  "source_url": "https://en.wikipedia.org/wiki/Complex_number"
+}

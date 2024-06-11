@@ -21,9 +21,9 @@ Haskell Onboarding Repository for [[https://github.com/haedosa/][Haedosa Inc]].
 ** Exercism Guide
 
 *** Pull Exercism exercises
-- Start [[https://exercism.org/tracks/haskell][Haskell track in Exercism]] and run the below command
+- Start [[https://exercism.org/tracks/haskell][Haskell track in Exercism]] and get the [[https://exercism.org/settings/api_cli][token]] to run the below command
 #+begin_src bash :eval never-export
-->> nix shell nixpkgs#exercism && ./exercism/get-exercises.sh haskell
+->> nix run .#get-exercises -- haskell <token> --force
 #+end_src
 
 *** How to run test before submission
@@ -61,5 +61,5 @@ Finished in 0.0007 seconds
 *** Submit Exercism exercises using exercism cli (Haskell)
 
 #+begin_src bash :eval never-export
-->> nix run nixpkgs#exercism -- submit ./exercism/haskell/<exercise>/src/<modified answer file>.hs <more files>
+->> nix run nixpkgs#exercism -- submit ./exercism/haskell/<exercise>/src/<modified answer file>.hs <more modified files>
 #+end_src

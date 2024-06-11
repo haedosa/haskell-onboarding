@@ -1,0 +1,39 @@
+{
+  "authors": [
+    "etrepum"
+  ],
+  "contributors": [
+    "cmcaine",
+    "Dysp",
+    "iHiD",
+    "jitwit",
+    "kytrinyx",
+    "lpalma",
+    "mambocab",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "samjonester",
+    "sjakobi",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/DNA.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/DNA.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Given a DNA string, compute how many times each nucleotide occurs in the string.",
+  "source": "The Calculating DNA Nucleotides_problem at Rosalind",
+  "source_url": "https://rosalind.info/problems/dna/"
+}

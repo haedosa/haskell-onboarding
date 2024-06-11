@@ -1,0 +1,33 @@
+{
+  "authors": [
+    "pminten"
+  ],
+  "contributors": [
+    "etrepum",
+    "iHiD",
+    "jgilray",
+    "kytrinyx",
+    "lpalma",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Person.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Person.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Use lenses to update nested records (specific to languages with immutable data)."
+}

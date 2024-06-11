@@ -1,0 +1,30 @@
+{
+  "authors": [
+    "rbasso"
+  ],
+  "contributors": [
+    "dbalmain",
+    "iHiD",
+    "navossoc",
+    "petertseng",
+    "ppartarr",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Base.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Base.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Convert a number, represented as a sequence of digits in one base, to any other base."
+}

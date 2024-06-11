@@ -1,0 +1,30 @@
+{
+  "authors": [],
+  "contributors": [
+    "iHiD",
+    "kytrinyx",
+    "navossoc",
+    "omer-g",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Alphametics.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Alphametics.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Write a function to solve alphametics puzzles."
+}

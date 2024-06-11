@@ -1,0 +1,33 @@
+{
+  "authors": [
+    "etrepum"
+  ],
+  "contributors": [
+    "iHiD",
+    "kytrinyx",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "sshine",
+    "stevejb71",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Series.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Series.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Given a string of digits, output all the contiguous substrings of length `n` in that string.",
+  "source": "A subset of the Problem 8 at Project Euler",
+  "source_url": "https://projecteuler.net/problem=8"
+}

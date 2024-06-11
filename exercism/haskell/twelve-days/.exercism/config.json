@@ -1,0 +1,32 @@
+{
+  "authors": [
+    "tuxagon"
+  ],
+  "contributors": [
+    "chiroptical",
+    "iHiD",
+    "PatrickMcSweeny",
+    "petertseng",
+    "ppartarr",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/TwelveDays.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/TwelveDays.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Output the lyrics to 'The Twelve Days of Christmas'.",
+  "source": "Wikipedia",
+  "source_url": "https://en.wikipedia.org/wiki/The_Twelve_Days_of_Christmas_(song)"
+}

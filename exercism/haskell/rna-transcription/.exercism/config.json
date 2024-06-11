@@ -1,0 +1,37 @@
+{
+  "authors": [
+    "etrepum"
+  ],
+  "contributors": [
+    "b-mehta",
+    "eijynagai",
+    "iHiD",
+    "kytrinyx",
+    "MazeChaZer",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "rpottsoh",
+    "samjonester",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/DNA.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/DNA.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Given a DNA strand, return its RNA Complement Transcription.",
+  "source": "Hyperphysics",
+  "source_url": "https://web.archive.org/web/20220408112140/http://hyperphysics.phy-astr.gsu.edu/hbase/Organic/transcription.html"
+}

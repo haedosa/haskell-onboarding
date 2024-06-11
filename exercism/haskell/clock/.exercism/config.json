@@ -1,0 +1,37 @@
+{
+  "authors": [
+    "etrepum"
+  ],
+  "contributors": [
+    "felix91gr",
+    "iHiD",
+    "jeeger",
+    "kevin-meyers",
+    "kytrinyx",
+    "lpalma",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "sshine",
+    "tejasbubane",
+    "tiniuclx"
+  ],
+  "files": {
+    "solution": [
+      "src/Clock.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Clock.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Implement a clock that handles times without dates.",
+  "source": "Pairing session with Erin Drummond",
+  "source_url": "https://twitter.com/ebdrummond"
+}

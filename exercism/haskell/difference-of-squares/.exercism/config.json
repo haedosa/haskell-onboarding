@@ -1,0 +1,35 @@
+{
+  "authors": [
+    "etrepum"
+  ],
+  "contributors": [
+    "bitfield",
+    "iHiD",
+    "kytrinyx",
+    "lpalma",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "Scientifica96",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Squares.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Squares.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Find the difference between the square of the sum and the sum of the squares of the first N natural numbers.",
+  "source": "Problem 6 at Project Euler",
+  "source_url": "https://projecteuler.net/problem=6"
+}

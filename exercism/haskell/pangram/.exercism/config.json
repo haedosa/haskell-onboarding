@@ -1,0 +1,35 @@
+{
+  "authors": [
+    "lpalma"
+  ],
+  "contributors": [
+    "chiroptical",
+    "iHiD",
+    "navossoc",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "rsslldnphy",
+    "Sir4ur0n",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Pangram.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Pangram.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Determine if a sentence is a pangram.",
+  "source": "Wikipedia",
+  "source_url": "https://en.wikipedia.org/wiki/Pangram"
+}

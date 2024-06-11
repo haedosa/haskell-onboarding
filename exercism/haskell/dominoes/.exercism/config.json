@@ -1,0 +1,30 @@
+{
+  "authors": [
+    "petertseng"
+  ],
+  "contributors": [
+    "AndrewKvalheim",
+    "cmccandless",
+    "iHiD",
+    "ppartarr",
+    "rbasso",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Dominoes.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Dominoes.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Make a chain of dominoes."
+}

@@ -1,0 +1,35 @@
+{
+  "authors": [
+    "etrepum"
+  ],
+  "contributors": [
+    "iHiD",
+    "kytrinyx",
+    "LarryRuane",
+    "navossoc",
+    "petertseng",
+    "ppartarr",
+    "qnikst",
+    "rbasso",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Grains.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Grains.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Calculate the number of grains of wheat on a chessboard given that the number on each square doubles.",
+  "source": "The CodeRanch Cattle Drive, Assignment 6",
+  "source_url": "https://coderanch.com/wiki/718824/Grains"
+}

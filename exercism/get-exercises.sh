@@ -18,21 +18,30 @@ green="\e[1;32m"
 
 # Main
 lang="$1"
+token="$2"
+force="$3"
 url="https://exercism.org/api/v2/tracks/${lang}/exercises"
-token="fb0c2c57-0af7-4602-bbe7-021735c96bd4"
-
-# Check if token is set
-if [ -z "$token" ]; then
-  echo -e "${strong}${red}Error: Please set your Exercism API token in the script.${reset}"
-  exit 1
-fi
 
 # Check if language argument is provided
-if [ -z "$lang" ]; then
+if [ -z "${lang}" ]; then
   echo -e "${strong}${red}Error: Please provide the language as the script argument.${reset}"
-  echo -e "${strong}${yellow}Usage: $0 <lang>${reset}"
+  echo -e "${strong}${yellow}Usage: $0 <lang> <token> <force>${reset}"
+  echo -e "${strong}${yellow}Example: $0 haskell 00000000-0000-0000-0000-000000000000 --force${reset}"
+  echo -e "${strong}${yellow}Example: $0 python 00000000-0000-0000-0000-000000000000${reset}"
   exit 1
 fi
+
+# Check if token is set
+if [ -z "${token}" ]; then
+  echo -e "${strong}${red}Error: Please set your Exercism API token as the script argument.${reset}"
+  echo -e "${strong}${yellow}Usage: $0 <lang> <token> <force>${reset}"
+  echo -e "${strong}${yellow}Example: $0 haskell 00000000-0000-0000-0000-000000000000 --force${reset}"
+  echo -e "${strong}${yellow}Example: $0 python 00000000-0000-0000-0000-000000000000${reset}"
+  exit 1
+fi
+
+echo -e "${strong}${yellow}\nSetting token...${reset}\n"
+exercism configure --token=${token}
 
 echo -e "${strong}${yellow}Getting list of exercises\t${reset}\n\n"
 
@@ -52,12 +61,13 @@ exercism configure -w .
 while read -r exercise; do
   i=$((i + 1))
 
-  if [ -d "${lang}/${exercise}" ]; then
-    echo -e "${strong}\n${i}. ${blue}${exercise}... ${yellow}NOOP${reset}"
-
-  else
+  if [ ! -d "${lang}/${exercise}" ] || { [ ! -z "${force}" ] && [ "${force}" == "--force" ]; }; then
     echo -e "${strong}\n${i}. ${blue}${exercise}... ${green}GET${reset}"
-    exercism download --exercise="${exercise}" --track="${lang}"
+    exercism download --exercise="${exercise}" --track="${lang}" ${force}
+    # ln -s ../../../.envrc "${lang}"/"${exercise}"/.envrc
+    # git add "${lang}"/"${exercise}"
+  else
+    echo -e "${strong}\n${i}. ${blue}${exercise}... ${yellow}NOOP${reset}"
   fi
 done <<< "$exercises"
 

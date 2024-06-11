@@ -1,0 +1,34 @@
+{
+  "authors": [
+    "petertseng"
+  ],
+  "contributors": [
+    "chastell",
+    "iHiD",
+    "kytrinyx",
+    "lpalma",
+    "ppartarr",
+    "rbasso",
+    "sshine",
+    "tejasbubane",
+    "tqa236"
+  ],
+  "files": {
+    "solution": [
+      "src/Hamming.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Hamming.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Calculate the Hamming difference between two DNA strands.",
+  "source": "The Calculating Point Mutations problem at Rosalind",
+  "source_url": "https://rosalind.info/problems/hamm/"
+}

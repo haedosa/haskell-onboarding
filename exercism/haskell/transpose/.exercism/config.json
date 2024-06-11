@@ -1,0 +1,30 @@
+{
+  "authors": [
+    "tuxagon"
+  ],
+  "contributors": [
+    "iHiD",
+    "petertseng",
+    "ppartarr",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Transpose.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Transpose.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Take input text and output it transposed.",
+  "source": "Reddit r/dailyprogrammer challenge #270 [Easy].",
+  "source_url": "https://www.reddit.com/r/dailyprogrammer/comments/4msu2x/challenge_270_easy_transpose_the_input_text"
+}

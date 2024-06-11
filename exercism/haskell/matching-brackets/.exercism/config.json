@@ -1,0 +1,33 @@
+{
+  "authors": [
+    "lpalma"
+  ],
+  "contributors": [
+    "abeger",
+    "iHiD",
+    "omer-g",
+    "petertseng",
+    "ppartarr",
+    "rbasso",
+    "rpottsoh",
+    "sshine",
+    "tejasbubane"
+  ],
+  "files": {
+    "solution": [
+      "src/Brackets.hs",
+      "package.yaml"
+    ],
+    "test": [
+      "test/Tests.hs"
+    ],
+    "example": [
+      ".meta/examples/success-standard/src/Brackets.hs"
+    ],
+    "invalidator": [
+      "stack.yaml"
+    ]
+  },
+  "blurb": "Make sure the brackets and braces all match.",
+  "source": "Ginna Baker"
+}
