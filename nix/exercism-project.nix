@@ -2,24 +2,25 @@
 
 let
 
-  project' = path: pkgs.haskell-nix.project' ({ pkgs, config, ... }:
+  # project' = path: pkgs.haskell-nix.project' ({ pkgs, config, ... }:
+  project' = path: pkgs.haskell-nix.cabalProject' ({ pkgs, config, ... }:
     let
       # When `isCross` is `true`, it means that we are cross-compiling the project.
       # WARNING You must use the `pkgs` coming from project' for `isCross` to work.
       isCross = pkgs.stdenv.hostPlatform != pkgs.stdenv.buildPlatform;
-      stack-wrapped = pkgs.symlinkJoin {
-        name = "stack"; # will be available as the usual `stack` in terminal
-        paths = [ (pkgs.haskell-nix.tool "ghc927" "stack" "2.9.1") ];
-        buildInputs = [ pkgs.makeWrapper ];
-        postBuild = ''
-          wrapProgram $out/bin/stack \
-            --add-flags "\
-              --no-nix \
-              --system-ghc \
-              --no-install-ghc \
-            "
-        '';
-      };
+      # stack-wrapped = pkgs.symlinkJoin {
+      #   name = "stack"; # will be available as the usual `stack` in terminal
+      #   paths = [ (pkgs.haskell-nix.tool "ghc928" "stack" "2.9.1") ];
+      #   buildInputs = [ pkgs.makeWrapper ];
+      #   postBuild = ''
+      #     wrapProgram $out/bin/stack \
+      #       --add-flags "\
+      #         --no-nix \
+      #         --system-ghc \
+      #         --no-install-ghc \
+      #       "
+      #   '';
+      # };
     in
     {
       name = "${baseNameOf path}";
@@ -29,11 +30,14 @@ let
         src = ../. + path;
       };
 
+      # projectFileName = "stack.yaml";
+      ignorePackageYaml = true;
+
       # inputMap = {
       #   "https://chap.intersectmbo.org/" = inputs.iogx.inputs.CHaP;
       # };
 
-      compiler-nix-name = lib.mkDefault "ghc927";
+      compiler-nix-name = lib.mkDefault "ghc928";
 
       shell.withHoogle = false;
 
@@ -44,7 +48,7 @@ let
       };
       # Non-Haskell shell tools go here
       shell.buildInputs = with pkgs; [
-        stack-wrapped
+        # stack-wrapped
         nixpkgs-fmt
       ];
       # This adds `js-unknown-ghcjs-cabal` to the shell.

@@ -17,26 +17,31 @@ yellow="\e[1;33m"
 green="\e[1;32m"
 
 # Main
+script_name="$0"
 lang="$1"
 token="$2"
 force="$3"
 url="https://exercism.org/api/v2/tracks/${lang}/exercises"
 
+if [[ "$script_name" == "/nix/store"* ]]; then
+  script_name="nix run .#get-exercises --"
+fi
+
 # Check if language argument is provided
 if [ -z "${lang}" ]; then
   echo -e "${strong}${red}Error: Please provide the language as the script argument.${reset}"
-  echo -e "${strong}${yellow}Usage: $0 <lang> <token> <force>${reset}"
-  echo -e "${strong}${yellow}Example: $0 haskell 00000000-0000-0000-0000-000000000000 --force${reset}"
-  echo -e "${strong}${yellow}Example: $0 python 00000000-0000-0000-0000-000000000000${reset}"
+  echo -e "${strong}${yellow}Usage: ${script_name} <lang> <token> <force>${reset}"
+  echo -e "${strong}${yellow}Example: ${script_name} haskell 00000000-0000-0000-0000-000000000000 --force${reset}"
+  echo -e "${strong}${yellow}Example: ${script_name} python 00000000-0000-0000-0000-000000000000${reset}"
   exit 1
 fi
 
 # Check if token is set
 if [ -z "${token}" ]; then
   echo -e "${strong}${red}Error: Please set your Exercism API token as the script argument.${reset}"
-  echo -e "${strong}${yellow}Usage: $0 <lang> <token> <force>${reset}"
-  echo -e "${strong}${yellow}Example: $0 haskell 00000000-0000-0000-0000-000000000000 --force${reset}"
-  echo -e "${strong}${yellow}Example: $0 python 00000000-0000-0000-0000-000000000000${reset}"
+  echo -e "${strong}${yellow}Usage: ${script_name} <lang> <token> <force>${reset}"
+  echo -e "${strong}${yellow}Example: ${script_name} haskell 00000000-0000-0000-0000-000000000000 --force${reset}"
+  echo -e "${strong}${yellow}Example: ${script_name} python 00000000-0000-0000-0000-000000000000${reset}"
   exit 1
 fi
 
@@ -58,14 +63,24 @@ echo -e "${strong}${yellow}\nDownloading ${n} exercises...${reset}\n"
 
 exercism configure -w .
 
+# exercism download --exercise="bob" --track="${lang}" ${force}
+# pushd "${lang}"/bob
+# hpack
+# ln -sf ../.envrc .envrc
+# git add .
+# popd
+
 while read -r exercise; do
   i=$((i + 1))
 
   if [ ! -d "${lang}/${exercise}" ] || { [ ! -z "${force}" ] && [ "${force}" == "--force" ]; }; then
     echo -e "${strong}\n${i}. ${blue}${exercise}... ${green}GET${reset}"
     exercism download --exercise="${exercise}" --track="${lang}" ${force}
-    # ln -s ../../../.envrc "${lang}"/"${exercise}"/.envrc
-    # git add "${lang}"/"${exercise}"
+    # pushd "${lang}"/"${exercise}"
+    # hpack
+    # ln -sf ../.envrc .envrc
+    # git add .
+    # popd
   else
     echo -e "${strong}\n${i}. ${blue}${exercise}... ${yellow}NOOP${reset}"
   fi

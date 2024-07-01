@@ -1,0 +1,35 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.2.
+--
+-- see: https://github.com/sol/hpack
+
+name:           satellite
+version:        1.0.0.0
+build-type:     Simple
+
+library
+  exposed-modules:
+      Satellite
+      BinaryTree
+  other-modules:
+      Paths_satellite
+  hs-source-dirs:
+      src
+  ghc-options: -Wall
+  build-depends:
+      base
+  default-language: Haskell2010
+
+test-suite test
+  type: exitcode-stdio-1.0
+  main-is: Tests.hs
+  other-modules:
+      Paths_satellite
+  hs-source-dirs:
+      test
+  build-depends:
+      base
+    , hspec
+    , satellite
+  default-language: Haskell2010

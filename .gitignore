@@ -31,5 +31,4 @@ nixpkgs/
 *MyAnswer.hs
 
 exercism/**/.exercism/metadata.json
-exercism/**/*.cabal
 exercism/**/stack.yaml.lock
