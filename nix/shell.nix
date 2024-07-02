@@ -6,8 +6,11 @@
 # Each flake variant defined in your project.nix project will yield a separate
 # shell. If no flake variants are defined, then cabalProject is the original 
 # project.
+isReplit:
 cabalProject:
-
+let
+  l = builtins // lib;
+in
 {
   name = "nix-shell";
 
@@ -50,7 +53,25 @@ cabalProject:
     # nixpkgs-fmt = null;
     # optipng = null;
     # purs-tidy = null;
-  };
+  } //
+  l.optionalAttrs isReplit
+    # NOTE: pkgs.shellcheck is used as a dummy package (placeholder package)
+    (__listToAttrs (map (l.flip l.nameValuePair pkgs.shellcheck) [
+      "cabal-install"
+      "cabal-fmt"
+      "stylish-haskell"
+      "fourmolu"
+      "hlint"
+      "shellcheck"
+      "prettier"
+      "editorconfig-checker"
+      "nixpkgs-fmt"
+      "optipng"
+      "purs-tidy"
+      "haskell-language-server"
+      "haskell-language-server-wrapper"
+      "ghcid"
+    ]));
 
   # preCommit = {
   #   cabal-fmt.enable = false;

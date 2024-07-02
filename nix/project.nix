@@ -1,6 +1,11 @@
 { repoRoot, inputs, pkgs, system, lib }:
 
+{ path, isReplit ? false }:
 let
+  l = builtins // lib;
+
+  isExercism = __match "/exercism/haskell/.*" path != null;
+
 
   project' = path: pkgs.haskell-nix.project' ({ pkgs, config, ... }:
     let
@@ -22,6 +27,7 @@ let
       };
     in
     {
+
       name = "${baseNameOf path}";
 
       src = pkgs.haskell-nix.cleanSourceHaskell {
@@ -29,24 +35,43 @@ let
         src = ../. + path;
       };
 
+      projectFileName = "cabal.project";
+      ignorePackageYaml = true;
+
       # inputMap = {
       #   "https://chap.intersectmbo.org/" = inputs.iogx.inputs.CHaP;
       # };
 
-      compiler-nix-name = lib.mkDefault "ghc98";
+      compiler-nix-name =
+        l.optionalString isExercism "ghc92"
+        +
+        l.optionalString (!isExercism) "ghc98"
+      ;
 
       shell.withHoogle = false;
 
-      shell.tools = {
-        cabal = "latest";
-        haskell-language-server = "latest";
-        implicit-hie = "latest";
-      };
+      shell.tools =
+        l.optionalAttrs (!isReplit) {
+          cabal = "latest";
+          haskell-language-server = "latest";
+          implicit-hie = "latest";
+        }
+        //
+        l.optionalAttrs isReplit {
+          cabal = "latest";
+        }
+      ;
+
       # Non-Haskell shell tools go here
-      shell.buildInputs = with pkgs; [
-        # stack-wrapped
-        nixpkgs-fmt
-      ];
+      shell.buildInputs = with pkgs;
+        l.optionals (!isReplit) [
+          # stack-wrapped
+          nixpkgs-fmt
+        ]
+        ++
+        l.optionals isReplit []
+      ;
+
       # This adds `js-unknown-ghcjs-cabal` to the shell.
       # shell.crossPlatforms = p: [p.ghcjs];
 
@@ -87,12 +112,11 @@ let
 
 
 in
-path:
   # Docs for mkHaskellProject: https://github.com/input-output-hk/iogx/blob/main/doc/api.md#mkhaskellproject
   lib.iogx.mkHaskellProject {
     cabalProject = project' path;
 
-    shellArgs = repoRoot.nix.shell;
+    shellArgs = repoRoot.nix.shell isReplit;
 
     # includeMingwW64HydraJobs = false;
 
@@ -109,4 +133,5 @@ path:
     #   prologue = "";
     #   packages = [];
     # };
+
   }

@@ -52,7 +52,7 @@
       # flake = { repoRoot, inputs }: {};
     };
 
-
+  # Binary cache on
   nixConfig = {
     extra-substituters = [
       "https://cache.iog.io"
@@ -62,4 +62,13 @@
     ];
     allow-import-from-derivation = true;
   };
+  
+  # Binary cache off
+  /*
+  nixConfig = {
+    extra-substituters = [];
+    extra-trusted-public-keys = [];
+    allow-import-from-derivation = true;
+  };
+  */
 }

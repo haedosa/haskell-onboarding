@@ -1,21 +1,17 @@
-#"bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow;\")"
-#"bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; if [[ ! -d nixpkgs ]]; then ./make_custom_nixpkgs.sh; fi; eval '$(direnv hook bash)'; direnv allow;\")"
-
-run = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow;\")"
+run = "bash --init-file <(echo \". ~/.bashrc; pushd exercism/haskell; eval '$(direnv hook bash)'; direnv deny;\")"
+# In Shell:
+# eval "$(direnv hook bash)"
 
 hidden = [".ghci", "ghci_wrapper.sh"]
 
 [nix]
-channel = "stable-22_11"
-
-[interpreter]
-command = "bash --init-file <(echo \"./ghci_wrapper.sh; . ~/.bashrc; eval '$(direnv hook bash)'; direnv allow;\")"
+channel = "stable-24_05"
 
 [languages.haskell]
 pattern = "**/*.hs"
 
 [languages.haskell.languageServer]
-start = ["haskell-language-server", "--lsp"]
+start = ["haskell-language-server-wrapper", "--lsp"]
 
 [gitHubImport]
 requiredFiles = [".replit", "replit.nix", ".ghci"]
