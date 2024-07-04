@@ -1,4 +1,3 @@
-module HelloWorld (hello) where
+module HelloWorld where
 
-hello :: String
-hello = "Goodbye, Mars!"
+hello = "Hello, World!"

@@ -1,4 +1,8 @@
 module ReverseString (reverseString) where
 
 reverseString :: String -> String
-reverseString str = error "You need to implement this function."
+reverseString = foldr (\c acc -> acc ++ [c]) ""
+-- reverseString = reverse
+
+-- >>> reverseString "haedosa"
+-- "asodeah"
