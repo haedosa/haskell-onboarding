@@ -1,8 +1,19 @@
-run = "bash --init-file <(echo \". ~/.bashrc; pushd exercism/haskell; eval '$(direnv hook bash)'; direnv deny;\")"
-# In Shell:
-# eval "$(direnv hook bash)"
+run = "./run_exercism.sh"
 
-hidden = [".ghci", "ghci_wrapper.sh"]
+#run = ". ~/.bashrc && bash"
+
+hidden = [
+  ".config",
+  ".direnv",
+  ".git",
+  ".nix",
+  ".envrc",
+  ".ghci",
+  "ghci_wrapper.sh",
+  ".gitignore",
+  ".pre-commit-config.yaml",
+  "make_custom_nixpkgs.sh",
+]
 
 [nix]
 channel = "stable-24_05"
@@ -14,4 +25,4 @@ pattern = "**/*.hs"
 start = ["haskell-language-server-wrapper", "--lsp"]
 
 [gitHubImport]
-requiredFiles = [".replit", "replit.nix", ".ghci"]
+requiredFiles = [".replit", "replit.nix"]

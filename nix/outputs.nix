@@ -7,11 +7,21 @@ let
       (path:
         let
           matches = __match (toString (../. + "(/.*)/src/.*")) (toString path);
-          match = __head matches;
         in
           if __isList matches
-          then match
+          then __head matches
           else null)));
+
+  exercism-paths = lib.unique (__filter __isString (
+    map
+      (path:
+        let
+          matches = __match (toString (../. + "(/exercism/haskell/.*)/src/.*")) (toString path);
+        in
+          if __isList matches
+          then __head matches
+          else null)
+      (lib.filesystem.listFilesRecursive ../.)));
 
   all = lib.forEach paths (path:
     {
@@ -22,7 +32,6 @@ let
 
   project = repoRoot.nix.project "/exercism/haskell/space-age";
 in
-# non-exercism ++ exercism-haskell ++
 all ++
 [
   # (
@@ -36,6 +45,10 @@ all ++
     testproject = project;
     testiogx = inputs.iogx;
     testlib = lib;
+    devShells.exercism = pkgs.mkShell {
+      packages = [];
+      inputsFrom = lib.forEach exercism-paths (path: (repoRoot.nix.project { inherit path; }).flake.devShell);
+    };
     packages.get-exercises = pkgs.writeShellApplication {
       name = "get-exercises";
       runtimeInputs = [ pkgs.exercism pkgs.hpack ];

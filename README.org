@@ -11,12 +11,12 @@ Haskell Onboarding Repository for [[https://github.com/haedosa/][Haedosa Inc]].
 
 ** Available Platform
 - [[https://replit.com/~][Replit]]
-  - If there is no startup =Console=, press the green =Run= button to start =ghci=.
-  - Inside =ghci=, run =:l Main= to load =Main.hs=
-  - Alternatively, run =:l learn-you-a-haskell/src/First= to load =learn-you-a-haskell/src/First.hs=
-  - If you quit the first =ghci=, then =devShells.x86_64-linux.replit= is run by =direnv=
-  - Although =.envrc= file is not in =git=, it is needed for =direnv=
-
+  - Press the green =Run= button and start a new =Console=.
+  - Follow the instruction on the =Console=. Type in the [[https://exercism.org/tracks/haskell/exercises][Haskell Exercism exercise]] that you wish to explore or type in =list= to see the list of available exercises.
+  - After typing in the exercise, you enter into the =cabal repl= which is =ghci= with libraries in =.cabal= ready to be loaded.
+  - The exercise source files are in =haskell-onboarding/exercism/haskell/<exercise>/src=. Write the code in the source file and type in =:r= to reload the repl so that you can test your variable/function interactively.
+  - Exit the =ghci>= by typing in =:q=.
+  - To test your code, refer to [[.#exercism-guide][Exercism Guide]].
 
 ** Exercism Guide
 
