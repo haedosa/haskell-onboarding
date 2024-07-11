@@ -32,5 +32,6 @@ nixpkgs/
 
 exercism/**/.exercism/metadata.json
 exercism/**/stack.yaml.lock
+exercism/user.json
 .pre-commit-config.yaml
 .nix
