@@ -15,30 +15,30 @@ while true; do
 
   exercise_devShell=${exercise_name}$(if [[ -n "$REPLIT_ENVIRONMENT" ]]; then echo "-replit"; fi)
 
-  if [[ -z "$exercise_name" ]]; then
+  if [[ -z "${exercise_name}" ]]; then
     echo -e "\nNo input detected. Please try again."
-  elif [[ "$exercise_name" == "list" ]]; then
+  elif [[ "${exercise_name}" == "list" ]]; then
     echo -e "\nAvailable exercises:"
     cat exercism_list.txt
     echo -e "\n"
-  elif [[ "$exercise_name" == "gc" ]]; then
+  elif [[ "${exercise_name}" == "gc" ]]; then
     echo -e "\nType the name of the exercise you want to garbage collect"
     read -r gc_exercise_name
-    if [[ -d "exercism/haskell/$gc_exercise_name" ]]; then
-      ./gc.sh "$gc_exercise_name"
+    if [[ -d "exercism/haskell/${gc_exercise_name}" ]]; then
+      ./gc.sh "${gc_exercise_name}"
     else
       echo -e "\nInvalid exercise name. Please try again."
     fi
-  elif [[ "$exercise_name" == "test" ]]; then
+  elif [[ "${exercise_name}" == "test" ]]; then
     echo -e "\nType the name of the exercise you want to test"
     read -r test_exercise_name
-    if [[ -d "exercism/haskell/$test_exercise_name" ]]; then
+    if [[ -d "exercism/haskell/${test_exercise_name}" ]]; then
       test_exercise_devShell=${test_exercise_name}$(if [[ -n "$REPLIT_ENVIRONMENT" ]]; then echo "-replit"; fi)
       nix run .#${test_exercise_devShell}.test
     else
       echo -e "\nInvalid exercise name. Please try again."
     fi
-  elif [[ "$exercise_name" == "submit" ]]; then
+  elif [[ "${exercise_name}" == "submit" ]]; then
     if [[ ! -f "exercism/user.json" ]]; then
       echo -e "\nNo token configured. Please provide your exercism token."
       read -r exercism_token
@@ -46,7 +46,15 @@ while true; do
     fi
     echo -e "\nType the name of the exercise you want to submit"
     read -r submit_exercise_name
-    if [[ -d "exercism/haskell/$submit_exercise_name" ]]; then
+    if [[ -d "exercism/haskell/${submit_exercise_name}" ]]; then
+      if [[ ! -f "exercism/haskell/$submit_exercise_name/.exercism/metadata.json" ]]; then
+        echo -e "\nNo metada.json found. Downloading ..."
+        mkdir -p "exercism/haskell/${submit_exercise_name}-tmp"
+        cp -rf "exercism/haskell/${submit_exercise_name}/"* "exercism/haskell/${submit_exercise_name}-tmp/"
+        exercism download --track=haskell --exercise="$submit_exercise_name" --force
+        cp -rf "exercism/haskell/${submit_exercise_name}-tmp/"* "exercism/haskell/${submit_exercise_name}/"
+        rm -rf "exercism/haskell/${submit_exercise_name}-tmp"
+      fi
       exercism submit exercism/haskell/"$submit_exercise_name"/src/*
     else
       echo -e "\nInvalid exercise name. Please try again."
